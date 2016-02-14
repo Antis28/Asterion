@@ -69,7 +69,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Button x:Name="previewCleanButton" Grid.Column="0"
-                Content="Анализ" HorizontalAlignment="Right" Margin="0,22,95,0" VerticalAlignment="Top" Width="75" Height="20"/>
+                Content="Анализ" HorizontalAlignment="Right" Margin="0,22,95,0" VerticalAlignment="Top" Width="75" Height="20" Click="previewCleanButton_Click"/>
 
                             <Button x:Name="cleanButton" Grid.Column="0"
                 Content="Очистить" HorizontalAlignment="Right" Margin="0,22,15,0" VerticalAlignment="Top" Width="75" Panel.ZIndex="100" Height="20"/>
