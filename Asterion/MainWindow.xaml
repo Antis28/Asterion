@@ -33,10 +33,51 @@
             </TabItem>
             <TabItem Header="Слежение за интернетом">
                 <Grid>
-
                     <Button x:Name="button" Content="Старт" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"  Grid.ColumnSpan="3"/>
                     <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,51,0,0" TextWrapping="Wrap" Text="Статус: не включено" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Очистка каталогов">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="240*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock  x:Name="sizeDiskText" Text="ProgressBar text" Grid.Row="0"  Margin="0,15,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Panel.ZIndex="1" Foreground="#FF00033A" />
+                    <ProgressBar x:Name="sizeDiskProgressBar" Grid.Row="0" Height="25" Margin="50,10,50,10" VerticalAlignment="Top"  FontWeight="Bold" Background="#FFEEEEEE" BorderBrush="#FF4B004B" Foreground="#FF98FF68"/>
 
+
+
+                    <ListView x:Name="consoleListView"
+                   Margin="5" Padding="5" Grid.Row="2" Background="#FFFFFDEF"                   
+                  >
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <StackPanel Grid.Row="1">
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <Button x:Name="previewCleanButton" Grid.Column="0"
+                Content="Анализ" HorizontalAlignment="Right" Margin="0,22,100,0" VerticalAlignment="Top" Width="75" Height="20"/>
+
+                            <Button x:Name="cleanButton" Grid.Column="0"
+                Content="Очистить" HorizontalAlignment="Right" Margin="0,22,15,0" VerticalAlignment="Top" Width="75" Panel.ZIndex="100" Height="20"/>
+
+
+                            <ComboBox x:Name="comboBox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,30,65,0" VerticalAlignment="Top" Width="53" Height="20" />
+                            <CheckBox x:Name="checkBox" Grid.Column="1" Content="Автоматически очищать" Margin="0,10,10,0" HorizontalAlignment="Right"  VerticalAlignment="Top"  Height="15" Width="155"/>
+                            <TextBlock  Text="Через"    Grid.Column="1" Margin="0,30,130,0" VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="1" Foreground="#FF00033A" Height="16" Width="33" />
+                            <TextBlock  Text="час(ов)"  Grid.Column="1" Margin="0,30,20,0" VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="1" Foreground="#FF00033A" Height="16" Width="39" />
+                        </Grid>
+                    </StackPanel>
                 </Grid>
             </TabItem>
         </TabControl>
