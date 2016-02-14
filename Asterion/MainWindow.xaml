@@ -5,8 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Asterion"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="227.553" Width="341.149" >
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <!--   Главного меню -->
+            <RowDefinition Height="auto"></RowDefinition>
+            <!--  Место для TabControl -->
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions >
+        <!--   Контент  для Tab элементов -->
+        <TabControl Grid.Row="1">
+            <TabItem Header="Таймер">
+                <Grid>
+                    <Button x:Name="startAlarm" Content="Start Alarm" HorizontalAlignment="Left" Margin="10,10,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto" ></Button>
+                    <Button x:Name="startTimer" Content="Start Timer" HorizontalAlignment="Left" Margin="10,50,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto" ></Button>
+
+                    <TextBlock x:Name="statusText" Text="Осталось:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="87,50,0,0"></TextBlock>
+                    <ComboBox x:Name="hoursComboBox" HorizontalAlignment="Left" Margin="87,10,0,0" VerticalAlignment="Top" Width="auto"/>
+                    <ComboBox x:Name="minutesComboBox" HorizontalAlignment="Left" Margin="150,10,0,0" VerticalAlignment="Top" Width="auto" />
+                    <TextBox x:Name="adressPlayer" Height="23" Text="C:\Program Files (x86)\VideoLAN\VLC\vlc.exe" Width="306"
+                             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,90,0,0" MaxLines="1"/>
+                    <TextBox x:Name="adressFile" Height="23" Text="M:\1.mp3" Width="307"
+                             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,120,0,0"/>
+                    <CheckBox x:Name="sleepFlag" Content="Гибернация" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Слежение за интернетом">
+                <Grid>
+
+                    <Button x:Name="button" Content="Старт" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"  Grid.ColumnSpan="3"/>
+                    <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,51,0,0" TextWrapping="Wrap" Text="Статус: не включено" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <!--   Описание главного меню -->
+        <Menu x:Name="menu" Grid.Row="0" Margin="0,0,0,0">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Выход"></MenuItem>
+            </MenuItem>
+            <MenuItem x:Name="Settings" Header="Настройки" ></MenuItem>
+        </Menu>
+
     </Grid>
 </Window>
