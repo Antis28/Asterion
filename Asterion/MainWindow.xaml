@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Asterion"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" Width="355" >
+        Title="MainWindow" Height="250" Width="360.333" >
     <Grid>
         <Grid.RowDefinitions>
             <!--   Главного меню -->
@@ -48,7 +48,7 @@
                         <RowDefinition Height="240*"/>
                     </Grid.RowDefinitions>
                     <TextBlock  x:Name="sizeDiskText" Text="ProgressBar text" Grid.Row="0"  Margin="0,15,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Panel.ZIndex="1" Foreground="#FF00033A" />
-                    <ProgressBar x:Name="sizeDiskProgressBar" Grid.Row="0" Height="25" Margin="50,10,50,10" VerticalAlignment="Top"  FontWeight="Bold" Background="#FFEEEEEE" BorderBrush="#FF4B004B" Foreground="#FF98FF68"/>
+                    <ProgressBar x:Name="sizeDiskProgressBar" Grid.Row="0" Height="25" Margin="50,10,50,10" VerticalAlignment="Top"  FontWeight="Bold" Background="#FFEEEEEE" BorderBrush="#FF4B004B" Foreground="#FF98FF68" Initialized="sizeDiskProgressBar_Initialized"/>
 
 
 
@@ -72,11 +72,11 @@
                 Content="Анализ" HorizontalAlignment="Right" Margin="0,22,95,0" VerticalAlignment="Top" Width="75" Height="20" Click="previewCleanButton_Click"/>
 
                             <Button x:Name="cleanButton" Grid.Column="0"
-                Content="Очистить" HorizontalAlignment="Right" Margin="0,22,15,0" VerticalAlignment="Top" Width="75" Panel.ZIndex="100" Height="20"/>
+                Content="Очистить" HorizontalAlignment="Right" Margin="0,22,15,0" VerticalAlignment="Top" Width="75" Panel.ZIndex="100" Height="20" Click="cleanButton_Click"/>
 
 
-                            <ComboBox x:Name="comboBox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,30,65,0" VerticalAlignment="Top" Width="53" Height="20" />
-                            <CheckBox x:Name="checkBox" Grid.Column="1" Content="Автоматически очищать" Margin="0,10,10,0" HorizontalAlignment="Right"  VerticalAlignment="Top"  Height="15" Width="155"/>
+                            <ComboBox x:Name="comboBox" Grid.Column="1" HorizontalAlignment="Right" Margin="0,30,65,0" VerticalAlignment="Top" Width="53" Height="20" Initialized="comboBox_Initialized" />
+                            <CheckBox x:Name="checkBoxCleanTemp" Grid.Column="1" Content="Автоматически очищать" Margin="0,10,10,0" HorizontalAlignment="Right"  VerticalAlignment="Top"  Height="15" Width="155" Click="checkBox_Click"/>
                             <TextBlock  Text="Через"    Grid.Column="1" Margin="0,30,130,0" VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="1" Foreground="#FF00033A" Height="16" Width="33" />
                             <TextBlock  Text="час(ов)"  Grid.Column="1" Margin="0,30,20,0" VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="1" Foreground="#FF00033A" Height="16" Width="39" />
                         </Grid>
