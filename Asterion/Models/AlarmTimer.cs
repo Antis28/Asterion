@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Asterion.Models
 {
-    class AlarmTimer
+    class LogicAlarmTimer
     {
     }
 }

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Asterion"
         mc:Ignorable="d"
-        Title="MainWindow" Height="227.553" Width="341.149" >
+        Title="MainWindow" Height="250" Width="355" >
     <Grid>
         <Grid.RowDefinitions>
             <!--   Главного меню -->
@@ -14,7 +14,7 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions >
         <!--   Контент  для Tab элементов -->
-        <TabControl Grid.Row="1">
+        <TabControl Grid.Row="1" >
             <TabItem Header="Таймер">
                 <Grid>
                     <Button x:Name="startAlarm" Content="Start Alarm" HorizontalAlignment="Left" Margin="10,10,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto" ></Button>
@@ -66,7 +66,7 @@
                             </Grid.ColumnDefinitions>
 
                             <Button x:Name="previewCleanButton" Grid.Column="0"
-                Content="Анализ" HorizontalAlignment="Right" Margin="0,22,100,0" VerticalAlignment="Top" Width="75" Height="20"/>
+                Content="Анализ" HorizontalAlignment="Right" Margin="0,22,95,0" VerticalAlignment="Top" Width="75" Height="20"/>
 
                             <Button x:Name="cleanButton" Grid.Column="0"
                 Content="Очистить" HorizontalAlignment="Right" Margin="0,22,15,0" VerticalAlignment="Top" Width="75" Panel.ZIndex="100" Height="20"/>
@@ -79,6 +79,9 @@
                         </Grid>
                     </StackPanel>
                 </Grid>
+            </TabItem>
+            <TabItem Header="Перезапуск explorer.exe">
+                <Button x:Name="buttonRestartProcess" Content="Перезапустить" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,5,0,5" Click="buttonRestartProcess_Click"></Button>
             </TabItem>
         </TabControl>
 
