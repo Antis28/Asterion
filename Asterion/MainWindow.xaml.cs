@@ -14,6 +14,7 @@ namespace Asterion
         {
             InitializeComponent();
             new PresenterAlarmTimer( this );
+            new PresenterRestartProcess( this );
         }
 
         public event EventHandler startAlarmEvent = null;        

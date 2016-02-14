@@ -15,6 +15,9 @@
         </Grid.RowDefinitions >
         <!--   Контент  для Tab элементов -->
         <TabControl Grid.Row="1" >
+            <TabItem Header="Перезапуск explorer.exe">
+                <Button x:Name="buttonRestartProcess" Content="Перезапустить" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,5,0,5" Click="buttonRestartProcess_Click"></Button>
+            </TabItem>
             <TabItem Header="Таймер">
                 <Grid>
                     <Button x:Name="startAlarm" Content="Start Alarm" HorizontalAlignment="Left" Margin="10,10,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto" ></Button>
@@ -79,10 +82,7 @@
                         </Grid>
                     </StackPanel>
                 </Grid>
-            </TabItem>
-            <TabItem Header="Перезапуск explorer.exe">
-                <Button x:Name="buttonRestartProcess" Content="Перезапустить" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,5,0,5" Click="buttonRestartProcess_Click"></Button>
-            </TabItem>
+            </TabItem>            
         </TabControl>
 
         <!--   Описание главного меню -->
