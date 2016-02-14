@@ -14,6 +14,8 @@ namespace Asterion
         {
             InitializeComponent();
             new PresenterAlarmTimer( this );
+            new PresenterRestartProcess( this );
+            new PresenterClean( this );
         }
 
         public event EventHandler startAlarmEvent = null;        
@@ -28,5 +30,17 @@ namespace Asterion
         {
             restartProcessEvent.Invoke( sender, e );
         }
+
+        public event EventHandler previewCleanEvent = null;
+        private void previewCleanButton_Click( object sender, RoutedEventArgs e )
+        {
+            previewCleanEvent.Invoke( sender, e );
+        }
+
+        public event EventHandler CleanEvent = null;
+        //private void previewCleanButton_Click( object sender, RoutedEventArgs e )
+        //{
+        //    previewCleanEvent.Invoke( sender, e );
+        //}
     }
 }

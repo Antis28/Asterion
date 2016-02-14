@@ -1,0 +1,12 @@
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\bin\Release\Asterion.exe
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\bin\Release\Asterion.pdb
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\MainWindow.g.cs
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\App.g.cs
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion_MarkupCompile.cache
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion_MarkupCompile.lref
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\MainWindow.baml
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.g.resources
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.Properties.Resources.resources
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.csproj.GenerateResource.Cache
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.exe
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.pdb
