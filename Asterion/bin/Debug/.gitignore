@@ -1,4 +1,1 @@
-/Asterion.exe.config
-/Asterion.vshost.exe.config
-/Asterion.vshost.exe
-/Asterion.vshost.exe.manifest
+*.vshost.exe
