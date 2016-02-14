@@ -1,1 +1,7 @@
 *.cache
+/Asterion.Properties.Resources.resources
+/Asterion.csproj.FileListAbsolute.txt
+/Asterion.exe
+/Asterion.g.resources
+/Asterion.pdb
+/Asterion_MarkupCompile.lref
