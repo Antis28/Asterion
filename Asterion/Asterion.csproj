@@ -71,9 +71,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\AlarmTimer.cs" />
+    <Compile Include="Models\FindExtInBaseDate.cs" />
     <Compile Include="Models\LogicCleanTemp.cs" />
     <Compile Include="Models\LogicRestartProcess.cs" />
     <Compile Include="Presentors\PresenterAlarmTimer.cs" />
+    <Compile Include="Presentors\PresenterFindExt.cs" />
     <Compile Include="Presentors\PresenterPreviewClean.cs" />
     <Compile Include="Presentors\PresenterRestartProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">

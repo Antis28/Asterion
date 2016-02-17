@@ -19,6 +19,7 @@ namespace Asterion
             new PresenterAlarmTimer( this );
             new PresenterRestartProcess( this );
             new PresenterClean( this );
+            new PresenterFindExt( this );
         }
 
         public event EventHandler startAlarmEvent = null;
@@ -66,6 +67,11 @@ namespace Asterion
         {
             new SpaceDiskInPercent(this);
             sizeDiskProgressBarEvent.Invoke( sender, e );
+        }
+        public event EventHandler findExtInBaseDateEvent = null;
+        private void startSerach_Click( object sender, RoutedEventArgs e )
+        {
+            findExtInBaseDateEvent.Invoke( sender, e );
         }
     }
 }
