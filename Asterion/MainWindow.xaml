@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Asterion"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" Width="360.333" >
+        Title="MainWindow"  HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" Width="450"  Height="250" MinWidth="450" MinHeight="250">
     <Grid>
         <Grid.RowDefinitions>
             <!--   Главного меню -->
@@ -15,8 +15,31 @@
         </Grid.RowDefinitions >
         <!--   Контент  для Tab элементов -->
         <TabControl Grid.Row="1" >
-            <TabItem Header="Перезапуск explorer.exe">
-                <Button x:Name="buttonRestartProcess" Content="Перезапустить" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="20,5,0,5" Click="buttonRestartProcess_Click"></Button>
+            <TabItem Header="Разное">
+                <Grid>
+                    <Button x:Name="button" Content="Слежение за интернетом" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top" Width="75"  Grid.ColumnSpan="3"/>
+                    <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,51,0,0" TextWrapping="Wrap" Text="Статус: не включено" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
+                    <Button x:Name="buttonRestartProcess" Content="Перезапуск explorer.exe" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="190,15,0,0" Click="buttonRestartProcess_Click"></Button>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Поиск по расширению">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="extText" Grid.Row="0" Grid.Column="0" Text="Найти расширение файла:" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="21.333"/>
+                    <TextBlock x:Name="extDotText" Grid.Row="0" Grid.Column="1" Text="." Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="21.333" FontWeight="Bold"/>
+
+                    <TextBox x:Name="extInput" Grid.Row="0" Grid.Column="1" Text="txt"  Margin="15,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="21.333" MinWidth="50" FontWeight="Bold"/>
+                    <TextBlock x:Name="extDescription" Grid.Row="1" Text="Some text" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="21.333" FontFamily="Segoe WP Semibold" Grid.ColumnSpan="2" Margin="15,0,0,0" TextWrapping="Wrap"/>
+
+                </Grid>
             </TabItem>
             <TabItem Header="Таймер">
                 <Grid>
@@ -32,12 +55,6 @@
                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,120,0,0"/>
                     <CheckBox x:Name="sleepFlag" Content="Гибернация" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top"/>
 
-                </Grid>
-            </TabItem>
-            <TabItem Header="Слежение за интернетом">
-                <Grid>
-                    <Button x:Name="button" Content="Старт" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"  Grid.ColumnSpan="3"/>
-                    <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,51,0,0" TextWrapping="Wrap" Text="Статус: не включено" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Очистка каталогов">
@@ -82,7 +99,8 @@
                         </Grid>
                     </StackPanel>
                 </Grid>
-            </TabItem>            
+            </TabItem>
+
         </TabControl>
 
         <!--   Описание главного меню -->
