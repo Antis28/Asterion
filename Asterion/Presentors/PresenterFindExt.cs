@@ -15,10 +15,12 @@ namespace Asterion.Presentors
         {            
             this.mainWindow = mainWindow;
             this.mainWindow.findExtInBaseDateEvent += new EventHandler( mainWindow_findExtInBaseDate );
+
+            mainWindow.extDescriptionCategory.Text = mainWindow.extDescription.Text = "";
         }
 
         void mainWindow_findExtInBaseDate( object sender, System.EventArgs e )
-        {
+        {            
             this.ExtInBaseDate = new FindExtInBaseDate( mainWindow.extInput.Text );
             ExtInBaseDate.FindIn_TXT();
             mainWindow.extDescriptionCategory.Text = ExtInBaseDate.descriptExt.Category;

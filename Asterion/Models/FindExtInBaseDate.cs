@@ -21,7 +21,15 @@ namespace Asterion.Models
         /// <summary>
         /// Главная функция поиска по файлам
         /// </summary>
+        /// 
         public void FindIn_TXT()
+        {
+            try
+            {
+                FindIn_TXT_Start();
+            }catch(Exception e ) { MessageBox.Show( e.Message ); }
+        }
+        public void FindIn_TXT_Start()
         {
             tagetExt = "." + tagetExt;
             DirectoryInfo textDirectory = new DirectoryInfo( "text" );
@@ -54,10 +62,12 @@ namespace Asterion.Models
 
         private void ЗаполнениеОписания( string currentLine )
         {
-            string paternExt = @"\s\w+";
+            string paternExt = @"\s\S+";
+            //@"\s\w+";
 
             var regex = new Regex( paternExt );
             MatchCollection findable = regex.Matches( currentLine );
+            string sd = regex.Match( currentLine ).Result("${description}");
             foreach( var item in findable )
             {
                 string[] s = item.ToString().Split( '\t' );
