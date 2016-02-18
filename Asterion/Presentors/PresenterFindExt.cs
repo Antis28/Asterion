@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using Asterion.Models;
 
 namespace Asterion.Presentors
@@ -25,6 +26,15 @@ namespace Asterion.Presentors
             ExtInBaseDate.FindIn_TXT();
             mainWindow.extDescriptionCategory.Text = ExtInBaseDate.descriptExt.Category;
             mainWindow.extDescription.Text = ExtInBaseDate.descriptExt.Description;
+            mainWindow.listViewExtDescription.Items.Clear();
+            foreach( var item in ExtInBaseDate.descriptExtList )
+            {
+                mainWindow.listViewExtDescription.Items.Add( item.Category );
+                mainWindow.listViewExtDescription.Items.Add( item.Description );
+                mainWindow.listViewExtDescription.Items.Add( new string( '-', 50 ));
+            }
+            
+           
         }
 
 

@@ -10,12 +10,13 @@ namespace Asterion.Models
 {
     class FindExtInBaseDate
     {
+        public List<DescriptionExtension> descriptExtList= null;
         public DescriptionExtension descriptExt = null;
         string tagetExt;
 
         public FindExtInBaseDate( string tagetExt )
-        {
-            descriptExt = new DescriptionExtension();
+        {            
+            descriptExtList = new List<DescriptionExtension>();
             this.tagetExt = tagetExt;
         }
         /// <summary>
@@ -31,11 +32,15 @@ namespace Asterion.Models
         }
         public void FindIn_TXT_Start()
         {
+            descriptExtList.Clear();
             tagetExt = "." + tagetExt;
             DirectoryInfo textDirectory = new DirectoryInfo( "text" );
-            bool isFind = false;
+            descriptExt = new DescriptionExtension();
+            
             foreach( var fileTXT in textDirectory.GetFiles() )
             {
+                bool isFind = false;
+                descriptExt = new DescriptionExtension();
                 descriptExt.Category = Path.GetFileNameWithoutExtension( fileTXT.Name );
                 StreamReader reader = File.OpenText( fileTXT.FullName );
                 try
@@ -46,6 +51,7 @@ namespace Asterion.Models
                         if( isEqualyExt( currentLine ) )
                         {
                             ЗаполнениеОписания( currentLine );
+                            descriptExtList.Add( descriptExt );
                             isFind = true;
                             break;
                         }
@@ -53,7 +59,7 @@ namespace Asterion.Models
                 } catch(Exception e) { MessageBox.Show( e.Message ); } finally { reader.Close(); }
                 if( isFind )
                 {                    
-                    break;
+                    continue;
                 }
                 descriptExt.Category = "Не найдено совпадений";
                 descriptExt.Description = "";
