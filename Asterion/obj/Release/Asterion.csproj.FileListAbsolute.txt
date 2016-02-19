@@ -10,3 +10,4 @@ M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.Prop
 M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.csproj.GenerateResource.Cache
 M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.exe
 M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.pdb
+M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.csprojResolveAssemblyReference.cache
