@@ -15,7 +15,7 @@ namespace Asterion.Presentors
 
         public PresenterAlarmTimer( MainWindow mainWindow )
         {
-            this.alarmTimer = new LogicAlarmTimer();
+           // this.alarmTimer = new LogicAlarmTimer();
             this.mainWindow = mainWindow;
             this.mainWindow.startAlarmEvent += new EventHandler( mainWindow_startAlarmEvent );
         }
