@@ -84,7 +84,7 @@ namespace Asterion
         public event EventHandler startTimerEvent = null;
         private void startTimer_Click( object sender, RoutedEventArgs e )
         {
-
+            startTimerEvent.Invoke( sender, e );
         }
 
         

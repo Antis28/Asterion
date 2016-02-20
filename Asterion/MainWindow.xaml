@@ -91,10 +91,14 @@
             </TabItem>
             <TabItem Header="Таймер">
                 <Grid>
-                    <Button x:Name="startAlarm" Content="Start Alarm" HorizontalAlignment="Left" Margin="10,10,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto" ></Button>
-                    <Button x:Name="startTimer" Content="Start Timer" HorizontalAlignment="Left" Margin="10,50,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto" Click="startTimer_Click" ></Button>
+                    <Button x:Name="startAlarmButton" Content="Start Alarm" HorizontalAlignment="Left" Margin="10,10,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto" ></Button>
+                    <Button x:Name="startTimerButton" Content="Включить таймер" HorizontalAlignment="Left" Margin="10,50,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto" Click="startTimer_Click" Foreground="Black" >
+                        <Button.Background>
+                            <SolidColorBrush Color="#FFE3E3E3"/>
+                        </Button.Background>
+                    </Button>
 
-                    <TextBlock x:Name="statusText" Text="Осталось:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="87,50,0,0"></TextBlock>
+                    <TextBlock x:Name="statusText" Text="Осталось:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,50,0,0"></TextBlock>
                     <ComboBox x:Name="hoursComboBox" HorizontalAlignment="Left" Margin="87,10,0,0" VerticalAlignment="Top" Width="auto" Initialized="hoursComboBox_Initialized" />
                     <ComboBox x:Name="minutesComboBox" HorizontalAlignment="Left" Margin="150,10,0,0" VerticalAlignment="Top" Width="auto" Initialized="minutesComboBox_Initialized"  />
                     <TextBlock Text="Путь к музыкальному файлу:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,90,0,0"/>

@@ -55,7 +55,7 @@ namespace Asterion.Models
             }
         }
 
-        void StartTimer()
+        public void StartTimer()
         {
             while( timerMinute != 0 && timerMinute != 0 )
             {
