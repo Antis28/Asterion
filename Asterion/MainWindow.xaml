@@ -20,8 +20,8 @@
                     <Button x:Name="button" Content="Слежение за интернетом" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top"   Grid.ColumnSpan="3"/>
                     <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,51,0,0" TextWrapping="Wrap" Text="Статус: не включено" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
                     <Button x:Name="buttonRestartProcess" Content="Перезапуск explorer.exe" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="190,15,0,0" Click="buttonRestartProcess_Click"></Button>
-                    <Button x:Name="renameFiles" Content="Переименовать"  Padding="2" Margin="30,121,0,0" Click="button1_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                    <Button x:Name="openFileDialog" Content="Указать путь к папке"  Padding="2" Margin="23,94,0,0" Click="button1_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <Button x:Name="buttonRenameFiles" Content="Переименовать"  Padding="2" Margin="30,121,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" Click="buttonRenameFiles_Click"/>
+                    <Button x:Name="buttonOpenFileDialog" Content="Указать путь к папке"  Padding="2" Margin="23,94,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Click="buttonOpenFileDialog_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Поиск по расширению">
@@ -91,16 +91,31 @@
             </TabItem>
             <TabItem Header="Таймер">
                 <Grid>
-                    <Button x:Name="startAlarm" Content="Start Alarm" HorizontalAlignment="Left" Margin="10,10,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto" ></Button>
-                    <Button x:Name="startTimer" Content="Start Timer" HorizontalAlignment="Left" Margin="10,50,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto" Click="startTimer_Click" ></Button>
+                    <Button x:Name="startAlarmButton" Content="Start Alarm" HorizontalAlignment="Left" Margin="10,10,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto" ></Button>
+                    <Button x:Name="startTimerButton" Content="Включить таймер" HorizontalAlignment="Left" Margin="10,50,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto" Click="startTimer_Click" Foreground="Black" >
+                        <Button.Background>
+                            <SolidColorBrush Color="#FFE3E3E3"/>
+                        </Button.Background>
+                    </Button>
 
-                    <TextBlock x:Name="statusText" Text="Осталось:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="87,50,0,0"></TextBlock>
-                    <ComboBox x:Name="hoursComboBox" HorizontalAlignment="Left" Margin="87,10,0,0" VerticalAlignment="Top" Width="auto"/>
-                    <ComboBox x:Name="minutesComboBox" HorizontalAlignment="Left" Margin="150,10,0,0" VerticalAlignment="Top" Width="auto" />
+                    <Button x:Name="openFileDialog" Content="Выбрать файл" HorizontalAlignment="Left" Margin="177,86,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto"  Foreground="Black" Click="openFileDialogToAlarmAndTimer_Click" >
+                        <Button.Background>
+                            <SolidColorBrush Color="#FFE3E3E3"/>
+                        </Button.Background>
+                    </Button>
+
+                    <TextBlock x:Name="statusText" Text="Осталось:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,50,0,0"></TextBlock>
+                    
+                    <TextBlock Text="часы:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="115,13,0,0"></TextBlock>
+                    <ComboBox x:Name="hoursComboBox" HorizontalAlignment="Left" Margin="150,10,0,0" VerticalAlignment="Top" Width="auto" Initialized="hoursComboBox_Initialized" />
+                    
+                    <TextBlock Text="минуты:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="189,13,0,0"></TextBlock>
+                    <ComboBox x:Name="minutesComboBox" HorizontalAlignment="Left" Margin="238,10,0,0" VerticalAlignment="Top" Width="auto" Initialized="minutesComboBox_Initialized"  />
+                    
                     <TextBlock Text="Путь к музыкальному файлу:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,90,0,0"/>
-                    <TextBox x:Name="adressPlayer" Text="C:\Program Files (x86)\VideoLAN\VLC\vlc.exe" Width="306" Padding="2"
+                    <TextBox x:Name="pathToFile" Width="306" Padding="2"
                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,113,0,0" MaxLines="1"/>
-                    <CheckBox x:Name="sleepFlag" Content="Гибернация" HorizontalAlignment="Left" Margin="230,10,0,0" VerticalAlignment="Top"/>
+                    <CheckBox x:Name="sleepFlag" Content="Гибернация" HorizontalAlignment="Left" Margin="293,10,0,0" VerticalAlignment="Top"/>
 
                 </Grid>
             </TabItem>

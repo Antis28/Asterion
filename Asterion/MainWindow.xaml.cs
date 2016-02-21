@@ -22,6 +22,7 @@ namespace Asterion
             new PresenterRestartProcess( this );
             new PresenterClean( this );
             new PresenterFindExt( this );
+            new PresenterRenamer( this );
         }
 
         public event EventHandler startAlarmEvent = null;
@@ -74,32 +75,47 @@ namespace Asterion
             findExtInBaseDateEvent.Invoke( sender, e );
         }
 
-        private void button1_Click( object sender, RoutedEventArgs e )
+        public event EventHandler openFileDialogRenamerEvent = null;
+        private void buttonOpenFileDialog_Click( object sender, RoutedEventArgs e )
         {
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.FileName = "Document"; // Default file name
-            dlg.DefaultExt = ".txt"; // Default file extension
-            dlg.Filter = "Все файлы (*.*)|*.*"; // Filter files by extension
-
-            // Show open file dialog box
-            Nullable<bool> result = dlg.ShowDialog();
-
-            // Process open file dialog box results
-            if( result == true )
-            {
-                // Open document
-                string filename = dlg.FileName;
-            }
-
+            openFileDialogRenamerEvent.Invoke( sender, e );
         }
 
         public event EventHandler startTimerEvent = null;
         private void startTimer_Click( object sender, RoutedEventArgs e )
         {
-
+            startTimerEvent.Invoke( sender, e );
         }
 
+        
         public event EventHandler logicRanamerEvent = null;
+        private void buttonRenameFiles_Click( object sender, RoutedEventArgs e )
+        {
+            logicRanamerEvent.Invoke( sender, e );
+        }
 
+        private void hoursComboBox_Initialized( object sender, EventArgs e )
+        {
+            for( int i = 0; i < 24; i++ )
+            {
+                hoursComboBox.Items.Add( i );
+            }
+            hoursComboBox.SelectedIndex = 0;
+        }        
+
+        private void minutesComboBox_Initialized( object sender, EventArgs e )
+        {
+            for( int i = 0; i < 60; i++ )
+            {
+                minutesComboBox.Items.Add( i );
+            }
+            minutesComboBox.SelectedIndex = 0;
+        }
+
+        public event EventHandler openFileDialogEvent = null;
+        private void openFileDialogToAlarmAndTimer_Click( object sender, RoutedEventArgs e )
+        {
+            openFileDialogEvent.Invoke( sender, e );
+        }
     }
 }
