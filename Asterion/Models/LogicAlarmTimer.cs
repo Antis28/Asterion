@@ -59,10 +59,10 @@ namespace Asterion.Models
         {
             while( timerMinute != 0 && timerMinute != 0 )
             {
-                lock( lockObject )
-                {
-                    timerStatusText = MyMessage.lastTime + timerHour + " час(ов),  " + timerMinute + "минут(а/ы)";
-                }
+
+                timerStatusText = MyMessage.lastTime + timerHour + " час(ов),  " + timerMinute + "минут(а/ы)";
+
+                Thread.Sleep( TimeSpan.FromSeconds( 1 ) );
             }
         }
     }
