@@ -15,12 +15,39 @@ namespace Asterion.Presentors
         LogicAlarmTimer alarmTimer = null;
         MainWindow mainWindow = null;
 
-        int currentHourChange = 0;
-        int currentMinutesChange = 0;
-        volatile bool isStopTimer = true;
+        public int currentHourChange = 0;
+        public int currentMinutesChange = 0;
+        
+        public volatile bool isStopTimer = true;
+        string timerStatusText = "";
+
+        public volatile string pathToMusicFile = "";
+
+        public string TimerStatusText
+        {
+            get
+            {
+                 mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
+                    (Action)delegate
+                    {
+                        timerStatusText = mainWindow.statusText.Text;
+                    } );
+                return timerStatusText;
+            }
+
+            set
+            {
+                timerStatusText = value;
+                mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
+                    (Action)delegate
+                    {
+                        mainWindow.statusText.Text = timerStatusText;
+                    } );                
+            }
+        }
 
         public PresenterAlarmTimer( MainWindow mainWindow )
-        {            
+        {
             this.alarmTimer = new LogicAlarmTimer();
             this.mainWindow = mainWindow;
             this.mainWindow.startAlarmEvent += new EventHandler( mainWindow_startAlarmEvent );
@@ -36,48 +63,44 @@ namespace Asterion.Presentors
         {
             if( isStopTimer )
             {
-                ButtonContentInvert();
+                pathToMusicFile = mainWindow.pathToFile.Text;
+                EnableTimer();
                 ChangedTimeInTimer();
                 new Thread( StartTimer ) { IsBackground = true, Name = "PreStartTimer" }.Start();
             } else
             {
-                ButtonContentInvert();
+                DisableTimer();
             }
         }
 
         private void StartTimer()
         {
-            Thread threadTimer = new Thread( alarmTimer.StartTimer )
+            Thread threadTimer = new Thread( new ParameterizedThreadStart( alarmTimer.StartTimer ) )
             { IsBackground = true, Name = "StartTimer" };
-            threadTimer.Start();
+            threadTimer.Start( this );
             while( !isStopTimer )
             {
                 Thread.Sleep( TimeSpan.FromSeconds( 1 ) );
-                isStopTimer = !alarmTimer.TimerIsStart;
+                if( !isStopTimer )
+                    isStopTimer = !alarmTimer.TimerIsStart;
             }
             mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
-                                                new Action( DisbleTimer ) );
+                                                new Action( DisableTimer ) );            
             threadTimer.Abort();
-        }
 
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            process.StartInfo.FileName = pathToMusicFile;
+            process.Start();
+
+        }
         
-        private void ButtonContentInvert()
-        {
-            if( isStopTimer )
-            {                
-                
-                EnableTimer();
-            } else
-            {
-                DisbleTimer();
-            }
-        }
 
-        private void DisbleTimer()
+        private void DisableTimer()
         {
             mainWindow.startTimerButton.Foreground = System.Windows.Media.Brushes.Black;
             mainWindow.startTimerButton.Background = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromArgb( 0xFF, 0xE3, 0xE3, 0xE3 ) );
             mainWindow.startTimerButton.Content = "Включить таймер";
+            TimerStatusText = "Cтатус: таймер выключен";
             isStopTimer = true;
         }
 
@@ -85,7 +108,7 @@ namespace Asterion.Presentors
         {
             mainWindow.startTimerButton.Foreground = System.Windows.Media.Brushes.Red;
             mainWindow.startTimerButton.Background = System.Windows.Media.Brushes.Yellow;
-            mainWindow.startTimerButton.Content = "Таймер включен";
+            mainWindow.startTimerButton.Content = "Таймер включен";            
             isStopTimer = false;
         }
 

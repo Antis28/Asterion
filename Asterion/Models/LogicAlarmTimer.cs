@@ -14,8 +14,8 @@ namespace Asterion.Models
 
         int timerHour = 0;
         int timerMinute = 0;
-        bool timerIsStart = false;
-        string timerStatusText = "";
+        bool timerIsStart = true;
+        
 
 
         public int TimerHour
@@ -42,6 +42,7 @@ namespace Asterion.Models
                 timerMinute = value;
             }
         }
+
         public bool TimerIsStart
         {
             get
@@ -55,15 +56,28 @@ namespace Asterion.Models
             }
         }
 
-        public void StartTimer()
+        
+        
+
+        public void StartTimer( object pat)
         {
-            while( timerMinute != 0 && timerMinute != 0 )
-            {
+            Asterion.Presentors.PresenterAlarmTimer presenterAlarmTimer = pat as Asterion.Presentors.PresenterAlarmTimer;
+            timerHour = presenterAlarmTimer.currentHourChange;
+            timerMinute = presenterAlarmTimer.currentMinutesChange;
+            TimerIsStart = !presenterAlarmTimer.isStopTimer;
 
-                timerStatusText = MyMessage.lastTime + timerHour + " час(ов),  " + timerMinute + "минут(а/ы)";
-
+            while( timerMinute != 0 || timerHour != 0 )
+            {               
+                presenterAlarmTimer.TimerStatusText = MyMessage.lastTime + timerHour + " час(ов),  " + timerMinute + "минут(а/ы)";
                 Thread.Sleep( TimeSpan.FromSeconds( 1 ) );
+                timerMinute--;
+                if( timerMinute <0 && timerHour > 0)
+                {
+                    timerMinute = 59;
+                    timerHour--;
+                }
             }
+            TimerIsStart = false;
         }
     }
 
