@@ -69,7 +69,7 @@ namespace Asterion.Models
             while( timerMinute != 0 || timerHour != 0 )
             {               
                 presenterAlarmTimer.TimerStatusText = MyMessage.lastTime + timerHour + " час(ов),  " + timerMinute + "минут(а/ы)";
-                Thread.Sleep( TimeSpan.FromSeconds( 1 ) );
+                Thread.Sleep( TimeSpan.FromMinutes( 1 ) );
                 timerMinute--;
                 if( timerMinute <0 && timerHour > 0)
                 {

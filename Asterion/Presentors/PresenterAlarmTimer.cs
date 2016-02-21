@@ -132,7 +132,7 @@ namespace Asterion.Presentors
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.FileName = ""; // Default file name            
-            dlg.Filter = "Все файлы (*.*)|*.*"; // Filter files by extension
+            dlg.Filter = "Музыкальные файлы| *.mp3; *.wav; *.flac; *.wma; *.ogg|Видео файлы|*.avi; *.mp4|Все файлы (*.*)|*.*"; // Filter files by extension.mp3
 
             // Show open file dialog box
             Nullable<bool> result = dlg.ShowDialog();

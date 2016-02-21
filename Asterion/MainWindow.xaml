@@ -113,7 +113,7 @@
                     <ComboBox x:Name="minutesComboBox" HorizontalAlignment="Left" Margin="238,10,0,0" VerticalAlignment="Top" Width="auto" Initialized="minutesComboBox_Initialized"  />
                     
                     <TextBlock Text="Путь к музыкальному файлу:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,90,0,0"/>
-                    <TextBox x:Name="pathToFile" Text="M:\Music_(67 ГБ)\Organ\Играет Евгения Лисицина (1972)\Евгения Лисицина-side 2.flac" Width="306" Padding="2"
+                    <TextBox x:Name="pathToFile" Width="306" Padding="2"
                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,113,0,0" MaxLines="1"/>
                     <CheckBox x:Name="sleepFlag" Content="Гибернация" HorizontalAlignment="Left" Margin="293,10,0,0" VerticalAlignment="Top"/>
 
