@@ -20,7 +20,7 @@ namespace Asterion.Presentors
             logicRanamer = new LogicRanamer();
 
             this.mainWindow.logicRanamerEvent += new EventHandler( mainWindow_logicRanamerEvent );
-            this.mainWindow.openFileDialogEvent += new EventHandler( mainWindow_openFileDialog );
+            this.mainWindow.openFileDialogRenamerEvent += new EventHandler( mainWindow_openFileDialog );
         }
 
         void mainWindow_logicRanamerEvent( object sender, System.EventArgs e )

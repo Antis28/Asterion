@@ -52,6 +52,8 @@ namespace Asterion.Presentors
             this.mainWindow = mainWindow;
             this.mainWindow.startAlarmEvent += new EventHandler( mainWindow_startAlarmEvent );
             this.mainWindow.startTimerEvent += new EventHandler( mainWindow_startTimerEvent );
+            this.mainWindow.openFileDialogEvent += new EventHandler( mainWindow_openFileDialog );
+
         }
 
         private void mainWindow_startAlarmEvent( object sender, EventArgs e )
@@ -89,11 +91,16 @@ namespace Asterion.Presentors
             threadTimer.Abort();
 
             System.Diagnostics.Process process = new System.Diagnostics.Process();
-            process.StartInfo.FileName = pathToMusicFile;
-            process.Start();
+            if( System.IO.File.Exists(pathToMusicFile) )
+                process.StartInfo.FileName = pathToMusicFile;
+            else if( System.IO.File.Exists( @"\Alarm01.wav" ) )
+            {
+                process.StartInfo.FileName = @"\Alarm.wav";
+            } else
+            { process.StartInfo.FileName = @"C:\Windows\Media\Alarm02.wav"; }
 
-        }
-        
+                process.Start();
+        }        
 
         private void DisableTimer()
         {
@@ -118,6 +125,23 @@ namespace Asterion.Presentors
             {
                 currentHourChange = (int)this.mainWindow.hoursComboBox.SelectedValue;
                 currentMinutesChange = (int)this.mainWindow.minutesComboBox.SelectedValue;
+            }
+        }
+
+        void mainWindow_openFileDialog( object sender, System.EventArgs e )
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+            dlg.FileName = ""; // Default file name            
+            dlg.Filter = "Все файлы (*.*)|*.*"; // Filter files by extension
+
+            // Show open file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process open file dialog box results
+            if( result == true )
+            {
+                // Open document
+                mainWindow.pathToFile.Text = dlg.FileName;
             }
         }
     }

@@ -98,6 +98,12 @@
                         </Button.Background>
                     </Button>
 
+                    <Button x:Name="openFileDialog" Content="Выбрать файл" HorizontalAlignment="Left" Margin="177,86,0,0" Padding="5,2,5,2" VerticalAlignment="Top" Height="auto" Width="auto"  Foreground="Black" Click="openFileDialogToAlarmAndTimer_Click" >
+                        <Button.Background>
+                            <SolidColorBrush Color="#FFE3E3E3"/>
+                        </Button.Background>
+                    </Button>
+
                     <TextBlock x:Name="statusText" Text="Осталось:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,50,0,0"></TextBlock>
                     
                     <TextBlock Text="часы:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="115,13,0,0"></TextBlock>

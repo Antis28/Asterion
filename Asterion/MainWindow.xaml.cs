@@ -75,10 +75,10 @@ namespace Asterion
             findExtInBaseDateEvent.Invoke( sender, e );
         }
 
-        public event EventHandler openFileDialogEvent = null;
+        public event EventHandler openFileDialogRenamerEvent = null;
         private void buttonOpenFileDialog_Click( object sender, RoutedEventArgs e )
         {
-            openFileDialogEvent.Invoke( sender, e );
+            openFileDialogRenamerEvent.Invoke( sender, e );
         }
 
         public event EventHandler startTimerEvent = null;
@@ -111,6 +111,11 @@ namespace Asterion
             }
             minutesComboBox.SelectedIndex = 0;
         }
-        
+
+        public event EventHandler openFileDialogEvent = null;
+        private void openFileDialogToAlarmAndTimer_Click( object sender, RoutedEventArgs e )
+        {
+            openFileDialogEvent.Invoke( sender, e );
+        }
     }
 }
