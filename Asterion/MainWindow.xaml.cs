@@ -23,6 +23,7 @@ namespace Asterion
             new PresenterClean( this );
             new PresenterFindExt( this );
             new PresenterRenamer( this );
+            new PresenterFindExtInXMLBaseDate( this );
         }
 
         public event EventHandler startAlarmEvent = null;
@@ -70,9 +71,13 @@ namespace Asterion
             sizeDiskProgressBarEvent.Invoke( sender, e );
         }
         public event EventHandler findExtInBaseDateEvent = null;
+        public event EventHandler FindExtInXMLBaseDateEvent= null;
         private void startSerach_Click( object sender, RoutedEventArgs e )
         {
-            findExtInBaseDateEvent.Invoke( sender, e );
+            if( isSearchXML.IsEnabled != true)
+                findExtInBaseDateEvent.Invoke( sender, e );
+            else
+                FindExtInXMLBaseDateEvent.Invoke( sender, e );            
         }
 
         public event EventHandler openFileDialogRenamerEvent = null;
