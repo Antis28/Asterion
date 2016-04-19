@@ -137,8 +137,10 @@ namespace Asterion.Presentors
             
             zapros = "RASHIRENIE" + zapros;
             XmlElement resultNode = null;
+            int ggg= 0;
             foreach( XmlElement item in root )
             {
+                ggg++;
                 if( zapros == item.Name )
                 {
                     resultNode = item;

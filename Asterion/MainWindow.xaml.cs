@@ -74,7 +74,7 @@ namespace Asterion
         public event EventHandler FindExtInXMLBaseDateEvent= null;
         private void startSerach_Click( object sender, RoutedEventArgs e )
         {
-            if( isSearchXML.IsEnabled != true)
+            if( isSearchXML.IsChecked != true)
                 findExtInBaseDateEvent.Invoke( sender, e );
             else
                 FindExtInXMLBaseDateEvent.Invoke( sender, e );            
