@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Forms;
 using Asterion.Presentors;
 using Asterion.WpfExtensions;
+using System.Windows.Interop;
 
 namespace Asterion
 {
@@ -74,10 +75,10 @@ namespace Asterion
         public event EventHandler FindExtInXMLBaseDateEvent= null;
         private void startSerach_Click( object sender, RoutedEventArgs e )
         {
-            if( isSearchXML.IsChecked != true)
+            if( isSearchXML.IsChecked != true )
                 findExtInBaseDateEvent.Invoke( sender, e );
             else
-                FindExtInXMLBaseDateEvent.Invoke( sender, e );            
+                FindExtInXMLBaseDateEvent.Invoke( sender, e );
         }
 
         public event EventHandler openFileDialogRenamerEvent = null;
@@ -92,7 +93,7 @@ namespace Asterion
             startTimerEvent.Invoke( sender, e );
         }
 
-        
+
         public event EventHandler logicRanamerEvent = null;
         private void buttonRenameFiles_Click( object sender, RoutedEventArgs e )
         {
@@ -106,7 +107,7 @@ namespace Asterion
                 hoursComboBox.Items.Add( i );
             }
             hoursComboBox.SelectedIndex = 0;
-        }        
+        }
 
         private void minutesComboBox_Initialized( object sender, EventArgs e )
         {
@@ -121,6 +122,18 @@ namespace Asterion
         private void openFileDialogToAlarmAndTimer_Click( object sender, RoutedEventArgs e )
         {
             openFileDialogEvent.Invoke( sender, e );
+        }
+
+
+        public event EventHandler logOutTrackEvent = null;
+        protected override void OnSourceInitialized( EventArgs e )
+        {
+            base.OnSourceInitialized( e );
+            // создаем экземпляр HwndSource
+            Asterion.Models.LogicLogOutTrack LOT = new Asterion.Models.LogicLogOutTrack();
+            LOT.hwndSource = PresentationSource.FromVisual( this ) as HwndSource;
+            // и устанавливаем перехватчик
+            LOT.hwndSource.AddHook( LOT.WndProc );            
         }
     }
 }
