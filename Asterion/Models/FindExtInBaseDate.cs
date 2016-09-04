@@ -102,7 +102,7 @@ namespace Asterion.Models
     {
         string category;
         string description;
-        string fullDescription;
+        //string fullDescription;
 
         public string Category
         {

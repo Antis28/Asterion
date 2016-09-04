@@ -58,6 +58,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\Diary.cs" />
+    <Compile Include="Presentors\PresenterDiary.cs" />
     <Compile Include="WPFExtensions\OpenFolderDialog_extension.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using Asterion.Presentors;
 using Asterion.WpfExtensions;
@@ -23,6 +25,7 @@ namespace Asterion
             new PresenterClean( this );
             new PresenterFindExt( this );
             new PresenterRenamer( this );
+            new PresenterDiary( this );
         }
 
         public event EventHandler startAlarmEvent = null;
@@ -117,5 +120,13 @@ namespace Asterion
         {
             openFileDialogEvent.Invoke( sender, e );
         }
+
+        public event EventHandler diaryEvent = null;
+        private void button1_Click( object sender, RoutedEventArgs e )
+        {
+            diaryEvent.Invoke( sender, e );            
+        }
+
+        
     }
 }
