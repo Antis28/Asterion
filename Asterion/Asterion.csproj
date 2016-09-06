@@ -58,6 +58,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\LogicFindExtInXMLBaseDate.cs" />
+    <Compile Include="Models\LogicLogOutTrack.cs" />
+    <Compile Include="Presentors\PresenterFindExtInXMLBaseDate.cs" />
+    <Compile Include="Presentors\PresentorLogOutTrack.cs" />
     <Compile Include="WPFExtensions\OpenFolderDialog_extension.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
