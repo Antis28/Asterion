@@ -36,20 +36,20 @@ namespace Asterion.Presentors
                 for( int i = 0; i < XmlBaseDate.Header.Count; i++ )
                 {
 
-                    mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.Header[i] ) );
-                    mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.DrusDescription + ": " ) );
-                    mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.RusDescription[i] ) );
+                    mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.Header[i], mainWindow.Width ) );
+                    mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.DrusDescription + ": ", mainWindow.Width ) );
+                    mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.RusDescription[i], mainWindow.Width ) );
 
-                    mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.DtypeFile + ": " ) );
-                    mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.TypeFile[i] ) );
+                    mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.DtypeFile + ": ", mainWindow.Width ) );
+                    mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.TypeFile[i], mainWindow.Width ) );
 
                     // Заголовки файлов, если есть
                     if( XmlBaseDate.InfoHeaderFile.Count > InfoHeaderIterator )
                     {
-                        mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.DinfoHeaderFile + ": " ) );
+                        mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.DinfoHeaderFile + ": ", mainWindow.Width ) );
                         while( XmlBaseDate.InfoHeaderFile.Count > InfoHeaderIterator && isHex != "HEX:" )
                         {
-                            mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.InfoHeaderFile[InfoHeaderIterator++] ) );
+                            mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.InfoHeaderFile[InfoHeaderIterator++], mainWindow.Width ) );
 
                             if( XmlBaseDate.InfoHeaderFile.Count > InfoHeaderIterator )
                                 isHex = XmlBaseDate.InfoHeaderFile[InfoHeaderIterator].Remove( 4 );
@@ -61,11 +61,11 @@ namespace Asterion.Presentors
                     // Детальное описание, если есть
                     if( XmlBaseDate.DetailedDescription.Count > DetailedDescriptionIterator )
                     {
-                        mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.DdetailedDescription + ": " ) );
-                        mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.DetailedDescription[DetailedDescriptionIterator++] ) );
+                        mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.DdetailedDescription + ": ", mainWindow.Width ) );
+                        mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.DetailedDescription[DetailedDescriptionIterator++], mainWindow.Width ) );
                     }
 
-                    mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.DwhatOpen + ": " + XmlBaseDate.WhatOpen[i] ) );
+                    mainWindow.listViewExtDescription.Items.Add( NewTextBlock( XmlBaseDate.DwhatOpen + ": " + XmlBaseDate.WhatOpen[i], mainWindow.Width ) );
                     //Отделить разные форматы
                     mainWindow.listViewExtDescription.Items.Add( "" );
                 }
@@ -75,11 +75,12 @@ namespace Asterion.Presentors
 
         }
 
-        private static System.Windows.Controls.TextBlock NewTextBlock( string text )
+        private static System.Windows.Controls.TextBlock NewTextBlock( string text, Double widthWin = 400 )
         {
             return new System.Windows.Controls.TextBlock()
             {
                 FontSize = 22,
+                Width = widthWin,
                 TextWrapping = TextWrapping.WrapWithOverflow,
                 Text = text
             };

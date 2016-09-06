@@ -6,23 +6,66 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Xml;
 
 namespace Asterion.Models
 {
     class Diary
     {
+        string pathToXmlDocument  = "DiaryBase.xml";
+        XmlTextWriter xmlWriter;
+
         public Diary()
         {
-            Open();
+            if( !System.IO.File.Exists( pathToXmlDocument ) )
+                CreateBase();
+            //Open();
         }
         private void Open()
         {
-            
+            var document = new XmlDocument();
+            document.Load( pathToXmlDocument );
+            XmlElement root = document.DocumentElement; //<?xml version="1.0"?>
         }
+
+        private void CreateBase()
+        {
+            xmlWriter = new XmlTextWriter( pathToXmlDocument, null )
+            {
+                Formatting = Formatting.Indented,   // Включить форматирование документа (с отступом).
+                IndentChar = '\t',                  // Для выделения уровня элемента использовать табуляцию.
+                Indentation = 1,                    // использовать один символ табуляции.
+                //QuoteChar = '\''                  // способ записи ковычек
+            };
+            if( !System.IO.File.Exists( pathToXmlDocument ) )
+                xmlWriter.WriteStartDocument();         //<? xml version = "1.0" ?>
+
+            xmlWriter.WriteComment( "Мой Дневник" );
+            xmlWriter.WriteStartElement( "ListOfExtension" );
+            xmlWriter.Close();
+        }
+
+        public void Add()
+        {
+            //xmlWriter.WriteStartElement( category );
+            xmlWriter.WriteStartElement( "extension" );
+
+            xmlWriter.WriteStartElement( "Header" );
+            xmlWriter.WriteAttributeString( "Value", "item" );
+            xmlWriter.WriteEndElement();
+
+            xmlWriter.WriteEndElement();
+        }
+
+        public void Close()
+        {
+            xmlWriter.Close();
+        }
+
 
         internal void Save()
         {
-          
+
         }
     }
 
@@ -43,7 +86,7 @@ namespace Asterion.Models
         *   который преобразует .rtf-документ в выборку текста в объекте TextRange, 
         *   после чего вставляет этот текст в RichTextBox:
         */
-        public void Open( )//RichTextBox richTextBox )
+        public void Open()//RichTextBox richTextBox )
         {
             System.Windows.Forms.OpenFileDialog openFile =
                 new System.Windows.Forms.OpenFileDialog();
@@ -86,7 +129,7 @@ namespace Asterion.Models
             }
         }
 
-        public void Save( )//RichTextBox richTextBox )
+        public void Save()//RichTextBox richTextBox )
         {
             Microsoft.Win32.SaveFileDialog save = new Microsoft.Win32.SaveFileDialog();
             save.Filter =

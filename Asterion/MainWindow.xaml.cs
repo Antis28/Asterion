@@ -3,11 +3,9 @@ using System.IO;
 using System.Windows;
 using System.Windows.Documents;
 using Asterion.Presentors;
-<<<<<<< HEAD
-=======
 using Asterion.WpfExtensions;
 using System.Windows.Interop;
->>>>>>> develop
+
 
 namespace Asterion
 {
