@@ -2,9 +2,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using Asterion.Presentors;
-using Asterion.WpfExtensions;
 
 namespace Asterion
 {
@@ -24,8 +22,8 @@ namespace Asterion
             new PresenterRestartProcess( this );
             new PresenterClean( this );
             new PresenterFindExt( this );
-            new PresenterRenamer( this );
-            new PresenterDiary( this );
+            new PresenterRenamer( this );            
+            new ControllerDiary( this );
         }
 
         public event EventHandler startAlarmEvent = null;
@@ -115,18 +113,28 @@ namespace Asterion
             minutesComboBox.SelectedIndex = 0;
         }
 
-        public event EventHandler openFileDialogEvent = null;
+        public event EventHandler alarmTimerOpenFileDialogEvent = null;
         private void openFileDialogToAlarmAndTimer_Click( object sender, RoutedEventArgs e )
         {
-            openFileDialogEvent.Invoke( sender, e );
+            alarmTimerOpenFileDialogEvent.Invoke( sender, e );
         }
 
-        public event EventHandler diaryEvent = null;
-        private void button1_Click( object sender, RoutedEventArgs e )
+        /**************************** Diary **************************************/
+        public event EventHandler diaryOpenEvent = null;
+        private void diaryOpen_Click( object sender, RoutedEventArgs e )
         {
-            diaryEvent.Invoke( sender, e );            
+            diaryOpenEvent.Invoke( sender, e );            
         }
 
-        
+        public event EventHandler diarySaveEvent = null;        
+        private void diarySave_Click( object sender, RoutedEventArgs e )
+        {
+            diarySaveEvent.Invoke( sender, e );
+        }
+
+        private void newdiary_Click( object sender, RoutedEventArgs e )
+        {
+            txb_Diary.Text = "";
+        }
     }
 }

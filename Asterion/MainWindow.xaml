@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Asterion"
         mc:Ignorable="d"
-        Title="Asterion"  HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" Width="452"  Height="282.666" MinWidth="450" MinHeight="250" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+        Title="Asterion"  HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" Width="533"  Height="406.666" MinWidth="450" MinHeight="250" ScrollViewer.HorizontalScrollBarVisibility="Auto">
     <Grid>
         <Grid.RowDefinitions>
             <!--   Главного меню -->
@@ -17,7 +17,7 @@
         <TabControl Grid.Row="1" >
             <TabItem Header="Разное">
                 <Grid>
-                    <Button x:Name="button" Content="Слежение за интернетом" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top"   Grid.ColumnSpan="3"/>
+                    <Button x:Name="button" Content="Слежение за интернетом" HorizontalAlignment="Left" Margin="10,15,0,0" VerticalAlignment="Top"   Grid.ColumnSpan="3" />
                     <TextBlock x:Name="textBlock" HorizontalAlignment="Left" Margin="10,51,0,0" TextWrapping="Wrap" Text="Статус: не включено" VerticalAlignment="Top" Grid.ColumnSpan="3"/>
                     <Button x:Name="buttonRestartProcess" Content="Перезапуск explorer.exe" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="190,15,0,0" Click="buttonRestartProcess_Click"></Button>
                     <Button x:Name="buttonRenameFiles" Content="Переименовать"  Padding="2" Margin="30,121,0,0"  HorizontalAlignment="Left" VerticalAlignment="Top" Click="buttonRenameFiles_Click"/>
@@ -121,19 +121,28 @@
             </TabItem>
             <TabItem x:Name="diary" Header="Дневник">
                 <Grid>
-                    <TextBox x:Name="tbRecordName" HorizontalAlignment="Left" Height="23" Margin="94,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-                    <TextBlock x:Name="tblockRecordName" HorizontalAlignment="Left" Margin="27,11,0,0" TextWrapping="Wrap" Text="Заголовок" VerticalAlignment="Top"/>
-                    <CheckBox x:Name="cbRecordName" Content="Текущая дата" HorizontalAlignment="Left" Margin="239,12,0,0" VerticalAlignment="Top"/>
-                    <RichTextBox x:Name="richTextBox" Margin="10,50,10,10">
-                        <FlowDocument>
-                            <Paragraph>
-                                Привет от мира редактируемых документов!
-                            </Paragraph>
-                        </FlowDocument>
-                    </RichTextBox>
-                    <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" Margin="346,13,0,0" VerticalAlignment="Top" Width="75" Click="button1_Click"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="0.5"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <ToolBarTray>
+                        <ToolBar>
+                          <!--   <Button Click="newdiary_Click">New</Button>
+                           <Button Click="diaryOpen_Click">Open</Button> -->
+                            <Button Click="diarySave_Click" Content="Добавить в дневник"/>
+                        </ToolBar>
+                        <ToolBar>
+                            <CheckBox x:Name="cbRemind" Content="Напомнить"  Height="22" VerticalAlignment="Top"/>
 
-
+                        </ToolBar>
+                    </ToolBarTray>
+                    <TextBlock Margin="10" Text="Загруженный документ:" Grid.Row="1"/>
+                    <TextBox x:Name="txb_Diary" Margin="10" TextWrapping="Wrap" Padding="5" Grid.Row="5" BorderBrush="LightBlue" BorderThickness="2"
+                                 VerticalScrollBarVisibility="Visible"/>
                 </Grid>
             </TabItem>
 

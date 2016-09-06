@@ -20,7 +20,7 @@ namespace Asterion.Presentors
             mainWindow.extDescriptionCategory.Text = mainWindow.extDescription.Text = "";
         }
 
-        void mainWindow_findExtInBaseDate( object sender, System.EventArgs e )
+        void mainWindow_findExtInBaseDate( object sender, EventArgs e )
         {            
             this.ExtInBaseDate = new FindExtInBaseDate( mainWindow.extInput.Text );
             ExtInBaseDate.FindIn_TXT();

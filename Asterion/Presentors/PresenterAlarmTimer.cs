@@ -52,7 +52,7 @@ namespace Asterion.Presentors
             this.mainWindow = mainWindow;
             this.mainWindow.startAlarmEvent += new EventHandler( mainWindow_startAlarmEvent );
             this.mainWindow.startTimerEvent += new EventHandler( mainWindow_startTimerEvent );
-            this.mainWindow.openFileDialogEvent += new EventHandler( mainWindow_openFileDialog );
+            this.mainWindow.alarmTimerOpenFileDialogEvent += new EventHandler( mainWindow_openFileDialog );
 
         }
 
