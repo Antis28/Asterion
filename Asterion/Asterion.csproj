@@ -60,6 +60,10 @@
     </ApplicationDefinition>
     <Compile Include="Models\Diary.cs" />
     <Compile Include="Presentors\ControllerDiary.cs" />
+    <Compile Include="Models\LogicFindExtInXMLBaseDate.cs" />
+    <Compile Include="Models\LogicLogOutTrack.cs" />
+    <Compile Include="Presentors\PresenterFindExtInXMLBaseDate.cs" />
+    <Compile Include="Presentors\PresentorLogOutTrack.cs" />
     <Compile Include="WPFExtensions\OpenFolderDialog_extension.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
