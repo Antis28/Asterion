@@ -28,7 +28,8 @@ namespace Asterion.Presentors
 
         void mainWindow_diarySave( object sender, System.EventArgs e )
         {
-            diary.Save();
+           
+            diary.Save( mainWindow.txb_Diary.Text );
         }
     }
 }

@@ -59,6 +59,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Diary.cs" />
+    <Compile Include="Models\Helpers\MyLibrary.cs" />
     <Compile Include="Presentors\ControllerDiary.cs" />
     <Compile Include="Models\LogicFindExtInXMLBaseDate.cs" />
     <Compile Include="Models\LogicLogOutTrack.cs" />

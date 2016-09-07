@@ -13,59 +13,80 @@ namespace Asterion.Models
     class Diary
     {
         string pathToXmlDocument  = "DiaryBase.xml";
-        XmlTextWriter xmlWriter;
+        XmlDocument xmlDoc;
+        XmlNode root;
+
 
         public Diary()
         {
             if( !System.IO.File.Exists( pathToXmlDocument ) )
                 CreateBase();
-            //Open();
+            else
+                Open();
         }
         private void Open()
         {
-            var document = new XmlDocument();
-            document.Load( pathToXmlDocument );
-            XmlElement root = document.DocumentElement; //<?xml version="1.0"?>
+            xmlDoc = new XmlDocument();
+            xmlDoc.Load( pathToXmlDocument );
+
+            root = xmlDoc.SelectSingleNode( "Diary" ); // найти корневой элемент            
         }
 
         private void CreateBase()
         {
-            xmlWriter = new XmlTextWriter( pathToXmlDocument, null )
+            XmlTextWriter xmlWriter = new XmlTextWriter( pathToXmlDocument, System.Text.Encoding.UTF8 )
             {
                 Formatting = Formatting.Indented,   // Включить форматирование документа (с отступом).
                 IndentChar = '\t',                  // Для выделения уровня элемента использовать табуляцию.
                 Indentation = 1,                    // использовать один символ табуляции.
                 //QuoteChar = '\''                  // способ записи ковычек
             };
-            if( !System.IO.File.Exists( pathToXmlDocument ) )
-                xmlWriter.WriteStartDocument();         //<? xml version = "1.0" ?>
 
-            xmlWriter.WriteComment( "Мой Дневник" );
-            xmlWriter.WriteStartElement( "ListOfExtension" );
+            xmlWriter.WriteStartDocument();         //<? xml version = "1.0" ?>
+
+            xmlWriter.WriteComment( "My diary" );
+            xmlWriter.WriteStartElement( "Diary" );
+            xmlWriter.WriteComment( "Date stamps" );
+            xmlWriter.WriteEndElement();
             xmlWriter.Close();
         }
 
-        public void Add()
+        public void Add( string msg, double timestamp )
         {
-            //xmlWriter.WriteStartElement( category );
-            xmlWriter.WriteStartElement( "extension" );
+            XmlElement timestampElement;
+            XmlElement msgElement;
+            string name = "Section_" + timestamp;
+            string xPath = "Diary/Section_" + timestamp;
 
-            xmlWriter.WriteStartElement( "Header" );
-            xmlWriter.WriteAttributeString( "Value", "item" );
-            xmlWriter.WriteEndElement();
+            // Метка времени существует?
+            XmlNode timestampNode = xmlDoc.SelectSingleNode( xPath );
+            if( timestampNode == null )
+            {
+                // Нет. Создать элемент с меткой времени
+                timestampElement = xmlDoc.CreateElement( name );
+                // Создать элемент с сообщением
+                msgElement = xmlDoc.CreateElement( "Message" );
+                msgElement.InnerText = msg;
 
-            xmlWriter.WriteEndElement();
+                timestampElement.AppendChild( msgElement );
+                root.AppendChild( timestampElement );
+            } else
+            {
+                // Создать элемент с сообщением
+                msgElement = xmlDoc.CreateElement( "Message" );
+                msgElement.InnerText = msg;
+                timestampNode.AppendChild( msgElement );                
+            }
+            xmlDoc.Save( pathToXmlDocument );           
         }
 
-        public void Close()
+        internal void Save(string msg)
         {
-            xmlWriter.Close();
-        }
-
-
-        internal void Save()
-        {
-
+            double timestamp = MyLibrary.UnixDateStamp();
+            Add( msg, timestamp );
+            DateTime dt = MyLibrary.ConvertFromUnixTimestamp( timestamp );
+            MessageBox.Show( "Элемент с меткой = " + timestamp + " = "
+                + dt.Day+"."+ dt.Month+"."+dt.Year + " добавлен." );
         }
     }
 
