@@ -25,7 +25,7 @@ namespace Asterion
             new PresenterRestartProcess( this );
             new PresenterClean( this );
             new PresenterFindExt( this );
-            new PresenterRenamer( this );            
+            new PresenterRenamer( this );
             new ControllerDiary( this );
             new PresenterFindExtInXMLBaseDate( this );
 
@@ -132,10 +132,10 @@ namespace Asterion
         public event EventHandler diaryOpenEvent = null;
         private void diaryOpen_Click( object sender, RoutedEventArgs e )
         {
-            diaryOpenEvent.Invoke( sender, e );            
+            diaryOpenEvent.Invoke( sender, e );
         }
 
-        public event EventHandler diarySaveEvent = null;        
+        public event EventHandler diarySaveEvent = null;
         private void diarySave_Click( object sender, RoutedEventArgs e )
         {
             diarySaveEvent.Invoke( sender, e );
@@ -144,6 +144,12 @@ namespace Asterion
         private void newdiary_Click( object sender, RoutedEventArgs e )
         {
             txb_Diary.Text = "";
+        }
+
+        public event EventHandler diaryShowEvent = null;
+        private void diaryShow_Click( object sender, RoutedEventArgs e )
+        {
+            diaryShowEvent.Invoke( sender, e );
         }
 
 
@@ -155,7 +161,11 @@ namespace Asterion
             Asterion.Models.LogicLogOutTrack LOT = new Asterion.Models.LogicLogOutTrack();
             LOT.hwndSource = PresentationSource.FromVisual( this ) as HwndSource;
             // и устанавливаем перехватчик
-            LOT.hwndSource.AddHook( LOT.WndProc );            
+            LOT.hwndSource.AddHook( LOT.WndProc );
+        }
+
+        
+
+
         }
     }
-}

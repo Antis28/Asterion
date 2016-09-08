@@ -12,7 +12,7 @@ namespace Asterion.Models
 {
     class Diary
     {
-        string pathToXmlDocument  = "DiaryBase.xml";
+        public string pathToXmlDocument  = "DiaryBase.xml";
         XmlDocument xmlDoc;
         XmlNode root;
 
@@ -24,6 +24,7 @@ namespace Asterion.Models
             else
                 Open();
         }
+
         private void Open()
         {
             xmlDoc = new XmlDocument();
@@ -46,7 +47,7 @@ namespace Asterion.Models
 
             xmlWriter.WriteComment( "My diary" );
             xmlWriter.WriteStartElement( "Diary" );
-            xmlWriter.WriteComment( "Date stamps" );
+            //xmlWriter.WriteComment( "Date stamps" );
             xmlWriter.WriteEndElement();
             xmlWriter.Close();
         }
@@ -75,21 +76,44 @@ namespace Asterion.Models
                 // Создать элемент с сообщением
                 msgElement = xmlDoc.CreateElement( "Message" );
                 msgElement.InnerText = msg;
-                timestampNode.AppendChild( msgElement );                
+                timestampNode.AppendChild( msgElement );
             }
-            xmlDoc.Save( pathToXmlDocument );           
+            xmlDoc.Save( pathToXmlDocument );
         }
 
-        internal void Save(string msg)
+        internal void Save( string msg )
         {
             double timestamp = MyLibrary.UnixDateStamp();
             Add( msg, timestamp );
             DateTime dt = MyLibrary.ConvertFromUnixTimestamp( timestamp );
             MessageBox.Show( "Элемент с меткой = " + timestamp + " = "
-                + dt.Day+"."+ dt.Month+"."+dt.Year + " добавлен." );
+                + dt.Day + "." + dt.Month + "." + dt.Year + " добавлен." );
         }
-    }
 
+        public List<string> ReadDiary(string pathToXmlDocument = "DiaryBase.xml" )
+        {
+            var document = new XmlDocument();
+            List<string> resultMsg = new List<string>();
+
+            try
+            {
+                document.Load( pathToXmlDocument );
+                foreach( XmlElement messages in root )
+                {
+                    double timestamp = double.Parse( messages.Name.Replace( "Section_", "" ) );
+                    DateTime date = MyLibrary.ConvertFromUnixTimestamp( timestamp );
+                    string fDate = date.Day + "." + date.Month + "." + date.Year;
+
+                    resultMsg.Add( fDate );
+                    foreach( XmlElement message in messages )
+                        resultMsg.Add( message.InnerText );
+                    resultMsg.Add( new string( '-', 30 ) );
+                }
+            } catch( System.IO.IOException ) { }
+            return resultMsg;
+        }        
+    }
+    
     class DiaryReachBox
     {
 
