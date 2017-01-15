@@ -15,7 +15,7 @@ namespace Asterion
     {
 
         System.Windows.Threading.DispatcherTimer timerDiskSpace = new System.Windows.Threading.DispatcherTimer();
-
+        PresenterChellForWebp presenterChellForWebp;
         public MainWindow()
         {
             InitializeComponent();
@@ -25,6 +25,7 @@ namespace Asterion
             new PresenterFindExt( this );
             new PresenterRenamer( this );
             new PresenterFindExtInXMLBaseDate( this );
+            presenterChellForWebp = new PresenterChellForWebp( this );
         }
 
         public event EventHandler startAlarmEvent = null;
@@ -134,6 +135,27 @@ namespace Asterion
             LOT.hwndSource = PresentationSource.FromVisual( this ) as HwndSource;
             // и устанавливаем перехватчик
             LOT.hwndSource.AddHook( LOT.WndProc );            
+        }
+
+        public event EventHandler openFolderDialogEvent = null;
+        private void btn_addAddress_Click( object sender, RoutedEventArgs e )
+        {
+            openFolderDialogEvent.Invoke( sender, e );
+        }
+        public event EventHandler startConvertEvent= null;
+        private void btn_convert_Click( object sender, RoutedEventArgs e )
+        {
+            startConvertEvent.Invoke( sender, e );
+        }
+
+        private void tb_addressField_DragEnter( object sender, System.Windows.DragEventArgs e )
+        {
+            System.Windows.MessageBox.Show( e.ToString() );
+        }
+
+        private void tb_addressField_LostFocus( object sender, RoutedEventArgs e )
+        {
+            presenterChellForWebp.ExistPath();
         }
     }
 }
