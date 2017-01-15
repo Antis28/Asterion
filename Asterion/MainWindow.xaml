@@ -63,7 +63,8 @@
                         </Grid>
                     </StackPanel>
                     <TextBox x:Name="tb_addressField"  HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Адрес каталога с картинками" VerticalAlignment="Top" Width="217"/>
-                    <Button x:Name="button1" Content="..." HorizontalAlignment="Left" Margin="282,12,0,0" Grid.Row="2" VerticalAlignment="Top" Width="37"/>
+                    <Button x:Name="btn_addAddress" Content="..." HorizontalAlignment="Left" Margin="282,12,0,0" Grid.Row="2" VerticalAlignment="Top" Width="37"/>
+                    <Button x:Name="btn_convert" Content="Начать" HorizontalAlignment="Left" Margin="329,12,0,0" Grid.Row="2" VerticalAlignment="Top" Width="59"/>
 
                 </Grid>
             </TabItem>
