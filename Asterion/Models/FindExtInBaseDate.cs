@@ -50,7 +50,7 @@ namespace Asterion.Models
                         string currentLine = reader.ReadLine();
                         if( isEqualyExt( currentLine ) )
                         {
-                            ЗаполнениеОписания( currentLine );
+                            FillingDescriptions( currentLine );
                             descriptExtList.Add( descriptExt );
                             isFind = true;
                             break;
@@ -66,7 +66,7 @@ namespace Asterion.Models
             }
         }
 
-        private void ЗаполнениеОписания( string currentLine )
+        private void FillingDescriptions( string currentLine )
         {
             string paternExt = @"\s\S+";
             //@"\s\w+";
