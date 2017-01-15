@@ -88,7 +88,7 @@ namespace Asterion.Models
             psiOpt.WindowStyle = ProcessWindowStyle.Hidden;
             psiOpt.RedirectStandardOutput = true;
             psiOpt.UseShellExecute = false;
-            psiOpt.CreateNoWindow = false;
+            psiOpt.CreateNoWindow = true;
             // запускаем процесс
             Process procCommand = Process.Start( psiOpt );
             // получаем ответ запущенного процесса
