@@ -45,6 +45,28 @@
 
                 </Grid>
             </TabItem>
+            <TabItem Header="Конвертер WebP">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="240*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock  x:Name="tb_percentConvert" Text="0 / 100%" Grid.Row="0"  Margin="0,15,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Panel.ZIndex="1" Foreground="#FF00033A" />
+                    <ProgressBar x:Name="pb_percentConvert" Grid.Row="0" Height="25" Margin="50,10,50,10" VerticalAlignment="Top"  FontWeight="Bold" Background="#FFEEEEEE" BorderBrush="#FF4B004B" Foreground="#FF98FF68"/>
+                    <StackPanel Grid.Row="1">
+                        <Grid >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </StackPanel>
+                    <TextBox x:Name="tb_addressField"  HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Адрес каталога с картинками" VerticalAlignment="Top" Width="217"/>
+                    <Button x:Name="button1" Content="..." HorizontalAlignment="Left" Margin="282,12,0,0" Grid.Row="2" VerticalAlignment="Top" Width="37"/>
+
+                </Grid>
+            </TabItem>
             <TabItem Header="Очистка каталогов">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -104,13 +126,13 @@
                     </Button>
 
                     <TextBlock x:Name="statusText" Text="Осталось:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,50,0,0"></TextBlock>
-                    
+
                     <TextBlock Text="часы:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="115,13,0,0"></TextBlock>
                     <ComboBox x:Name="hoursComboBox" HorizontalAlignment="Left" Margin="150,10,0,0" VerticalAlignment="Top" Width="auto" Initialized="hoursComboBox_Initialized" />
-                    
+
                     <TextBlock Text="минуты:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="189,13,0,0"></TextBlock>
                     <ComboBox x:Name="minutesComboBox" HorizontalAlignment="Left" Margin="238,10,0,0" VerticalAlignment="Top" Width="auto" Initialized="minutesComboBox_Initialized"  />
-                    
+
                     <TextBlock Text="Путь к музыкальному файлу:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,90,0,0"/>
                     <TextBox x:Name="pathToFile" Width="306" Padding="2"
                              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,113,0,0" MaxLines="1"/>
@@ -119,8 +141,6 @@
                 </Grid>
             </TabItem>
             <!--<CheckBox x:Name="checkBox" Content="CheckBox" Height="100" Width="100"/>-->
-
-
         </TabControl>
 
         <!--   Описание главного меню -->
