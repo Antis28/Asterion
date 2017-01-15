@@ -30,6 +30,7 @@ namespace Asterion.Models
         {
             myProcess = new Process();
         }
+        //получение полных путей файлов
         public void ExtractPathsFiles( string pathDirectory )
         {
             DirectoryInfo dir = new System.IO.DirectoryInfo( pathDirectory );
@@ -42,55 +43,15 @@ namespace Asterion.Models
         }
         public void Start( string pathDirectory )
         {
-            ExtractPathsFiles( pathDirectory );
-            /*
-            try
-            {
-                myProcess.StartInfo.UseShellExecute = false;
-                // You can start any process.
-                myProcess.StartInfo.FileName = "";//pathToWebp;
-                myProcess.StartInfo.Arguments = pathToInputFiles[0];
-                myProcess.StartInfo.WorkingDirectory = pathDirectory;
-                myProcess.StartInfo.CreateNoWindow = true;
-                myProcess.Start();
-                // This code assumes the process you are starting will terminate itself. 
-                // Given that is is started without a window so you cannot terminate it 
-                // on the desktop, it must terminate itself or you can do it programmatically
-                // from this application using the Kill method.
-            } catch( Exception e )
-            {
-                MessageBox.Show( e.Message );
-            }
-            */
-            //////////////////////////////////////////
+            ExtractPathsFiles( pathDirectory );            
             if(!Directory.Exists( pathDirectory + @"\output" )){
                 Directory.CreateDirectory( pathDirectory + @"\output" );
             }
-            string command = "/C " + pathToWebp +" \"" + pathToInputFiles[0] + "\" -q " + quality + " -alpha_q 100 -o \"" + pathDirectory + @"\output\"  + Path.GetFileNameWithoutExtension(pathToInputFiles[0])+".webP\"";            
-
-            //string command2 = @"/C cwebp.exe T:\2\40181.jpg -q 85 -alpha_q 100 -o T:\2\output\40181.webP";
+            // Компановка команды для Webp конвертера
+            string command = "/C " + pathToWebp +" \"" + pathToInputFiles[0] + "\" -q " + quality + " -alpha_q 100 -o \"" + pathDirectory + @"\output\"  + Path.GetFileNameWithoutExtension(pathToInputFiles[0])+".webP\"";
+            // преобразование кодировки для консоли
             command = convertToCp866( command );
-           
-            // создаем процесс cmd.exe с параметрами "ipconfig /all"
-            ProcessStartInfo psiOpt = new ProcessStartInfo( @"cmd.exe", command );//, @"/C ipconfig /all" );
-                       
-            // скрываем окно запущенного процесса
-            psiOpt.WindowStyle = ProcessWindowStyle.Hidden;
-            psiOpt.RedirectStandardOutput = true;
-            //psiOpt.RedirectStandardOutput = false;
-            //psiOpt.RedirectStandardInput = true;
-            psiOpt.UseShellExecute = false;
-            psiOpt.CreateNoWindow = true;
-            //psiOpt.CreateNoWindow = false;
-            // запускаем процесс
-            Process procCommand = Process.Start( psiOpt );
-            // получаем ответ запущенного процесса
-            StreamReader srIncoming = procCommand.StandardOutput;
-            //StreamReader srOutcoming = procCommand.StandardInput;
-            // выводим результат
-            //MessageBox.Show( srIncoming.ReadToEnd() );
-            // закрываем процесс
-            procCommand.WaitForExit();            
+            convertFileToWebP( command );
         }
         string convertToCp866(string input )
         {
@@ -109,6 +70,25 @@ namespace Asterion.Models
             string cp866String = new string( cp866Chars );
 
             return cp866String;
+        }
+        void convertFileToWebP(string command )
+        {
+            // создаем процесс cmd.exe с параметрами command
+            ProcessStartInfo psiOpt = new ProcessStartInfo( @"cmd.exe", command );
+            // скрываем окно запущенного процесса
+            psiOpt.WindowStyle = ProcessWindowStyle.Hidden;
+            psiOpt.RedirectStandardOutput = true;
+            psiOpt.UseShellExecute = false;
+            psiOpt.CreateNoWindow = true;
+            // запускаем процесс
+            Process procCommand = Process.Start( psiOpt );
+            // получаем ответ запущенного процесса
+            StreamReader srIncoming = procCommand.StandardOutput;
+            //StreamReader srOutcoming = procCommand.StandardInput;
+            // выводим результат
+            //MessageBox.Show( srIncoming.ReadToEnd() );
+            // закрываем процесс
+            procCommand.WaitForExit();
         }
     }
 }
