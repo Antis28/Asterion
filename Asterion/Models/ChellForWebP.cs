@@ -43,17 +43,26 @@ namespace Asterion.Models
         }
         public void Start( string pathDirectory )
         {
-            ExtractPathsFiles( pathDirectory );            
-            if(!Directory.Exists( pathDirectory + @"\output" )){
+            ExtractPathsFiles( pathDirectory );
+            if( !Directory.Exists( pathDirectory + @"\output" ) )
+            {
                 Directory.CreateDirectory( pathDirectory + @"\output" );
             }
-            // Компановка команды для Webp конвертера
-            string command = "/C " + pathToWebp +" \"" + pathToInputFiles[0] + "\" -q " + quality + " -alpha_q 100 -o \"" + pathDirectory + @"\output\"  + Path.GetFileNameWithoutExtension(pathToInputFiles[0])+".webP\"";
-            // преобразование кодировки для консоли
-            command = convertToCp866( command );
-            convertFileToWebP( command );
+            List<string> commands = new List<string>();
+            foreach( var currentFile in pathToInputFiles )
+            {
+                // Компановка команды для Webp конвертера
+                string command = "/C " + pathToWebp + " \"" + currentFile + "\" -q " + quality + " -alpha_q 100 -o \"" + pathDirectory + @"\output\" + Path.GetFileNameWithoutExtension( currentFile ) + ".webP\"";
+                // преобразование кодировки для консоли
+                //command = convertToCp866( command );
+                commands.Add( command );                
+            }
+            foreach( var command in commands )
+            {
+                convertFileToWebP( command );
+            }
         }
-        string convertToCp866(string input )
+        string convertToCp866( string input )
         {
             Encoding cp866 = Encoding.GetEncoding( 866 );
             Encoding unicode = Encoding.Unicode;
@@ -71,7 +80,7 @@ namespace Asterion.Models
 
             return cp866String;
         }
-        void convertFileToWebP(string command )
+        void convertFileToWebP( string command )
         {
             // создаем процесс cmd.exe с параметрами command
             ProcessStartInfo psiOpt = new ProcessStartInfo( @"cmd.exe", command );
@@ -79,7 +88,7 @@ namespace Asterion.Models
             psiOpt.WindowStyle = ProcessWindowStyle.Hidden;
             psiOpt.RedirectStandardOutput = true;
             psiOpt.UseShellExecute = false;
-            psiOpt.CreateNoWindow = true;
+            psiOpt.CreateNoWindow = false;
             // запускаем процесс
             Process procCommand = Process.Start( psiOpt );
             // получаем ответ запущенного процесса
