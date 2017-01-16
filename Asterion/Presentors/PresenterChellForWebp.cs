@@ -30,28 +30,7 @@ namespace Asterion.Presentors
 
         public volatile string pathToMusicFile = "";
 
-        public string ConvertStatusText
-        {
-            get
-            {
-                mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
-                   (Action)delegate
-                   {
-                       convertStatusText = mainWindow.statusText.Text;
-                   } );
-                return convertStatusText;
-            }
-
-            set
-            {
-                convertStatusText = value;
-                mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
-                    (Action)delegate
-                    {
-                        mainWindow.statusText.Text = convertStatusText;
-                    } );
-            }
-        }
+        
 
         public PresenterChellForWebp( MainWindow mainWindow )
         {
@@ -61,16 +40,30 @@ namespace Asterion.Presentors
             this.mainWindow.openFolderDialogEvent += new EventHandler( mainWindow_openFolderDialog );
         }
 
+        bool isRunning = false;
         private void mainWindow_startConvert( object sender, EventArgs e )
         {
-            chellForWebP.quality = int.Parse( mainWindow.tb_qualityValue.Text );
-            // Очистка старых событий;
-            chellForWebP.ClearEvents();
-            // Добавляем обработчик события             
-            chellForWebP.MaxValueEvent += onInitialValue;
-            chellForWebP.ChangeValueEvent += onChangeIndicator;
-            chellForWebP.CompleteConvertEvent += onCompleteConver;
-            chellForWebP.BeginStartConvert( mainWindow.tb_addressField.Text );
+            if( !isRunning )
+            {
+                isRunning = !isRunning;
+                chellForWebP.isRunning = isRunning;
+                mainWindow.btn_convert.Content = "Остановить";
+                chellForWebP.quality = int.Parse( mainWindow.tb_qualityValue.Text );
+               
+                // Добавляем обработчик события             
+                chellForWebP.MaxValueEvent += onInitialValue;
+                chellForWebP.ChangeValueEvent += onChangeIndicator;
+                chellForWebP.CompleteConvertEvent += onCompleteConver;
+                chellForWebP.CanceledConvertEvent += onCanceledConvert;
+                chellForWebP.BeginStartConvert( mainWindow.tb_addressField.Text );
+                
+            } else
+            {
+                isRunning = !isRunning;
+                mainWindow.btn_convert.Content = "Начать";
+                chellForWebP.isRunning = isRunning;
+                
+            }
         }
         void onChangeIndicator()
         {
@@ -94,6 +87,18 @@ namespace Asterion.Presentors
                     (Action)delegate
                     {
                         mainWindow.tb_percentConvert.Text = "Конвертировние завершено";
+                        isRunning = !isRunning;
+                        mainWindow.btn_convert.Content = "Начать";
+                    } );
+
+        }
+        void onCanceledConvert()
+        {
+            mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
+                    (Action)delegate
+                    {
+                        mainWindow.tb_percentConvert.Text = "Конвертировние отменено";                        
+                        mainWindow.btn_convert.Content = "Начать";
                     } );
 
         }
@@ -106,68 +111,7 @@ namespace Asterion.Presentors
                         mainWindow.pb_percentConvert.Maximum = maximum;
                     } );
 
-        }
-
-        private void StartTimer()
-        {
-            /*
-            Thread threadTimer = new Thread( new ParameterizedThreadStart( alarmTimer.StartTimer ) )
-            { IsBackground = true, Name = "StartTimer" };
-            threadTimer.Start( this );
-            while( !isStopTimer )
-            {
-                Thread.Sleep( TimeSpan.FromSeconds( 1 ) );
-                if( !isStopTimer )
-                    isStopTimer = !alarmTimer.TimerIsStart;
-            }
-            mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
-                                                new Action( DisableTimer ) );            
-            threadTimer.Abort();
-
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            if( System.IO.File.Exists(pathToMusicFile) )
-                process.StartInfo.FileName = pathToMusicFile;
-            else if( System.IO.File.Exists( @"\Alarm01.wav" ) )
-            {
-                process.StartInfo.FileName = @"\Alarm.wav";
-            } else
-            { process.StartInfo.FileName = @"C:\Windows\Media\Alarm02.wav"; }
-
-                process.Start();
-                */
-        }
-
-        private void DisableTimer()
-        {
-            /*
-            mainWindow.startTimerButton.Foreground = System.Windows.Media.Brushes.Black;
-            mainWindow.startTimerButton.Background = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromArgb( 0xFF, 0xE3, 0xE3, 0xE3 ) );
-            mainWindow.startTimerButton.Content = "Включить таймер";
-            TimerStatusText = "Cтатус: таймер выключен";
-            isStopTimer = true;
-            */
-        }
-
-        private void EnableTimer()
-        {
-            /*
-            mainWindow.startTimerButton.Foreground = System.Windows.Media.Brushes.Red;
-            mainWindow.startTimerButton.Background = System.Windows.Media.Brushes.Yellow;
-            mainWindow.startTimerButton.Content = "Таймер включен";            
-            isStopTimer = false;
-            */
-        }
-
-        private void ChangedTimeInTimer()
-        {
-            /*
-            if( this.mainWindow.hoursComboBox != null && this.mainWindow.minutesComboBox != null )
-            {
-                currentHourChange = (int)this.mainWindow.hoursComboBox.SelectedValue;
-                currentMinutesChange = (int)this.mainWindow.minutesComboBox.SelectedValue;
-            }
-            */
-        }
+        }       
 
         private void mainWindow_openFileDialog( object sender, System.EventArgs e )
         {
@@ -192,7 +136,7 @@ namespace Asterion.Presentors
             if( result == true )
             {
                 mainWindow.tb_addressField.Text = dialog.FileName;
-                ExistPath();
+                ExistPath();                
             }
         }
         public void ExistPath()
@@ -200,11 +144,14 @@ namespace Asterion.Presentors
             if( System.IO.Directory.Exists( mainWindow.tb_addressField.Text ) )
             {
                 mainWindow.btn_convert.IsEnabled = true;
+                mainWindow.tb_selectedValue.Text = System.IO.Directory.GetFiles( mainWindow.tb_addressField.Text ).Length.ToString();
             } else
             {
                 mainWindow.tb_addressField.Text = "Директория не существует";
                 mainWindow.btn_convert.IsEnabled = false;
+                mainWindow.tb_selectedValue.Text = "0";
             }
+            mainWindow.tb_selectedValue.Text += " файлов";
         }
     }
 }

@@ -18,6 +18,8 @@ namespace Asterion.Models
         public event Action ChangeValueEvent;
         public event Action<int> MaxValueEvent;
         public event Action CompleteConvertEvent;
+        public event Action CanceledConvertEvent;
+        
         // Используем метод для запуска события
         public void OnChangeValue()
         {
@@ -31,7 +33,13 @@ namespace Asterion.Models
         {
             CompleteConvertEvent();
         }
+        public void OnCanceledConvert()
+        {
+            CanceledConvertEvent();
+        }
 
+        // Выполняется?
+        public bool isRunning = false;
         //Process для консольного приложения
         Process myProcess;
         string pathToWebp = @"cwebp.exe";
@@ -97,8 +105,15 @@ namespace Asterion.Models
             {
                 OnChangeValue();
                 convertFileToWebP( command );
+                if( !isRunning )
+                    break;
             }
-            OnCompleteConvert();
+            if( !isRunning )
+                OnCanceledConvert();
+            else
+                OnCompleteConvert();
+            // Очистка старых событий;
+            ClearEvents();
         }
         string convertToCp866( string input )
         {
@@ -137,11 +152,12 @@ namespace Asterion.Models
             // закрываем процесс
             procCommand.WaitForExit();
         }
-        public void ClearEvents()
+        private void ClearEvents()
         {
             ChangeValueEvent = null;
             MaxValueEvent = null;
             CompleteConvertEvent = null;
+            CanceledConvertEvent = null;
         }
     }
 }
