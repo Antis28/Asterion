@@ -40,6 +40,9 @@ namespace Asterion.Models
 
         // Выполняется?
         public bool isRunning = false;
+        // Все файлы конвертировать?
+        public bool isAllFiles = true;
+        public string[] pathFileNames;
         //Process для консольного приложения
         Process myProcess;
         string pathToWebp = @"cwebp.exe";
@@ -60,9 +63,21 @@ namespace Asterion.Models
         //получение полных путей файлов
         public void ExtractPathsFiles( string pathDirectory )
         {
-            DirectoryInfo dir = new System.IO.DirectoryInfo( pathDirectory );
+            FileInfo[] files;
             pathToInputFiles = new List<string>();
-            FileInfo[] files = dir.GetFiles();
+            if( isAllFiles )
+            {
+                DirectoryInfo dir = new System.IO.DirectoryInfo( pathDirectory );                
+                files = dir.GetFiles();
+            } else
+            {
+                int length = this.pathFileNames.Length;
+                files = new FileInfo[length];
+                for( int i = 0; i < length; i++ )                
+                {
+                    files[i] = new FileInfo( this.pathFileNames[i] );
+                }                 
+            }
             foreach( var item in files )
             {
                 pathToInputFiles.Add( item.FullName );
@@ -158,6 +173,16 @@ namespace Asterion.Models
             MaxValueEvent = null;
             CompleteConvertEvent = null;
             CanceledConvertEvent = null;
+        }
+        public void SwitchOnAllFiles()
+        {
+            pathFileNames = null;
+            isAllFiles = true;
+        }
+        public void SwitchOnSelectedFiles(string[] pathFileNames )
+        {
+            this.pathFileNames = pathFileNames;
+            isAllFiles = false;
         }
     }
 }

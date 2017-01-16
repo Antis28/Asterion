@@ -138,9 +138,14 @@ namespace Asterion
         }
 
         public event EventHandler openFolderDialogEvent = null;
+        public event EventHandler openFileDialogToConverterEvent = null;
+
         private void btn_addAddress_Click( object sender, RoutedEventArgs e )
         {
-            openFolderDialogEvent.Invoke( sender, e );
+            if( cb_isDirectory.IsChecked == true )
+                openFolderDialogEvent.Invoke( sender, e );
+            else
+                openFileDialogToConverterEvent.Invoke( sender, e );
         }
         public event EventHandler startConvertEvent= null;
         private void btn_convert_Click( object sender, RoutedEventArgs e )

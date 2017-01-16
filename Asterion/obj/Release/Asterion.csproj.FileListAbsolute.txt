@@ -26,3 +26,4 @@ M:\My_projects\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.Properties.Res
 M:\My_projects\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.csproj.GenerateResource.Cache
 M:\My_projects\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.exe
 M:\My_projects\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.pdb
+M:\My_projects\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.csprojResolveAssemblyReference.cache

@@ -5,6 +5,7 @@ using Ookii.Dialogs.Wpf;
 using WPFFolderBrowser;
 using System.Threading;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace Asterion.Presentors
 {
@@ -30,7 +31,7 @@ namespace Asterion.Presentors
 
         public volatile string pathToMusicFile = "";
 
-        
+
 
         public PresenterChellForWebp( MainWindow mainWindow )
         {
@@ -38,6 +39,7 @@ namespace Asterion.Presentors
             this.mainWindow = mainWindow;
             this.mainWindow.startConvertEvent += new EventHandler( mainWindow_startConvert );
             this.mainWindow.openFolderDialogEvent += new EventHandler( mainWindow_openFolderDialog );
+            this.mainWindow.openFileDialogToConverterEvent += new EventHandler( mainWindow_openFileDialog );
         }
 
         bool isRunning = false;
@@ -49,20 +51,29 @@ namespace Asterion.Presentors
                 chellForWebP.isRunning = isRunning;
                 mainWindow.btn_convert.Content = "Остановить";
                 chellForWebP.quality = int.Parse( mainWindow.tb_qualityValue.Text );
-               
+
                 // Добавляем обработчик события             
                 chellForWebP.MaxValueEvent += onInitialValue;
                 chellForWebP.ChangeValueEvent += onChangeIndicator;
                 chellForWebP.CompleteConvertEvent += onCompleteConver;
                 chellForWebP.CanceledConvertEvent += onCanceledConvert;
-                chellForWebP.BeginStartConvert( mainWindow.tb_addressField.Text );
+
+                if( mainWindow.cb_isDirectory.IsChecked == true )
+                {
+                    chellForWebP.SwitchOnAllFiles();
+                } else
+                {
+                    chellForWebP.SwitchOnSelectedFiles( PathFileNames );
+                }
                 
+                chellForWebP.BeginStartConvert( mainWindow.tb_addressField.Text );
+
             } else
             {
                 isRunning = !isRunning;
                 mainWindow.btn_convert.Content = "Начать";
                 chellForWebP.isRunning = isRunning;
-                
+
             }
         }
         void onChangeIndicator()
@@ -73,7 +84,7 @@ namespace Asterion.Presentors
                         mainWindow.pb_percentConvert.Value += 1;
                         string currentValue;
                         if( mainWindow.isPercent )
-                            currentValue = (int)( mainWindow.pb_percentConvert.Value / mainWindow.pb_percentConvert.Maximum * 100 ) + " %";
+                            currentValue = (int)(mainWindow.pb_percentConvert.Value / mainWindow.pb_percentConvert.Maximum * 100) + " %";
                         else
                             currentValue = mainWindow.pb_percentConvert.Value + " из " + mainWindow.pb_percentConvert.Maximum;
 
@@ -97,7 +108,7 @@ namespace Asterion.Presentors
             mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
                     (Action)delegate
                     {
-                        mainWindow.tb_percentConvert.Text = "Конвертировние отменено";                        
+                        mainWindow.tb_percentConvert.Text = "Конвертировние отменено";
                         mainWindow.btn_convert.Content = "Начать";
                     } );
 
@@ -111,13 +122,15 @@ namespace Asterion.Presentors
                         mainWindow.pb_percentConvert.Maximum = maximum;
                     } );
 
-        }       
+        }
 
+        string[] PathFileNames;
         private void mainWindow_openFileDialog( object sender, System.EventArgs e )
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.FileName = ""; // Default file name            
-            dlg.Filter = "Музыкальные файлы| *.mp3; *.wav; *.flac; *.wma; *.ogg|Видео файлы|*.avi; *.mp4|Все файлы (*.*)|*.*"; // Filter files by extension.mp3
+            dlg.FileName = ""; // Default file name    
+            dlg.Multiselect = true;
+            dlg.Filter = "Графические файлы| *.PNG; *.JPG; *.JPEG; *.TIFF;";// Filter files by extension.mp3
 
             // Show open file dialog box
             Nullable<bool> result = dlg.ShowDialog();
@@ -126,7 +139,9 @@ namespace Asterion.Presentors
             if( result == true )
             {
                 // Open document
-                mainWindow.pathToFile.Text = dlg.FileName;
+                mainWindow.tb_addressField.Text = System.IO.Path.GetDirectoryName( dlg.FileName );
+                PathFileNames = dlg.FileNames;
+                ExistPath();
             }
         }
         private void mainWindow_openFolderDialog( object sender, System.EventArgs e )
@@ -136,7 +151,7 @@ namespace Asterion.Presentors
             if( result == true )
             {
                 mainWindow.tb_addressField.Text = dialog.FileName;
-                ExistPath();                
+                ExistPath();
             }
         }
         public void ExistPath()
@@ -144,7 +159,10 @@ namespace Asterion.Presentors
             if( System.IO.Directory.Exists( mainWindow.tb_addressField.Text ) )
             {
                 mainWindow.btn_convert.IsEnabled = true;
-                mainWindow.tb_selectedValue.Text = System.IO.Directory.GetFiles( mainWindow.tb_addressField.Text ).Length.ToString();
+                if( mainWindow.cb_isDirectory.IsChecked == true )
+                    mainWindow.tb_selectedValue.Text = System.IO.Directory.GetFiles( mainWindow.tb_addressField.Text ).Length.ToString();
+                else
+                    mainWindow.tb_selectedValue.Text = PathFileNames.Length.ToString();
             } else
             {
                 mainWindow.tb_addressField.Text = "Директория не существует";
