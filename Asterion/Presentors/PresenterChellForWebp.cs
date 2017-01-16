@@ -3,47 +3,53 @@ using System.Threading;
 using Asterion.Models;
 using Ookii.Dialogs.Wpf;
 using WPFFolderBrowser;
+using System.Threading;
+using System.Windows;
 
 namespace Asterion.Presentors
 {
+    //Объявление типа делегата для 2-го потока
+    delegate void UpdateProgressBarDelegate( DependencyProperty dp, object value );
+
     /// <summary>
     /// MVP - model-view-presenter
     /// Presenter служит для связывание логики и UI
     /// </summary>
     class PresenterChellForWebp
     {
+
         object lockObject = new object(); //Объект для синхронизации потоков
         ChellForWebP chellForWebP = null;
         MainWindow mainWindow = null;
 
         public int currentHourChange = 0;
         public int currentMinutesChange = 0;
-        
+
         public volatile bool isStopTimer = true;
-        string timerStatusText = "";
+        string convertStatusText = "";
 
         public volatile string pathToMusicFile = "";
 
-        public string TimerStatusText
+        public string ConvertStatusText
         {
             get
             {
-                 mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
-                    (Action)delegate
-                    {
-                        timerStatusText = mainWindow.statusText.Text;
-                    } );
-                return timerStatusText;
+                mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
+                   (Action)delegate
+                   {
+                       convertStatusText = mainWindow.statusText.Text;
+                   } );
+                return convertStatusText;
             }
 
             set
             {
-                timerStatusText = value;
+                convertStatusText = value;
                 mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
                     (Action)delegate
                     {
-                        mainWindow.statusText.Text = timerStatusText;
-                    } );                
+                        mainWindow.statusText.Text = convertStatusText;
+                    } );
             }
         }
 
@@ -51,14 +57,48 @@ namespace Asterion.Presentors
         {
             this.chellForWebP = new ChellForWebP();
             this.mainWindow = mainWindow;
-            this.mainWindow.startConvertEvent += new EventHandler( mainWindow_startConvert );                        
-            this.mainWindow.openFolderDialogEvent += new EventHandler( mainWindow_openFolderDialog );           
+            this.mainWindow.startConvertEvent += new EventHandler( mainWindow_startConvert );
+            this.mainWindow.openFolderDialogEvent += new EventHandler( mainWindow_openFolderDialog );
         }
 
         private void mainWindow_startConvert( object sender, EventArgs e )
         {
-            chellForWebP.Start( mainWindow.tb_addressField.Text );
-        }        
+            mainWindow.pb_percentConvert.Maximum = 100;
+            mainWindow.pb_percentConvert.Value = 0;
+            // Добавляем обработчик события          
+            chellForWebP.MaxValueEvent += onInitialValue;
+            chellForWebP.ChangeValueEvent += onChangeIndicator;
+            chellForWebP.CompleteConvertEvent += onCompleteConver;
+            chellForWebP.BeginStartConvert( mainWindow.tb_addressField.Text );
+        }
+        void onChangeIndicator()
+        {
+            mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
+                    (Action)delegate
+                    {
+                        mainWindow.pb_percentConvert.Value += 1;
+                        mainWindow.tb_percentConvert.Text = Math.Round(mainWindow.pb_percentConvert.Value / mainWindow.pb_percentConvert.Maximum * 100) + " %";
+                    } );
+
+        }
+        void onCompleteConver()
+        {
+            mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
+                    (Action)delegate
+                    {
+                        mainWindow.tb_percentConvert.Text = "Конвертировние завершено";
+                    } );
+
+        }
+        void onInitialValue(int maximum )
+        {
+            mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
+                    (Action)delegate
+                    {
+                        mainWindow.pb_percentConvert.Maximum = maximum;
+                    } );
+
+        }
 
         private void StartTimer()
         {
@@ -87,7 +127,7 @@ namespace Asterion.Presentors
 
                 process.Start();
                 */
-        }        
+        }
 
         private void DisableTimer()
         {
@@ -138,12 +178,12 @@ namespace Asterion.Presentors
             }
         }
         private void mainWindow_openFolderDialog( object sender, System.EventArgs e )
-        {            
-            var dialog = new WPFFolderBrowserDialog("Выберите каталог для обработки");
+        {
+            var dialog = new WPFFolderBrowserDialog( "Выберите каталог для обработки" );
             bool? result = dialog.ShowDialog();
             if( result == true )
             {
-                mainWindow.tb_addressField.Text = dialog.FileName;                             
+                mainWindow.tb_addressField.Text = dialog.FileName;
                 ExistPath();
             }
         }

@@ -11,19 +11,42 @@ using System.IO;
 using System.Text;
 
 namespace Asterion.Models
-{
+{          
     class ChellForWebP
     {
+        // Объявляем событие
+        public event Action ChangeValueEvent;
+        public event Action<int> MaxValueEvent;
+        public event Action CompleteConvertEvent;
+        // Используем метод для запуска события
+        public void OnChangeValue()
+        {
+            ChangeValueEvent();
+        }
+        public void OnMaxValue( int maxValue)
+        {
+            MaxValueEvent( maxValue );
+        }
+        public void OnCompleteConvert()
+        {
+            CompleteConvertEvent();
+        }
+
+        //Process для консольного приложения
         Process myProcess;
         string pathToWebp = @"cwebp.exe";
+        string pathDirectory = "";
         List<string> pathToInputFiles;
         int quality = 85;
+        
+        public int currentValue = 0;
+        public int maxValue = 0;
 
-        object lockObject = new object(); //Объект для синхронизации потоков
 
         public ChellForWebP()
         {
             Initialization();
+            
         }
 
         void Initialization()
@@ -41,7 +64,22 @@ namespace Asterion.Models
                 pathToInputFiles.Add( item.FullName );
             }
         }
-        public void Start( string pathDirectory )
+
+        public void BeginStartConvert( string pathDirectory )
+        {
+            this.pathDirectory = pathDirectory;
+            Thread backgroundThread = new Thread( new ThreadStart( Start ) );
+            backgroundThread.Name = "Вторичный";
+            backgroundThread.IsBackground = true;
+            backgroundThread.Start();
+        }
+        public void StartConvert( string pathDirectory )
+        {
+            this.pathDirectory = pathDirectory;
+            Start();
+        }
+
+        private void Start()
         {
             ExtractPathsFiles( pathDirectory );
             if( !Directory.Exists( pathDirectory + @"\output" ) )
@@ -55,12 +93,15 @@ namespace Asterion.Models
                 string command = "/C " + pathToWebp + " \"" + currentFile + "\" -q " + quality + " -alpha_q 100 -o \"" + pathDirectory + @"\output\" + Path.GetFileNameWithoutExtension( currentFile ) + ".webP\"";
                 // преобразование кодировки для консоли
                 //command = convertToCp866( command );
-                commands.Add( command );                
+                commands.Add( command );
             }
+            OnMaxValue( commands.Count );
             foreach( var command in commands )
             {
-                convertFileToWebP( command );
+                OnChangeValue();
+                convertFileToWebP( command );                
             }
+            OnCompleteConvert();
         }
         string convertToCp866( string input )
         {
