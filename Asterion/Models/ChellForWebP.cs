@@ -37,11 +37,7 @@ namespace Asterion.Models
         string pathToWebp = @"cwebp.exe";
         string pathDirectory = "";
         List<string> pathToInputFiles;
-        int quality = 85;
-        
-        public int currentValue = 0;
-        public int maxValue = 0;
-
+        public int quality = 85;
 
         public ChellForWebP()
         {
@@ -87,6 +83,7 @@ namespace Asterion.Models
                 Directory.CreateDirectory( pathDirectory + @"\output" );
             }
             List<string> commands = new List<string>();
+            OnMaxValue( pathToInputFiles.Count );
             foreach( var currentFile in pathToInputFiles )
             {
                 // Компановка команды для Webp конвертера
@@ -95,7 +92,7 @@ namespace Asterion.Models
                 //command = convertToCp866( command );
                 commands.Add( command );
             }
-            OnMaxValue( commands.Count );
+            
             foreach( var command in commands )
             {
                 OnChangeValue();

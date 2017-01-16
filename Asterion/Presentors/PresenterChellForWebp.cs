@@ -63,8 +63,7 @@ namespace Asterion.Presentors
 
         private void mainWindow_startConvert( object sender, EventArgs e )
         {
-            mainWindow.pb_percentConvert.Maximum = 100;
-            mainWindow.pb_percentConvert.Value = 0;
+            chellForWebP.quality = int.Parse( mainWindow.tb_qualityValue.Text );
             // Добавляем обработчик события          
             chellForWebP.MaxValueEvent += onInitialValue;
             chellForWebP.ChangeValueEvent += onChangeIndicator;
@@ -77,7 +76,13 @@ namespace Asterion.Presentors
                     (Action)delegate
                     {
                         mainWindow.pb_percentConvert.Value += 1;
-                        mainWindow.tb_percentConvert.Text = Math.Round(mainWindow.pb_percentConvert.Value / mainWindow.pb_percentConvert.Maximum * 100) + " %";
+                        string currentValue;
+                        if( mainWindow.isPercent )
+                            currentValue = (int)( mainWindow.pb_percentConvert.Value / mainWindow.pb_percentConvert.Maximum * 100 ) + " %";
+                        else
+                            currentValue = mainWindow.pb_percentConvert.Value + " из " + mainWindow.pb_percentConvert.Maximum;
+
+                        mainWindow.tb_percentConvert.Text = currentValue;//;
                     } );
 
         }
@@ -90,11 +95,12 @@ namespace Asterion.Presentors
                     } );
 
         }
-        void onInitialValue(int maximum )
+        void onInitialValue( int maximum )
         {
             mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
                     (Action)delegate
                     {
+                        mainWindow.pb_percentConvert.Value = 0;
                         mainWindow.pb_percentConvert.Maximum = maximum;
                     } );
 

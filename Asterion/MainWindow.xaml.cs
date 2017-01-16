@@ -134,7 +134,7 @@ namespace Asterion
             Asterion.Models.LogicLogOutTrack LOT = new Asterion.Models.LogicLogOutTrack();
             LOT.hwndSource = PresentationSource.FromVisual( this ) as HwndSource;
             // и устанавливаем перехватчик
-            LOT.hwndSource.AddHook( LOT.WndProc );            
+            LOT.hwndSource.AddHook( LOT.WndProc );
         }
 
         public event EventHandler openFolderDialogEvent = null;
@@ -156,6 +156,12 @@ namespace Asterion
         private void tb_addressField_LostFocus( object sender, RoutedEventArgs e )
         {
             presenterChellForWebp.ExistPath();
+        }
+
+        public bool isPercent = false;
+        private void pb_percentConvert_MouseUp( object sender, System.Windows.Input.MouseButtonEventArgs e )
+        {
+            isPercent = !isPercent;
         }
     }
 }
