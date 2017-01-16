@@ -11,7 +11,7 @@ using System.IO;
 using System.Text;
 
 namespace Asterion.Models
-{          
+{
     class ChellForWebP
     {
         // Объявляем событие
@@ -23,7 +23,7 @@ namespace Asterion.Models
         {
             ChangeValueEvent();
         }
-        public void OnMaxValue( int maxValue)
+        public void OnMaxValue( int maxValue )
         {
             MaxValueEvent( maxValue );
         }
@@ -42,7 +42,7 @@ namespace Asterion.Models
         public ChellForWebP()
         {
             Initialization();
-            
+
         }
 
         void Initialization()
@@ -92,11 +92,11 @@ namespace Asterion.Models
                 //command = convertToCp866( command );
                 commands.Add( command );
             }
-            
+
             foreach( var command in commands )
             {
                 OnChangeValue();
-                convertFileToWebP( command );                
+                convertFileToWebP( command );
             }
             OnCompleteConvert();
         }
@@ -136,6 +136,12 @@ namespace Asterion.Models
             //MessageBox.Show( srIncoming.ReadToEnd() );
             // закрываем процесс
             procCommand.WaitForExit();
+        }
+        public void ClearEvents()
+        {
+            ChangeValueEvent = null;
+            MaxValueEvent = null;
+            CompleteConvertEvent = null;
         }
     }
 }

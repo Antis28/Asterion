@@ -64,7 +64,9 @@ namespace Asterion.Presentors
         private void mainWindow_startConvert( object sender, EventArgs e )
         {
             chellForWebP.quality = int.Parse( mainWindow.tb_qualityValue.Text );
-            // Добавляем обработчик события          
+            // Очистка старых событий;
+            chellForWebP.ClearEvents();
+            // Добавляем обработчик события             
             chellForWebP.MaxValueEvent += onInitialValue;
             chellForWebP.ChangeValueEvent += onChangeIndicator;
             chellForWebP.CompleteConvertEvent += onCompleteConver;
