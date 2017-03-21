@@ -12,8 +12,10 @@ using System.Text;
 
 namespace Asterion.Models
 {
-    class ChellForWebP
+  public class ChellForWebP
     {
+        bool iDebug = false;
+        //------------- public -----------------------------//
         // Объявляем событие
         public event Action ChangeValueEvent;
         public event Action<int> MaxValueEvent;
@@ -42,24 +44,52 @@ namespace Asterion.Models
         public bool isRunning = false;
         // Все файлы конвертировать?
         public bool isAllFiles = true;
+
         public string[] pathFileNames;
-        //Process для консольного приложения
-        Process myProcess;
-        string pathToWebp = @"cwebp.exe";
-        string pathDirectory = "";
-        List<string> pathToInputFiles;
         public int quality = 85;
 
+        //Process для консольного приложения
+        protected Process myProcess;
+
+        protected string pathToWebp = @"cwebp.exe";
+        protected string pathDirectory = "";
+        protected List<string> pathToInputFiles;
+
+        //------------- public -----------------------------//
         public ChellForWebP()
         {
             Initialization();
 
         }
-
-        void Initialization()
+        /// <summary>
+        /// Конвертация выполняется в другом потоке
+        /// </summary>
+        /// <param name="pathDirectory"></param>
+        public void BeginStartConvert( string pathDirectory )
         {
-            myProcess = new Process();
+            this.pathDirectory = pathDirectory;
+            Thread backgroundThread = new Thread(new ThreadStart(Start));
+            backgroundThread.Name = "Вторичный";
+            backgroundThread.IsBackground = true;
+            backgroundThread.Start();
         }
+        public void StartConvert( string pathDirectory )
+        {
+            this.pathDirectory = pathDirectory;
+            Start();
+        }
+
+        public void SwitchOnAllFiles()
+        {
+            pathFileNames = null;
+            isAllFiles = true;
+        }
+        public void SwitchOnSelectedFiles( string[] pathFileNames )
+        {
+            this.pathFileNames = pathFileNames;
+            isAllFiles = false;
+        }
+                
         //получение полных путей файлов
         public void ExtractPathsFiles( string pathDirectory )
         {
@@ -84,21 +114,12 @@ namespace Asterion.Models
             }
         }
 
-        public void BeginStartConvert( string pathDirectory )
+        protected void Initialization()
         {
-            this.pathDirectory = pathDirectory;
-            Thread backgroundThread = new Thread( new ThreadStart( Start ) );
-            backgroundThread.Name = "Вторичный";
-            backgroundThread.IsBackground = true;
-            backgroundThread.Start();
-        }
-        public void StartConvert( string pathDirectory )
-        {
-            this.pathDirectory = pathDirectory;
-            Start();
+            myProcess = new Process();
         }
 
-        private void Start()
+        protected void Start()
         {
             ExtractPathsFiles( pathDirectory );
             if( !Directory.Exists( pathDirectory + @"\output" ) )
@@ -130,7 +151,7 @@ namespace Asterion.Models
             // Очистка старых событий;
             ClearEvents();
         }
-        string convertToCp866( string input )
+        protected string convertToCp866( string input )
         {
             Encoding cp866 = Encoding.GetEncoding( 866 );
             Encoding unicode = Encoding.Unicode;
@@ -148,42 +169,46 @@ namespace Asterion.Models
 
             return cp866String;
         }
-        void convertFileToWebP( string command )
+        protected void convertFileToWebP( string command )
         {
             // создаем процесс cmd.exe с параметрами command
             ProcessStartInfo psiOpt = new ProcessStartInfo( @"cmd.exe", command );
-            // скрываем окно запущенного процесса
-            psiOpt.WindowStyle = ProcessWindowStyle.Hidden;
-            psiOpt.RedirectStandardOutput = true;
-            psiOpt.UseShellExecute = false;
-            psiOpt.CreateNoWindow = true;
+            if( iDebug )
+            {                
+                psiOpt.WindowStyle = ProcessWindowStyle.Normal;
+                psiOpt.RedirectStandardOutput = false;
+                psiOpt.UseShellExecute = true;
+                psiOpt.CreateNoWindow = true;
+            } else
+            {
+                // скрываем окно запущенного процесса
+                psiOpt.WindowStyle = ProcessWindowStyle.Hidden;
+                psiOpt.RedirectStandardOutput = true;
+                psiOpt.UseShellExecute = false;
+                psiOpt.CreateNoWindow = true;
+            }
+            
             // запускаем процесс
             Process procCommand = Process.Start( psiOpt );
             // получаем ответ запущенного процесса
-            StreamReader srIncoming = procCommand.StandardOutput;
+            StreamReader srIncoming;
+            if( !iDebug )
+                srIncoming = procCommand.StandardOutput;
             //StreamReader srOutcoming = procCommand.StandardInput;
             // выводим результат
             //MessageBox.Show( srIncoming.ReadToEnd() );
-            // закрываем процесс
+            // закрываем процесс            
             procCommand.WaitForExit();
+            if( iDebug )
+                procCommand.WaitForInputIdle( 4000 );
         }
-        private void ClearEvents()
+        protected void ClearEvents()
         {
             ChangeValueEvent = null;
             MaxValueEvent = null;
             CompleteConvertEvent = null;
             CanceledConvertEvent = null;
-        }
-        public void SwitchOnAllFiles()
-        {
-            pathFileNames = null;
-            isAllFiles = true;
-        }
-        public void SwitchOnSelectedFiles(string[] pathFileNames )
-        {
-            this.pathFileNames = pathFileNames;
-            isAllFiles = false;
-        }
+        }        
     }
 }
 
