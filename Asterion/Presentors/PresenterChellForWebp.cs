@@ -3,7 +3,6 @@ using System.Threading;
 using Asterion.Models;
 using Ookii.Dialogs.Wpf;
 using WPFFolderBrowser;
-using System.Threading;
 using System.Windows;
 using System.Collections.Generic;
 
@@ -27,7 +26,7 @@ namespace Asterion.Presentors
         public int currentMinutesChange = 0;
 
         public volatile bool isStopTimer = true;
-        string convertStatusText = "";
+        //string convertStatusText = "";
 
         public volatile string pathToMusicFile = "";
 

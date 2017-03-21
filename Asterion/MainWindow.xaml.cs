@@ -135,6 +135,9 @@ namespace Asterion
             LOT.hwndSource = PresentationSource.FromVisual( this ) as HwndSource;
             // и устанавливаем перехватчик
             LOT.hwndSource.AddHook( LOT.WndProc );
+            // logOutTrackEvent - ?
+            if( e.ToString() == "" )
+                logOutTrackEvent.Invoke(this, e);
         }
 
         public event EventHandler openFolderDialogEvent = null;
