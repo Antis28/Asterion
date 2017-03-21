@@ -13,8 +13,6 @@ M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.pdb
 M:\My_project(11,1 ГБ)\My_Progi\C#\Asterion\Asterion\obj\Release\Asterion.csprojResolveAssemblyReference.cache
 M:\My_projects\My_Progi\C#\Asterion\Asterion\bin\Release\Asterion.exe
 M:\My_projects\My_Progi\C#\Asterion\Asterion\bin\Release\Asterion.pdb
-M:\My_projects\My_Progi\C#\Asterion\Asterion\bin\Release\Ookii.Dialogs.Wpf.dll
-M:\My_projects\My_Progi\C#\Asterion\Asterion\bin\Release\WPFFolderBrowser.dll
 M:\My_projects\My_Progi\C#\Asterion\Asterion\bin\Release\Ookii.Dialogs.Wpf.xml
 M:\My_projects\My_Progi\C#\Asterion\Asterion\obj\Release\MainWindow.g.cs
 M:\My_projects\My_Progi\C#\Asterion\Asterion\obj\Release\App.g.cs
