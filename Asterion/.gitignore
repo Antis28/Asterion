@@ -3,6 +3,8 @@
 /.vs/*
 /bin/*
 /obj/*
+#/OtherFiles/*
+/publish/*
 
 # Файлы в игнор
 /icon.ico
