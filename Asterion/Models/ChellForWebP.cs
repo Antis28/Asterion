@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Asterion.Models
 {
-  public class ChellForWebP
+    public class ChellForWebP
     {
         bool iDebug = false;
         //------------- public -----------------------------//
@@ -28,7 +28,7 @@ namespace Asterion.Models
         public bool isAllFiles = true;
 
         public string[] pathFileNames;
-        
+
         // Качество изображения
         public int quality = 85;
 
@@ -59,7 +59,7 @@ namespace Asterion.Models
         string command = string.Empty;
         string commandParameters = string.Empty;
 
-        private string pathToWebp = @"cwebp.exe";        
+        private string pathToWebp = @"cwebp.exe";
 
         private string pathDirectory = "";
         private List<string> pathToInputFiles;
@@ -112,7 +112,7 @@ namespace Asterion.Models
             this.pathFileNames = pathFileNames;
             isAllFiles = false;
         }
-                
+
         //получение полных путей файлов
         public void ExtractPathsFiles( string pathDirectory )
         {
@@ -120,20 +120,20 @@ namespace Asterion.Models
             pathToInputFiles = new List<string>();
             if( isAllFiles )
             {
-                DirectoryInfo dir = new System.IO.DirectoryInfo( pathDirectory );                
+                DirectoryInfo dir = new System.IO.DirectoryInfo(pathDirectory);
                 files = dir.GetFiles();
             } else
             {
                 int length = this.pathFileNames.Length;
                 files = new FileInfo[length];
-                for( int i = 0; i < length; i++ )                
+                for( int i = 0; i < length; i++ )
                 {
-                    files[i] = new FileInfo( this.pathFileNames[i] );
-                }                 
+                    files[i] = new FileInfo(this.pathFileNames[i]);
+                }
             }
             foreach( var item in files )
             {
-                pathToInputFiles.Add( item.FullName );
+                pathToInputFiles.Add(item.FullName);
             }
         }
 
@@ -145,10 +145,10 @@ namespace Asterion.Models
 
         private void Start()
         {
-            ExtractPathsFiles( pathDirectory );
-            if( !Directory.Exists( pathDirectory + @"\output" ) )
+            ExtractPathsFiles(pathDirectory);
+            if( !Directory.Exists(pathDirectory + @"\output") )
             {
-                Directory.CreateDirectory( pathDirectory + @"\output" );
+                Directory.CreateDirectory(pathDirectory + @"\output");
             }
             // Параметры для Webp конвертера
             commandParameters = string.Format("{0} {1}",
@@ -160,12 +160,13 @@ namespace Asterion.Models
                     " -alpha_q 100 -o \"",
                     qualityAlpha,
                     pathDirectory,
-                    @"\output\"                    
+                    @"\output\"
                 );
 
-            List<string> commands = new List<string>();
+            List <string> commands = new List<string>();
 
             OnMaxValue( pathToInputFiles.Count );
+
             foreach( var currentFile in pathToInputFiles )
             {
                 // Компановка команды для Webp конвертера
@@ -182,13 +183,13 @@ namespace Asterion.Models
                     );
                 // преобразование кодировки для консоли
                 //command = convertToCp866( command );
-                commands.Add( command );
+                commands.Add(command);
             }
 
             foreach( var command in commands )
             {
                 OnChangeValue();
-                convertFileToWebP( command );
+                convertFileToWebP(command);
                 if( !isRunning )
                 {
                     OnCanceledConvert();
@@ -203,19 +204,19 @@ namespace Asterion.Models
         }
         private string convertToCp866( string input )
         {
-            Encoding cp866 = Encoding.GetEncoding( 866 );
+            Encoding cp866 = Encoding.GetEncoding(866);
             Encoding unicode = Encoding.Unicode;
 
             // Convert the string into a byte array.
-            byte[] unicodeBytes = unicode.GetBytes( input );
+            byte[] unicodeBytes = unicode.GetBytes(input);
 
             // Perform the conversion from one encoding to the other.
-            byte[] cp866Bytes = Encoding.Convert( unicode, cp866, unicodeBytes );
+            byte[] cp866Bytes = Encoding.Convert(unicode, cp866, unicodeBytes);
 
             // Convert the new byte[] into a char[] and then into a string.
-            char[] cp866Chars = new char[cp866.GetCharCount( cp866Bytes, 0, cp866Bytes.Length )];
-            cp866.GetChars( cp866Bytes, 0, cp866Bytes.Length, cp866Chars, 0 );
-            string cp866String = new string( cp866Chars );
+            char[] cp866Chars = new char[cp866.GetCharCount(cp866Bytes, 0, cp866Bytes.Length)];
+            cp866.GetChars(cp866Bytes, 0, cp866Bytes.Length, cp866Chars, 0);
+            string cp866String = new string(cp866Chars);
 
             return cp866String;
         }
@@ -223,9 +224,9 @@ namespace Asterion.Models
         private void convertFileToWebP( string command )
         {
             // Запускаем через cmd с параметрами command
-            ProcessStartInfo psiOpt = new ProcessStartInfo( @"cmd.exe", command );
+            ProcessStartInfo psiOpt = new ProcessStartInfo(@"cmd.exe", command);
             if( iDebug )
-            {                
+            {
                 psiOpt.WindowStyle = ProcessWindowStyle.Normal;
                 psiOpt.RedirectStandardOutput = false;
                 psiOpt.UseShellExecute = true;
@@ -238,9 +239,9 @@ namespace Asterion.Models
                 psiOpt.UseShellExecute = false;
                 psiOpt.CreateNoWindow = true;
             }
-            
+
             // запускаем процесс
-            Process procCommand = Process.Start( psiOpt );
+            Process procCommand = Process.Start(psiOpt);
             // получаем ответ запущенного процесса
             StreamReader srIncoming;
             if( !iDebug )
@@ -248,18 +249,19 @@ namespace Asterion.Models
             //StreamReader srOutcoming = procCommand.StandardInput;
             // выводим результат
             //MessageBox.Show( srIncoming.ReadToEnd() );
-            // закрываем процесс            
+            // закрываем процесс
             procCommand.WaitForExit();
             if( iDebug )
-                procCommand.WaitForInputIdle( 4000 );
+                procCommand.WaitForInputIdle(4000);
         }
+
         private void ClearEvents()
         {
             ChangeValueEvent = null;
             MaxValueEvent = null;
             CompleteConvertEvent = null;
             CanceledConvertEvent = null;
-        }        
+        }
     }
 }
 
