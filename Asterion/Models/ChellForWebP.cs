@@ -150,12 +150,36 @@ namespace Asterion.Models
             {
                 Directory.CreateDirectory( pathDirectory + @"\output" );
             }
+            // Параметры для Webp конвертера
+            commandParameters = string.Format("{0} {1}",
+
+                    // -q качество изображения от 0 до 100
+                    "\" -q ",
+                    quality,
+                    // качество изображения для альфа канала от 0 до 100
+                    " -alpha_q 100 -o \"",
+                    qualityAlpha,
+                    pathDirectory,
+                    @"\output\"                    
+                );
+
             List<string> commands = new List<string>();
+
             OnMaxValue( pathToInputFiles.Count );
             foreach( var currentFile in pathToInputFiles )
             {
                 // Компановка команды для Webp конвертера
-                string command = "/C " + pathToWebp + " \"" + currentFile + "\" -q " + quality + " -alpha_q 100 -o \"" + pathDirectory + @"\output\" + Path.GetFileNameWithoutExtension( currentFile ) + ".webP\"";
+                //string command = "/C " + pathToWebp + " \"" + currentFile + "\" -q " + quality + " -alpha_q 100 -o \"" + pathDirectory + @"\output\" + Path.GetFileNameWithoutExtension( currentFile ) + ".webP\"";
+                command = string.Format("{0} {1} {2} {3} {4} {5} {6}",
+                    "/C ",          // Ключ /C - выполнение команды
+                    pathToWebp,     // Команда которую будет выполнять
+                    " \"",
+                    currentFile,
+                    commandParameters,
+                    // имя для выходного файла
+                    Path.GetFileNameWithoutExtension(currentFile),
+                    ".webP\""
+                    );
                 // преобразование кодировки для консоли
                 //command = convertToCp866( command );
                 commands.Add( command );
