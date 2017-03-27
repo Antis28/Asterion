@@ -32,7 +32,15 @@
                             </Grid.ColumnDefinitions>
                         </Grid>
                     </StackPanel>
-                    <TextBox x:Name="tb_addressField"  HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Адрес каталога с картинками" VerticalAlignment="Top" Width="217" LostFocus="tb_addressField_LostFocus"/>
+                    <TextBox x:Name="tb_addressField"  HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Адрес каталога с картинками" VerticalAlignment="Top" Width="217" LostFocus="tb_addressField_LostFocus"
+                             
+                             BorderBrush="Green" BorderThickness="1"
+                             AllowDrop="True" AcceptsReturn="True"
+                             PreviewDragEnter="text_PreviewDragEnter"
+                             PreviewDragOver="text_PreviewDragEnter"
+                             PreviewDrop="text_PreviewDrop"
+                             
+                             />
 
                     <TextBox x:Name="tb_resolution_w"  HorizontalAlignment="Left" Height="23" Margin="50,90,0,0" Grid.Row="2" TextWrapping="Wrap" Text="ширина" VerticalAlignment="Top" Width="50" />
                     <TextBox x:Name="tb_resolution_h"  HorizontalAlignment="Left" Height="23" Margin="110,90,0,0" Grid.Row="2" TextWrapping="Wrap" Text="высота" VerticalAlignment="Top" Width="50"/>
