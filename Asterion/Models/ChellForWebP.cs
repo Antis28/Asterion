@@ -27,7 +27,7 @@ namespace Asterion.Models
 
         // Качество изображения
         public int quality = 85;
-
+        public ImgSize resolution;
         public int qualityAlpha = 100;
 
         // Используем метод для запуска события
@@ -148,12 +148,31 @@ namespace Asterion.Models
                 Directory.CreateDirectory(pathDirectory + @"\output");
             }
             // Параметры для Webp конвертера
-            commandParameters = string.Format(" -q {0} -alpha_q {1} -o \"{2}{3}",
-                    quality,            //{0} -q       качество изображения от 0 до 100
-                    qualityAlpha,       //{1} -alpha_q качество изображения для альфа канала от 0 до 100
-                    pathDirectory,      //{2}  -o      адрес вывода файла
-                    @"\output\"         //{3}          каталог вывода
-                );
+            StringBuilder sb = new StringBuilder();
+            if( resolution.height > 100 && resolution.width > 100 )
+            {
+                sb.Append("-resize ");              // -resize
+                sb.Append(resolution.ToString());   // <w> <h>
+            }
+
+            sb.Append(" -q ");          // -q       качество изображения от 0 до 100
+            sb.Append(quality);
+            sb.Append(" -alpha_q ");    // -alpha_q качество изображения для альфа канала от 0 до 100   
+            sb.Append(qualityAlpha);
+            sb.Append(" -o ");          // -o       адрес вывода файла
+            sb.Append("\"");
+            sb.Append(pathDirectory);
+            sb.Append(@"\output\");     //          каталог вывода
+
+            //commandParameters = string.Format(" -q {0} -alpha_q {1} {4} -o \"{2}{3}",
+            //        quality,            //{0} -q       качество изображения от 0 до 100
+            //        qualityAlpha,       //{1} -alpha_q качество изображения для альфа канала от 0 до 100
+            //        pathDirectory,      //{2}  -o      адрес вывода файла
+            //        @"\output\",        //{3}          каталог вывода
+            //       "-resize " +
+            //       resolution.ToString()//{4} -resize
+            //    );
+            commandParameters = sb.ToString();
 
             List<string> commands = new List<string>();
 
@@ -174,7 +193,7 @@ namespace Asterion.Models
                 commands.Add(command);
             }
             string timeName = DateTime.Now.ToString("HH-mm-ss");
-            using( fileLogOut = new StreamWriter(Environment.CurrentDirectory + "\\log-"+ timeName + ".txt") )
+            using( fileLogOut = new StreamWriter(Environment.CurrentDirectory + "\\log-" + timeName + ".txt") )
             {
                 fileLogOut.WriteLine("Начало конвертации в " + DateTime.Now);
                 fileLogOut.WriteLine();
@@ -232,7 +251,8 @@ namespace Asterion.Models
             startinfo.UseShellExecute = false;
             // Не надо окон
             startinfo.CreateNoWindow = true;
-            
+
+            myProcess = new Process();
             myProcess.StartInfo = startinfo;
             myProcess.OutputDataReceived += cmd_DataReceived;
             myProcess.ErrorDataReceived += cmd_DataError;
@@ -243,7 +263,7 @@ namespace Asterion.Models
             myProcess.BeginOutputReadLine();
             myProcess.BeginErrorReadLine();
 
-            myProcess.StandardInput.WriteLine("cwebp.exe " + command);            
+            myProcess.StandardInput.WriteLine("cwebp.exe " + command);
             myProcess.StandardInput.WriteLine("exit");
             myProcess.WaitForExit();
 
@@ -270,7 +290,7 @@ namespace Asterion.Models
                     sw.WriteLine(e.Data);
                     sw.Close();
                 }
-            } catch {  }
+            } catch { }
         }
 
         void cmd_DataError( object sender, DataReceivedEventArgs e )
@@ -279,7 +299,22 @@ namespace Asterion.Models
             {
                 //Пишем в файл(поток)                
                 fileLogOut.WriteLine(e.Data);
-            } catch {}
+            } catch { }
+        }
+
+        public struct ImgSize
+        {
+            public int width;
+            public int height;
+            public ImgSize( int w, int h )
+            {
+                width = w;
+                height = h;
+            }
+            public override string ToString()
+            {
+                return width + " " + height;
+            }
         }
     }
 }
