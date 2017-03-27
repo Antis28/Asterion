@@ -21,24 +21,6 @@ namespace Asterion.Models
         public event Action<int> MaxValueEvent;
         public event Action CompleteConvertEvent;
         public event Action CanceledConvertEvent;
-        
-        // Используем метод для запуска события
-        public void OnChangeValue()
-        {
-            ChangeValueEvent();
-        }
-        public void OnMaxValue( int maxValue )
-        {
-            MaxValueEvent( maxValue );
-        }
-        public void OnCompleteConvert()
-        {
-            CompleteConvertEvent();
-        }
-        public void OnCanceledConvert()
-        {
-            CanceledConvertEvent();
-        }
 
         // Выполняется?
         public bool isRunning = false;
@@ -46,14 +28,41 @@ namespace Asterion.Models
         public bool isAllFiles = true;
 
         public string[] pathFileNames;
+        
+        // Качество изображения
         public int quality = 85;
 
-        //Process для консольного приложения
-        protected Process myProcess;
+        public int qualityAlpha = 100;
 
-        protected string pathToWebp = @"cwebp.exe";
-        protected string pathDirectory = "";
-        protected List<string> pathToInputFiles;
+        // Используем метод для запуска события
+        private void OnChangeValue()
+        {
+            ChangeValueEvent();
+        }
+        private void OnMaxValue( int maxValue )
+        {
+            MaxValueEvent(maxValue);
+        }
+        private void OnCompleteConvert()
+        {
+            CompleteConvertEvent();
+        }
+        private void OnCanceledConvert()
+        {
+            CanceledConvertEvent();
+        }
+
+        //Process для консольного приложения
+        private Process myProcess = null;
+
+        // Команда которую будет выполнять
+        string command = string.Empty;
+        string commandParameters = string.Empty;
+
+        private string pathToWebp = @"cwebp.exe";        
+
+        private string pathDirectory = "";
+        private List<string> pathToInputFiles;
 
         //------------- public -----------------------------//
         public ChellForWebP()
@@ -61,6 +70,7 @@ namespace Asterion.Models
             Initialization();
 
         }
+
         /// <summary>
         /// Конвертация выполняется в другом потоке
         /// </summary>
@@ -73,17 +83,30 @@ namespace Asterion.Models
             backgroundThread.IsBackground = true;
             backgroundThread.Start();
         }
+
+        /// <summary>
+        /// Начать конвертацию в том же потоке
+        /// </summary>
+        /// <param name="pathDirectory"></param>
         public void StartConvert( string pathDirectory )
         {
             this.pathDirectory = pathDirectory;
             Start();
         }
 
+        /// <summary>
+        /// Обрабатываются все файлы в папке
+        /// </summary>
         public void SwitchOnAllFiles()
         {
             pathFileNames = null;
             isAllFiles = true;
         }
+
+        /// <summary>
+        /// Обрабатываются только выбранные файлы в папке
+        /// </summary>
+        /// <param name="pathFileNames"></param>
         public void SwitchOnSelectedFiles( string[] pathFileNames )
         {
             this.pathFileNames = pathFileNames;
@@ -114,12 +137,13 @@ namespace Asterion.Models
             }
         }
 
-        protected void Initialization()
+        //------------- private -----------------------------//
+        private void Initialization()
         {
             myProcess = new Process();
         }
 
-        protected void Start()
+        private void Start()
         {
             ExtractPathsFiles( pathDirectory );
             if( !Directory.Exists( pathDirectory + @"\output" ) )
@@ -142,16 +166,18 @@ namespace Asterion.Models
                 OnChangeValue();
                 convertFileToWebP( command );
                 if( !isRunning )
+                {
+                    OnCanceledConvert();
                     break;
+                }
             }
-            if( !isRunning )
-                OnCanceledConvert();
-            else
+            if( isRunning )
                 OnCompleteConvert();
+
             // Очистка старых событий;
             ClearEvents();
         }
-        protected string convertToCp866( string input )
+        private string convertToCp866( string input )
         {
             Encoding cp866 = Encoding.GetEncoding( 866 );
             Encoding unicode = Encoding.Unicode;
@@ -169,9 +195,10 @@ namespace Asterion.Models
 
             return cp866String;
         }
-        protected void convertFileToWebP( string command )
+
+        private void convertFileToWebP( string command )
         {
-            // создаем процесс cmd.exe с параметрами command
+            // Запускаем через cmd с параметрами command
             ProcessStartInfo psiOpt = new ProcessStartInfo( @"cmd.exe", command );
             if( iDebug )
             {                
@@ -202,7 +229,7 @@ namespace Asterion.Models
             if( iDebug )
                 procCommand.WaitForInputIdle( 4000 );
         }
-        protected void ClearEvents()
+        private void ClearEvents()
         {
             ChangeValueEvent = null;
             MaxValueEvent = null;
