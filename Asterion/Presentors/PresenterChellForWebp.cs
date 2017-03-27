@@ -36,9 +36,9 @@ namespace Asterion.Presentors
         {
             this.chellForWebP = new ChellForWebP();
             this.mainWindow = mainWindow;
-            this.mainWindow.startConvertEvent += new EventHandler( mainWindow_startConvert );
-            this.mainWindow.openFolderDialogEvent += new EventHandler( mainWindow_openFolderDialog );
-            this.mainWindow.openFileDialogToConverterEvent += new EventHandler( mainWindow_openFileDialog );
+            this.mainWindow.startConvertEvent += new EventHandler(mainWindow_startConvert);
+            this.mainWindow.openFolderDialogEvent += new EventHandler(mainWindow_openFolderDialog);
+            this.mainWindow.openFileDialogToConverterEvent += new EventHandler(mainWindow_openFileDialog);
         }
 
         bool isRunning = false;
@@ -49,8 +49,14 @@ namespace Asterion.Presentors
                 isRunning = !isRunning;
                 chellForWebP.isRunning = isRunning;
                 mainWindow.btn_convert.Content = "Остановить";
-                chellForWebP.quality = int.Parse( mainWindow.tb_qualityValue.Text );
-
+                chellForWebP.quality = int.Parse(mainWindow.tb_qualityValue.Text);
+                {
+                    int width, height;
+                    if(
+                    int.TryParse(mainWindow.tb_resolution_w.Text, out width) &&
+                    int.TryParse(mainWindow.tb_resolution_h.Text, out height) )
+                        chellForWebP.resolution = new ChellForWebP.ImgSize(width, height);
+                }
                 // Добавляем обработчик события             
                 chellForWebP.MaxValueEvent += onInitialValue;
                 chellForWebP.ChangeValueEvent += onChangeIndicator;
@@ -60,14 +66,16 @@ namespace Asterion.Presentors
                 if( mainWindow.cb_isDirectory.IsChecked == true )
                 {
                     chellForWebP.SwitchOnAllFiles();
-                } else
-                {
-                    chellForWebP.SwitchOnSelectedFiles( PathFileNames );
                 }
-                
-                chellForWebP.BeginStartConvert( mainWindow.tb_addressField.Text );
+                else
+                {
+                    chellForWebP.SwitchOnSelectedFiles(PathFileNames);
+                }
 
-            } else
+                chellForWebP.BeginStartConvert(mainWindow.tb_addressField.Text);
+
+            }
+            else
             {
                 isRunning = !isRunning;
                 mainWindow.btn_convert.Content = "Начать";
@@ -77,7 +85,7 @@ namespace Asterion.Presentors
         }
         void onChangeIndicator()
         {
-            mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
+            mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                     (Action)delegate
                     {
                         mainWindow.pb_percentConvert.Value += 1;
@@ -88,38 +96,38 @@ namespace Asterion.Presentors
                             currentValue = mainWindow.pb_percentConvert.Value + " из " + mainWindow.pb_percentConvert.Maximum;
 
                         mainWindow.tb_percentConvert.Text = currentValue;//;
-                    } );
+                    });
 
         }
         void onCompleteConvert()
         {
-            mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
+            mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                     (Action)delegate
                     {
                         mainWindow.tb_percentConvert.Text = "Конвертировние завершено";
                         isRunning = !isRunning;
                         mainWindow.btn_convert.Content = "Начать";
-                    } );
+                    });
 
         }
         void onCanceledConvert()
         {
-            mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
+            mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                     (Action)delegate
                     {
                         mainWindow.tb_percentConvert.Text = "Конвертировние отменено";
                         mainWindow.btn_convert.Content = "Начать";
-                    } );
+                    });
 
         }
         void onInitialValue( int maximum )
         {
-            mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
+            mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                     (Action)delegate
                     {
                         mainWindow.pb_percentConvert.Value = 0;
                         mainWindow.pb_percentConvert.Maximum = maximum;
-                    } );
+                    });
 
         }
 
@@ -138,14 +146,14 @@ namespace Asterion.Presentors
             if( result == true )
             {
                 // Open document
-                mainWindow.tb_addressField.Text = System.IO.Path.GetDirectoryName( dlg.FileName );
+                mainWindow.tb_addressField.Text = System.IO.Path.GetDirectoryName(dlg.FileName);
                 PathFileNames = dlg.FileNames;
                 ExistPath();
             }
         }
         private void mainWindow_openFolderDialog( object sender, System.EventArgs e )
         {
-            var dialog = new WPFFolderBrowserDialog( "Выберите каталог для обработки" );
+            var dialog = new WPFFolderBrowserDialog("Выберите каталог для обработки");
             bool? result = dialog.ShowDialog();
             if( result == true )
             {
@@ -155,14 +163,15 @@ namespace Asterion.Presentors
         }
         public void ExistPath()
         {
-            if( System.IO.Directory.Exists( mainWindow.tb_addressField.Text ) )
+            if( System.IO.Directory.Exists(mainWindow.tb_addressField.Text) )
             {
                 mainWindow.btn_convert.IsEnabled = true;
                 if( mainWindow.cb_isDirectory.IsChecked == true )
-                    mainWindow.tb_selectedValue.Text = System.IO.Directory.GetFiles( mainWindow.tb_addressField.Text ).Length.ToString();
+                    mainWindow.tb_selectedValue.Text = System.IO.Directory.GetFiles(mainWindow.tb_addressField.Text).Length.ToString();
                 else
                     mainWindow.tb_selectedValue.Text = PathFileNames.Length.ToString();
-            } else
+            }
+            else
             {
                 mainWindow.tb_addressField.Text = "Директория не существует";
                 mainWindow.btn_convert.IsEnabled = false;
