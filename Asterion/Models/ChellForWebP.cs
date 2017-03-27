@@ -151,35 +151,27 @@ namespace Asterion.Models
                 Directory.CreateDirectory(pathDirectory + @"\output");
             }
             // Параметры для Webp конвертера
-            commandParameters = string.Format("{0} {1}",
-
-                    // -q качество изображения от 0 до 100
-                    "\" -q ",
-                    quality,
-                    // качество изображения для альфа канала от 0 до 100
-                    " -alpha_q 100 -o \"",
-                    qualityAlpha,
-                    pathDirectory,
-                    @"\output\"
+            commandParameters = string.Format(" -q {0} -alpha_q {1} -o \"{2}{3}",
+                    quality,            //{0} -q       качество изображения от 0 до 100
+                    qualityAlpha,       //{1} -alpha_q качество изображения для альфа канала от 0 до 100
+                    pathDirectory,      //{2}  -o      адрес вывода файла
+                    @"\output\"         //{3}          каталог вывода
                 );
 
-            List <string> commands = new List<string>();
+            List<string> commands = new List<string>();
 
-            OnMaxValue( pathToInputFiles.Count );
+            OnMaxValue(pathToInputFiles.Count);
 
             foreach( var currentFile in pathToInputFiles )
             {
                 // Компановка команды для Webp конвертера
                 //string command = "/C " + pathToWebp + " \"" + currentFile + "\" -q " + quality + " -alpha_q 100 -o \"" + pathDirectory + @"\output\" + Path.GetFileNameWithoutExtension( currentFile ) + ".webP\"";
-                command = string.Format("{0} {1} {2} {3} {4} {5} {6}",
-                    "/C ",          // Ключ /C - выполнение команды
-                    pathToWebp,     // Команда которую будет выполнять
-                    " \"",
-                    currentFile,
-                    commandParameters,
-                    // имя для выходного файла
-                    Path.GetFileNameWithoutExtension(currentFile),
-                    ".webP\""
+                command = string.Format("{0} {1} \"{2}\" {3}{4}.webP\"",
+                    "/C",               // {0} Ключ /C - выполнение команды
+                    pathToWebp,         // {1} Команда которую будет выполнять
+                    currentFile,        // {2} Файл для конвертации
+                    commandParameters,  // {3}
+                    Path.GetFileNameWithoutExtension(currentFile)  //{4} имя для выходного файла
                     );
                 // преобразование кодировки для консоли
                 //command = convertToCp866( command );
