@@ -54,7 +54,7 @@ namespace Asterion.Presentors
                 // Добавляем обработчик события             
                 chellForWebP.MaxValueEvent += onInitialValue;
                 chellForWebP.ChangeValueEvent += onChangeIndicator;
-                chellForWebP.CompleteConvertEvent += onCompleteConver;
+                chellForWebP.CompleteConvertEvent += onCompleteConvert;
                 chellForWebP.CanceledConvertEvent += onCanceledConvert;
 
                 if( mainWindow.cb_isDirectory.IsChecked == true )
@@ -91,7 +91,7 @@ namespace Asterion.Presentors
                     } );
 
         }
-        void onCompleteConver()
+        void onCompleteConvert()
         {
             mainWindow.Dispatcher.BeginInvoke( System.Windows.Threading.DispatcherPriority.Normal,
                     (Action)delegate
