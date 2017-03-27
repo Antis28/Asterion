@@ -1,12 +1,9 @@
-﻿using System;
+﻿#define Debug
+
+using System;
 using System.Diagnostics;
 using System.Collections.Generic;
-using System.Net;
-using System.Speech.Synthesis;
 using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
 using System.IO;
 using System.Text;
 
@@ -14,7 +11,6 @@ namespace Asterion.Models
 {
     public class ChellForWebP
     {
-        bool iDebug = false;
         //------------- public -----------------------------//
         // Объявляем событие
         public event Action ChangeValueEvent;
@@ -54,6 +50,7 @@ namespace Asterion.Models
 
         //Process для консольного приложения
         private Process myProcess = null;
+        StreamWriter fileLogOut;
 
         // Команда которую будет выполнять
         string command = string.Empty;
@@ -68,7 +65,6 @@ namespace Asterion.Models
         public ChellForWebP()
         {
             Initialization();
-
         }
 
         /// <summary>
@@ -122,7 +118,8 @@ namespace Asterion.Models
             {
                 DirectoryInfo dir = new System.IO.DirectoryInfo(pathDirectory);
                 files = dir.GetFiles();
-            } else
+            }
+            else
             {
                 int length = this.pathFileNames.Length;
                 files = new FileInfo[length];
@@ -165,8 +162,7 @@ namespace Asterion.Models
             foreach( var currentFile in pathToInputFiles )
             {
                 // Компановка команды для Webp конвертера
-                //string command = "/C " + pathToWebp + " \"" + currentFile + "\" -q " + quality + " -alpha_q 100 -o \"" + pathDirectory + @"\output\" + Path.GetFileNameWithoutExtension( currentFile ) + ".webP\"";
-                command = string.Format("{0} {1} \"{2}\" {3}{4}.webP\"",
+                command = string.Format(" {1} \"{2}\" {3}{4}.webP\"",
                     "/C",               // {0} Ключ /C - выполнение команды
                     pathToWebp,         // {1} Команда которую будет выполнять
                     currentFile,        // {2} Файл для конвертации
@@ -177,20 +173,26 @@ namespace Asterion.Models
                 //command = convertToCp866( command );
                 commands.Add(command);
             }
-
-            foreach( var command in commands )
+            string timeName = DateTime.Now.ToString("HH-mm-ss");
+            using( fileLogOut = new StreamWriter(Environment.CurrentDirectory + "\\log-"+ timeName + ".txt") )
             {
-                OnChangeValue();
-                convertFileToWebP(command);
-                if( !isRunning )
+                fileLogOut.WriteLine("Начало конвертации в " + DateTime.Now);
+                fileLogOut.WriteLine();
+                foreach( var command in commands )
                 {
-                    OnCanceledConvert();
-                    break;
+                    fileLogOut.WriteLine(new string('=', 50));
+                    convertFileToWebP(command);
+                    if( !isRunning )
+                    {
+                        OnCanceledConvert();
+                        break;
+                    }
+                    OnChangeValue();
                 }
+                fileLogOut.WriteLine("Конец конвертации в " + DateTime.Now);
             }
             if( isRunning )
                 OnCompleteConvert();
-
             // Очистка старых событий;
             ClearEvents();
         }
@@ -216,35 +218,38 @@ namespace Asterion.Models
         private void convertFileToWebP( string command )
         {
             // Запускаем через cmd с параметрами command
-            ProcessStartInfo psiOpt = new ProcessStartInfo(@"cmd.exe", command);
-            if( iDebug )
-            {
-                psiOpt.WindowStyle = ProcessWindowStyle.Normal;
-                psiOpt.RedirectStandardOutput = false;
-                psiOpt.UseShellExecute = true;
-                psiOpt.CreateNoWindow = true;
-            } else
-            {
-                // скрываем окно запущенного процесса
-                psiOpt.WindowStyle = ProcessWindowStyle.Hidden;
-                psiOpt.RedirectStandardOutput = true;
-                psiOpt.UseShellExecute = false;
-                psiOpt.CreateNoWindow = true;
-            }
+            ProcessStartInfo startinfo = new ProcessStartInfo();
+            startinfo.StandardOutputEncoding = Encoding.GetEncoding(866);
+
+            startinfo.FileName = @"C:\Windows\System32\cmd.exe";
+            // скрываем окно запущенного процесса
+            startinfo.WindowStyle = ProcessWindowStyle.Hidden;
+            // Перенаправить вывод
+            startinfo.RedirectStandardOutput = true;
+            startinfo.RedirectStandardInput = true;
+            startinfo.RedirectStandardError = true;
+            // Не используем shellexecute
+            startinfo.UseShellExecute = false;
+            // Не надо окон
+            startinfo.CreateNoWindow = true;
+            
+            myProcess.StartInfo = startinfo;
+            myProcess.OutputDataReceived += cmd_DataReceived;
+            myProcess.ErrorDataReceived += cmd_DataError;
+            myProcess.EnableRaisingEvents = true;
 
             // запускаем процесс
-            Process procCommand = Process.Start(psiOpt);
-            // получаем ответ запущенного процесса
-            StreamReader srIncoming;
-            if( !iDebug )
-                srIncoming = procCommand.StandardOutput;
-            //StreamReader srOutcoming = procCommand.StandardInput;
-            // выводим результат
-            //MessageBox.Show( srIncoming.ReadToEnd() );
-            // закрываем процесс
-            procCommand.WaitForExit();
-            if( iDebug )
-                procCommand.WaitForInputIdle(4000);
+            myProcess.Start();
+            myProcess.BeginOutputReadLine();
+            myProcess.BeginErrorReadLine();
+
+            myProcess.StandardInput.WriteLine("cwebp.exe " + command);            
+            myProcess.StandardInput.WriteLine("exit");
+            myProcess.WaitForExit();
+
+            // Освобождаем
+            myProcess = null;
+            startinfo = null;
         }
 
         private void ClearEvents()
@@ -253,6 +258,28 @@ namespace Asterion.Models
             MaxValueEvent = null;
             CompleteConvertEvent = null;
             CanceledConvertEvent = null;
+        }
+
+        void cmd_DataReceived( object sender, DataReceivedEventArgs e )
+        {
+            try
+            {
+                using( StreamWriter sw = new StreamWriter(Environment.CurrentDirectory + "\\log1.txt", true, Encoding.UTF8) )
+                {
+                    //Выводим                
+                    sw.WriteLine(e.Data);
+                    sw.Close();
+                }
+            } catch {  }
+        }
+
+        void cmd_DataError( object sender, DataReceivedEventArgs e )
+        {
+            try
+            {
+                //Пишем в файл(поток)                
+                fileLogOut.WriteLine(e.Data);
+            } catch {}
         }
     }
 }
