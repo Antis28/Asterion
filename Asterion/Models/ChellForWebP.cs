@@ -341,30 +341,30 @@ namespace Asterion.Models
 
         void cmd_DataError( object sender, DataReceivedEventArgs e )
         {
-            try
-            {
-                //Пишем в файл(поток)                
-                fileLogOut.WriteLine(e.Data);
-            } catch { }
+            log.RecordLine(e.Data);
         }
 
 
         // Используем метод для запуска события
         private void OnChangeValue()
         {
-            ChangeValueEvent();
+            if( ChangeValueEvent != null )
+                ChangeValueEvent();
         }
         private void OnMaxValue( int maxValue )
         {
-            MaxValueEvent(maxValue);
+            if( MaxValueEvent != null )
+                MaxValueEvent(maxValue);
         }
         private void OnCompleteConvert()
         {
-            CompleteConvertEvent();
+            if( CompleteConvertEvent != null )
+                CompleteConvertEvent();
         }
         private void OnCanceledConvert()
         {
-            CanceledConvertEvent();
+            if( CanceledConvertEvent != null )
+                CanceledConvertEvent();
         }
         public struct Resolution
         {
