@@ -48,14 +48,22 @@ namespace Asterion.Presentors
             {
                 isRunning = !isRunning;
                 chellForWebP.isRunning = isRunning;
-                mainWindow.btn_convert.Content = "Остановить";
-                chellForWebP.quality = int.Parse(mainWindow.tb_qualityValue.Text);
-                {
-                    int width, height;
-                    if(
-                    int.TryParse(mainWindow.tb_resolution_w.Text, out width) &&
-                    int.TryParse(mainWindow.tb_resolution_h.Text, out height) )
-                        chellForWebP.resolution = new ChellForWebP.Resolution(width, height);
+                mainWindow.btn_convert.Content = "Остановить";                
+                {                    
+                    int tmpWidth = 0, tmpHeight = 0, tmpQuality = 0;
+
+                    int.TryParse(mainWindow.tb_qualityValue.Text, out tmpQuality);
+                    int.TryParse(mainWindow.tb_resolution_w.Text, out tmpWidth);
+                    int.TryParse(mainWindow.tb_resolution_h.Text, out tmpHeight);                        
+
+                    // присвоение параметров из оболочки
+                    chellForWebP.parameters = new ChellForWebP.WebPParams()
+                    {
+                        quality = tmpQuality,
+                        qualityAlpha = 100,
+                        resolution = new ChellForWebP.WebPParams.Resolution(tmpWidth, tmpHeight),
+                        IsQuiet = true                        
+                    };
                 }
                 // Добавляем обработчик события             
                 chellForWebP.MaxValueEvent += onInitialValue;

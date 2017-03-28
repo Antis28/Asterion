@@ -24,11 +24,7 @@ namespace Asterion.Models
         public bool isAllFiles = true;
 
         public string[] pathFileNames;
-
-        // Качество изображения
-        public int quality = 85;
-        public Resolution resolution;
-        public int qualityAlpha = 100;
+        public WebPParams parameters;
 
         //Process для консольного приложения
         private Process myProcess = null;
@@ -102,11 +98,10 @@ namespace Asterion.Models
                 Directory.CreateDirectory(pathDirectory + @"\output");
             }
 
-            log = new LogFile();
-
-            string commandParameters = BuildParams();
+            string commandParameters = parameters.BuildParams(pathDirectory);
             List<string> commands = BuildComands(commandParameters);
 
+            log = new LogFile();
             log.StartRecordToLog();
             foreach( var command in commands )
             {
@@ -185,39 +180,7 @@ namespace Asterion.Models
             return commands;
         }
 
-        private string BuildParams()
-        {
-            // Параметры для Webp конвертера
-            StringBuilder sb = new StringBuilder();
-            if( resolution.height > 100 && resolution.width > 100 )
-            {
-                sb.Append("-resize ");              // -resize
-                sb.Append(resolution.ToString());   // <w> <h>
-            }
 
-            //sb.Append(" -progress ");          // -progress  report encoding progress 
-            sb.Append(" -v ");                   // -v         verbose, e.g. print encoding/decoding times
-
-
-            sb.Append(" -q ");          // -q       качество изображения от 0 до 100
-            sb.Append(quality);
-            sb.Append(" -alpha_q ");    // -alpha_q качество изображения для альфа канала от 0 до 100   
-            sb.Append(qualityAlpha);
-            sb.Append(" -o ");          // -o       адрес вывода файла
-            sb.Append("\"");
-            sb.Append(pathDirectory);
-            sb.Append(@"\output\");     //          каталог вывода
-
-            //commandParameters = string.Format(" -q {0} -alpha_q {1} {4} -o \"{2}{3}",
-            //        quality,            //{0} -q       качество изображения от 0 до 100
-            //        qualityAlpha,       //{1} -alpha_q качество изображения для альфа канала от 0 до 100
-            //        pathDirectory,      //{2}  -o      адрес вывода файла
-            //        @"\output\",        //{3}          каталог вывода
-            //       "-resize " +
-            //       resolution.ToString()//{4} -resize
-            //    );
-            return sb.ToString();
-        }
 
         private string convertToCp866( string input )
         {
@@ -352,20 +315,6 @@ namespace Asterion.Models
             if( CanceledConvertEvent != null )
                 CanceledConvertEvent();
         }
-        public struct Resolution
-        {
-            public int width;
-            public int height;
-            public Resolution( int w, int h )
-            {
-                width = w;
-                height = h;
-            }
-            public override string ToString()
-            {
-                return width + " " + height;
-            }
-        }
 
         class LogFile
         {
@@ -409,6 +358,77 @@ namespace Asterion.Models
             public void SeparateRecord()
             {
                 fileLogOut.WriteLine(new string('=', 50));
+            }
+        }
+        public class WebPParams
+        {
+            public struct Resolution
+            {
+                public int width;
+                public int height;
+
+                public Resolution( int w, int h )
+                {
+                    width = w;
+                    height = h;
+                }
+
+                public bool IsValid()
+                {
+                    if( height > 100 && width > 100 )
+                        return true;
+                    return false;
+                }
+
+                public override string ToString()
+                {
+                    return width + " " + height;
+                }
+            }
+
+            // Качество изображения
+            public int quality = 85;
+            public int qualityAlpha = 100;
+            public Resolution resolution;
+
+            public bool IsProgress = false;
+            public bool IsVerbose = false; 
+            public bool IsQuiet = false; 
+
+            public string BuildParams( string pathDirectory )
+            {
+                // Параметры для Webp конвертера
+                StringBuilder sb = new StringBuilder();
+                if( resolution.IsValid() )
+                {
+                    sb.Append("-resize ");              // -resize
+                    sb.Append(resolution.ToString());   // <w> <h>
+                }
+                if( IsProgress )
+                    sb.Append(" -progress ");   // -progress  report encoding progress 
+                if( IsVerbose )
+                    sb.Append(" -v ");      // -v       verbose, e.g. print encoding/decoding times
+                if( IsVerbose )
+                    sb.Append(" -quiet ");  //-quiet    don't print anything
+
+                sb.Append(" -q ");          // -q       качество изображения от 0 до 100
+                sb.Append(quality);
+                sb.Append(" -alpha_q ");    // -alpha_q качество изображения для альфа канала от 0 до 100   
+                sb.Append(qualityAlpha);
+                sb.Append(" -o ");          // -o       адрес вывода файла
+                sb.Append("\"");
+                sb.Append(pathDirectory);
+                sb.Append(@"\output\");     //          каталог вывода
+
+                //commandParameters = string.Format(" -q {0} -alpha_q {1} {4} -o \"{2}{3}",
+                //        quality,            //{0} -q       качество изображения от 0 до 100
+                //        qualityAlpha,       //{1} -alpha_q качество изображения для альфа канала от 0 до 100
+                //        pathDirectory,      //{2}  -o      адрес вывода файла
+                //        @"\output\",        //{3}          каталог вывода
+                //       "-resize " +
+                //       resolution.ToString()//{4} -resize
+                //    );
+                return sb.ToString();
             }
         }
     }
