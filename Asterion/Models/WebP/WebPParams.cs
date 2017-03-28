@@ -36,14 +36,43 @@ namespace Asterion.Models.WebP
         public int qualityAlpha = 100;
         public Resolution resolution;
 
+        /// <summary>
+        /// report encoding progress 
+        /// </summary>
         public bool IsProgress = false;
+        /// <summary>
+        /// verbose, e.g. print encoding/decoding times
+        /// </summary>
         public bool IsVerbose = false;
+        /// <summary>
+        /// don't print anything
+        /// </summary>
         public bool IsQuiet = false;
+        /// <summary>
+        /// condense printed message
+        /// </summary>
         public bool IsShort = false;
+        /// <summary>
+        /// comma separated list of metadata to
+        /// copy from the input to the output if present.
+        /// Valid values: all, none(default), exif, icc, xmp
+        /// </summary>
         public bool IsMetadataCopy = false;
+        /// <summary>
+        /// encode image losslessly
+        /// </summary>
         public bool IsLossless = false;
+        /// <summary>
+        /// discard any transparency information
+        /// </summary>
         public bool IsNoalpha = false;
+        /// <summary>
+        /// clean RGB values in transparent area
+        /// </summary>
         public bool IsAlpha_cleanup = false;
+        /// <summary>
+        /// compression method(0 = fast, 6 = slowest)
+        /// </summary>
         public int Compression
         {
             set
@@ -59,11 +88,13 @@ namespace Asterion.Models.WebP
             }
             get { return compression; }
         }
+        /// <summary>
+        /// target PSNR(in dB.typically: 42)
+        /// </summary>
         public float PSNR
         {
             set
-            {
-                //(in dB.typically: 42)
+            {                
                 if( value >= 0 && value <= 100 )
                 {
                     psnr = value;
@@ -74,7 +105,10 @@ namespace Asterion.Models.WebP
             }
             get { return psnr; }
         }
-        public float SNS
+        /// <summary>
+        /// spatial noise shaping (0:off, 100:max)
+        /// </summary>
+        public int SNS
         {
             set
             {
@@ -89,6 +123,9 @@ namespace Asterion.Models.WebP
             }
             get { return sns; }
         }
+        /// <summary>
+        /// filter strength(0 = off..100)
+        /// </summary>
         public float FilterStrength
         {
             set
@@ -120,7 +157,7 @@ namespace Asterion.Models.WebP
         private float psnr = 42;
 
         private bool IsSNS = false;
-        private float sns = 0;
+        private int sns = 0;
 
         private bool IsFilterStrength = false;
         private float filterStrength = 0;
@@ -167,28 +204,28 @@ namespace Asterion.Models.WebP
             if( IsCompressionMethod )
             {
                 sb.Append(" -m ");
-                sb.Append(compression);
+                sb.Append(Compression);
                 sb.Append(" ");
             }
             //-psnr<float>..........target PSNR(in dB.typically: 42)
             if( IsPSNR )
             {
                 sb.Append(" -psnr ");
-                sb.Append(psnr);
+                sb.Append(PSNR);
                 sb.Append(" ");
             }
             //-sns<int>.............spatial noise shaping (0:off, 100:max)
             if( IsSNS )
             {
                 sb.Append(" -sns ");
-                sb.Append(sns);
+                sb.Append(SNS);
                 sb.Append(" ");
             }
             //-f<int>...............filter strength(0 = off..100)
             if( IsFilterStrength )
             {
                 sb.Append(" -f ");
-                sb.Append(filterStrength);
+                sb.Append(FilterStrength);
                 sb.Append(" ");
             }
 
