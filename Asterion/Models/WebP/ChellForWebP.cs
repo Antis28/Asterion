@@ -103,10 +103,10 @@ namespace Asterion.Models
             {
                 if( !isRunning )
                     break;
-                log.SeparateRecord();
+                log.SeparateRecord(!parameters.IsQuiet);
                 PrepareConsole(command);
                 OnChangeValue();
-                log.SeparateRecord();
+                log.SeparateRecord(!parameters.IsQuiet);
             }
 
             if( isRunning )

@@ -45,9 +45,10 @@ namespace Asterion.Models.WebP
             fileLogOut.WriteLine(data);
         }
 
-        public void SeparateRecord()
+        public void SeparateRecord( bool isPrint = true )
         {
-            fileLogOut.WriteLine(new string('=', 50));
+            if( isPrint )
+                fileLogOut.WriteLine(new string('=', 50));
         }
     }
 }

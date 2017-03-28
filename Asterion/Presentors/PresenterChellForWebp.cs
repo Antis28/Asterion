@@ -63,7 +63,7 @@ namespace Asterion.Presentors
                         quality = tmpQuality,
                         qualityAlpha = 100,
                         resolution = new WebPParams.Resolution(tmpWidth, tmpHeight),
-                        IsQuiet = false,
+                        IsQuiet = true,
                         
                     };
                 }
