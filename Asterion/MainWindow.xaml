@@ -32,7 +32,9 @@
                             </Grid.ColumnDefinitions>
                         </Grid>
                     </StackPanel>
-                    <TextBox x:Name="tbx_addressField"  HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Адрес каталога с картинками" VerticalAlignment="Top" Width="217" LostFocus="tb_addressField_LostFocus"
+
+                    <Grid Grid.Row="2" Name="g_select">
+                        <TextBox x:Name="tbx_addressField"  HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Адрес каталога с картинками" VerticalAlignment="Top" Width="217" LostFocus="tb_addressField_LostFocus"
                              
                              BorderBrush="Green" BorderThickness="1"
                              AllowDrop="True" AcceptsReturn="True"
@@ -41,19 +43,21 @@
                              PreviewDrop="text_PreviewDrop"
                              
                              />
+                        <Button x:Name="btn_addAddress" Content="..." HorizontalAlignment="Left" Margin="290,13,0,0" Grid.Row="2" VerticalAlignment="Top" Width="37" Click="btn_addAddress_Click"/>
+                        <Button x:Name="btn_convert" Content="Начать" HorizontalAlignment="Left" Margin="337,13,0,0" Grid.Row="2" VerticalAlignment="Top" Width="80" Click="btn_convert_Click" IsEnabled="False"/>
+                        <CheckBox x:Name="cb_isDirectory" Content="Выбрать каталог" HorizontalAlignment="Left" Margin="290,49,0,0" Grid.Row="2" VerticalAlignment="Top" IsChecked="True"/>
 
-
-                    <Button x:Name="btn_addAddress" Content="..." HorizontalAlignment="Left" Margin="290,13,0,0" Grid.Row="2" VerticalAlignment="Top" Width="37" Click="btn_addAddress_Click"/>
-                    <Button x:Name="btn_convert" Content="Начать" HorizontalAlignment="Left" Margin="337,13,0,0" Grid.Row="2" VerticalAlignment="Top" Width="80" Click="btn_convert_Click" IsEnabled="False"/>
-                    <Slider x:Name="slider_quality" HorizontalAlignment="Left" Margin="67,61,0,0" Grid.Row="2" VerticalAlignment="Top" Width="200" Maximum="100" Value="85" TickPlacement="BottomRight" TickFrequency="5" LargeChange="10" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True"/>
-                    <TextBlock x:Name="tb_quality" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Качество :" VerticalAlignment="Top" Margin="50,45,0,0" Grid.Row="2"/>
-                    <TextBlock x:Name="tb_qualityValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=slider_quality, Path=Value}" VerticalAlignment="Top" Margin="111,45,0,0" Grid.Row="2"/>
-                    <TextBlock x:Name="tb_selected" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Выбрано :" VerticalAlignment="Top" Margin="290,72,0,0" Grid.Row="2"/>
-                    <TextBlock x:Name="tb_selectedValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Margin="351,72,0,0" Grid.Row="2"/>
-                    <CheckBox x:Name="cb_isDirectory" Content="Выбрать каталог" HorizontalAlignment="Left" Margin="290,49,0,0" Grid.Row="2" VerticalAlignment="Top" IsChecked="True"/>
-
+                        <TextBlock x:Name="tb_selected" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Выбрано :" VerticalAlignment="Top" Margin="290,72,0,0" Grid.Row="2"/>
+                        <TextBlock x:Name="tb_selectedValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Margin="351,72,0,0" Grid.Row="2"/>
+                    </Grid>
+                    <Grid Grid.Row="3" Name="g_quality">
+                        <Slider x:Name="slider_quality" HorizontalAlignment="Left" Margin="67,61,0,0" Grid.Row="2" VerticalAlignment="Top" Width="200" Maximum="100" Value="85" TickPlacement="BottomRight" TickFrequency="5" LargeChange="10" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True"/>
+                        <TextBlock x:Name="tb_quality" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Качество :" VerticalAlignment="Top" Margin="50,45,0,0" Grid.Row="2"/>
+                        <TextBlock x:Name="tb_qualityValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=slider_quality, Path=Value}" VerticalAlignment="Top" Margin="111,45,0,0" Grid.Row="2"/>
+                    </Grid>
+                    
                     <CheckBox x:Name="cb_isChangeResolution" Content="Задать разрешение" HorizontalAlignment="Left" Margin="50,91,0,0" Grid.Row="2" VerticalAlignment="Top" Click="cb_isChangeResolution_Click"/>
-                    <Grid Grid.Row="2" Name="g_resolution">
+                    <Grid Grid.Row="4" Name="g_resolution">
                         <TextBlock x:Name="tb_resolution_w" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Ш:" VerticalAlignment="Top" Margin="53,115,0,0"/>
                         <TextBlock x:Name="tb_resolution_h" HorizontalAlignment="Left" TextWrapping="Wrap" Text="В:" VerticalAlignment="Top" Margin="132,115,0,0"/>
                         <TextBox x:Name="tbx_resolution_w"  HorizontalAlignment="Left" Height="23" Margin="69,111,0,0" TextWrapping="Wrap" Text="ширина" VerticalAlignment="Top" Width="50" PreviewMouseDown="tbx_resolution_PreviewMouseDown" />
