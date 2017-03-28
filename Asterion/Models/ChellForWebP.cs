@@ -105,11 +105,10 @@ namespace Asterion.Models
             string commandParameters = BuildParams();
             List<string> commands = BuildComands(commandParameters);
 
-            string timpName = DateTime.Now.ToString("HH-mm-ss");
-            using( fileLogOut = new StreamWriter(Environment.CurrentDirectory + "\\log-" + timpName + ".txt") )
+            //string timpName = DateTime.Now.ToString("HH-mm-ss");
+            using( fileLogOut = new StreamWriter(Environment.CurrentDirectory + "\\log-error.txt", true) )
             {
-                fileLogOut.WriteLine("Начало конвертации в " + DateTime.Now);
-                fileLogOut.WriteLine();
+                StartRecordToLog();
                 foreach( var command in commands )
                 {
                     fileLogOut.WriteLine(new string('=', 50));
@@ -120,14 +119,31 @@ namespace Asterion.Models
                         break;
                     }
                     OnChangeValue();
+                    fileLogOut.WriteLine(new string('=', 50));
                 }
-                fileLogOut.WriteLine("Конец конвертации в " + DateTime.Now);
+                EndRecordToLog();
             }
             if( isRunning )
                 OnCompleteConvert();
 
             // Очистка старых событий;
             ClearEvents();
+        }        
+
+        private void StartRecordToLog()
+        {
+            fileLogOut.WriteLine(new string('*', 50));
+            fileLogOut.WriteLine();
+            fileLogOut.WriteLine("Начало конвертации " + DateTime.Now);
+            fileLogOut.WriteLine();
+        }
+
+        private void EndRecordToLog()
+        {
+            fileLogOut.WriteLine();
+            fileLogOut.WriteLine("Конец конвертации " + DateTime.Now);
+            fileLogOut.WriteLine();
+            fileLogOut.WriteLine(new string('*', 50));
         }
 
         /// <summary>
@@ -192,6 +208,10 @@ namespace Asterion.Models
                 sb.Append("-resize ");              // -resize
                 sb.Append(resolution.ToString());   // <w> <h>
             }
+
+            //sb.Append(" -progress ");          // -progress  report encoding progress 
+            sb.Append(" -v ");                   // -v         verbose, e.g. print encoding/decoding times
+
 
             sb.Append(" -q ");          // -q       качество изображения от 0 до 100
             sb.Append(quality);
