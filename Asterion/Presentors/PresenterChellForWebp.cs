@@ -66,15 +66,16 @@ namespace Asterion.Presentors
                     {
                         quality = tmpQuality,
                         Compression = compression,
-                        FilterStrength = strength,
-                        SNS = tmpSns,
+                        FilterStrength = strength,                        
                         qualityAlpha = 100,
                         IsQuiet = true,
                     };
-                    if( mainWindow.tb_PSNR.Text != "42" )
+                    if( mainWindow.tb_PSNRValue.Text != "42" )
                     {
-                        chellForWebP.parameters.PSNR = int.Parse(mainWindow.tb_PSNR.Text);
+                        chellForWebP.parameters.PSNR = int.Parse(mainWindow.tb_PSNRValue.Text);
                     }
+                    if( tmpSns != 35 )
+                        chellForWebP.parameters.SNS = tmpSns;
 
                     if( mainWindow.cb_isChangeResolution.IsChecked.Value )
                     {
