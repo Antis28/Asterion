@@ -5,6 +5,7 @@ using Asterion.Presentors;
 using Asterion.WpfExtensions;
 using System.Windows.Interop;
 using System.IO;
+using DevWilson;
 
 namespace Asterion
 {
@@ -225,6 +226,9 @@ namespace Asterion
                 else
                     tb_addressField.Text = filename;
             e.Handled = true;
+            System.Drawing.Size size = ImageHeader.GetDimensions(filenames[0]);
+            tb_resolution_w.Text = size.Width.ToString();
+            tb_resolution_h.Text = size.Height.ToString();
         }
     }
 }
