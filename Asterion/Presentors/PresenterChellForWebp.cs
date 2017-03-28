@@ -53,19 +53,21 @@ namespace Asterion.Presentors
                 {                    
                     int tmpWidth = 0, tmpHeight = 0, 
                         tmpQuality = 0, compression = 0,
-                        strength = 0;
+                        strength = 0, tmpSns = 0;
 
                     int.TryParse(mainWindow.tb_qualityValue.Text, out tmpQuality);
                     int.TryParse(mainWindow.tb_compressionValue.Text, out compression);
                     int.TryParse(mainWindow.tb_strengthValue.Text, out strength);
+                    int.TryParse(mainWindow.tb_noise_shapingValue.Text, out tmpSns);
 
-                    
+
                     // присвоение параметров из оболочки
                     chellForWebP.parameters = new WebPParams()
                     {
                         quality = tmpQuality,
                         Compression = compression,
                         FilterStrength = strength,
+                        SNS = tmpSns,
                         qualityAlpha = 100,
                         IsQuiet = true,
                     };
