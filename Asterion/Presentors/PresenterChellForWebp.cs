@@ -54,8 +54,8 @@ namespace Asterion.Presentors
                     int tmpWidth = 0, tmpHeight = 0, tmpQuality = 0;
 
                     int.TryParse(mainWindow.tb_qualityValue.Text, out tmpQuality);
-                    int.TryParse(mainWindow.tb_resolution_w.Text, out tmpWidth);
-                    int.TryParse(mainWindow.tb_resolution_h.Text, out tmpHeight);                        
+                    int.TryParse(mainWindow.tbx_resolution_w.Text, out tmpWidth);
+                    int.TryParse(mainWindow.tbx_resolution_h.Text, out tmpHeight);                        
 
                     // присвоение параметров из оболочки
                     chellForWebP.parameters = new WebPParams()
@@ -82,7 +82,7 @@ namespace Asterion.Presentors
                     chellForWebP.SwitchOnSelectedFiles(PathFileNames);
                 }
 
-                chellForWebP.BeginStartConvert(mainWindow.tb_addressField.Text);
+                chellForWebP.BeginStartConvert(mainWindow.tbx_addressField.Text);
 
             }
             else
@@ -156,7 +156,7 @@ namespace Asterion.Presentors
             if( result == true )
             {
                 // Open document
-                mainWindow.tb_addressField.Text = System.IO.Path.GetDirectoryName(dlg.FileName);
+                mainWindow.tbx_addressField.Text = System.IO.Path.GetDirectoryName(dlg.FileName);
                 PathFileNames = dlg.FileNames;
                 ExistPath();
             }
@@ -167,23 +167,23 @@ namespace Asterion.Presentors
             bool? result = dialog.ShowDialog();
             if( result == true )
             {
-                mainWindow.tb_addressField.Text = dialog.FileName;
+                mainWindow.tbx_addressField.Text = dialog.FileName;
                 ExistPath();
             }
         }
         public void ExistPath()
         {
-            if( System.IO.Directory.Exists(mainWindow.tb_addressField.Text) )
+            if( System.IO.Directory.Exists(mainWindow.tbx_addressField.Text) )
             {
                 mainWindow.btn_convert.IsEnabled = true;
                 if( mainWindow.cb_isDirectory.IsChecked == true )
-                    mainWindow.tb_selectedValue.Text = System.IO.Directory.GetFiles(mainWindow.tb_addressField.Text).Length.ToString();
+                    mainWindow.tb_selectedValue.Text = System.IO.Directory.GetFiles(mainWindow.tbx_addressField.Text).Length.ToString();
                 else
                     mainWindow.tb_selectedValue.Text = PathFileNames.Length.ToString();
             }
             else
             {
-                mainWindow.tb_addressField.Text = "Директория не существует";
+                mainWindow.tbx_addressField.Text = "Директория не существует";
                 mainWindow.btn_convert.IsEnabled = false;
                 mainWindow.tb_selectedValue.Text = "0";
             }
