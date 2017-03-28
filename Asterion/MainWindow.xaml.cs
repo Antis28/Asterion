@@ -230,6 +230,7 @@ namespace Asterion
             System.Drawing.Size size = ImageHeader.GetDimensions(filenames[0]);
             tbx_resolution_w.Text = size.Width.ToString();
             tbx_resolution_h.Text = size.Height.ToString();
+            presenterChellForWebp.ExistPath();
         }
     }
 }
