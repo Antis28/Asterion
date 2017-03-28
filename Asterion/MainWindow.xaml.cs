@@ -240,28 +240,34 @@ namespace Asterion
 
         private void InitializeWebPGUI()
         {
-            tbx_resolution_w.IsEnabled = false;
-            tbx_resolution_w.Visibility = Visibility.Collapsed;
-            tbx_resolution_h.IsEnabled = false;
-            tbx_resolution_h.Visibility = Visibility.Collapsed;
+            g_resolution.Visibility = Visibility.Collapsed;
         }
 
         private void cb_isChangeResolution_Click( object sender, RoutedEventArgs e )
         {
             if( (bool)cb_isChangeResolution.IsChecked )
             {
-                tbx_resolution_w.IsEnabled = true;
-                tbx_resolution_w.Visibility = Visibility.Visible;
-                tbx_resolution_h.IsEnabled = true;
-                tbx_resolution_h.Visibility = Visibility.Visible;
+                g_resolution.Visibility = Visibility.Visible;
             }
             else
             {
-                tbx_resolution_w.IsEnabled = false;
-                tbx_resolution_w.Visibility = Visibility.Collapsed;
-                tbx_resolution_h.IsEnabled = false;
-                tbx_resolution_h.Visibility = Visibility.Collapsed;
+                g_resolution.Visibility = Visibility.Collapsed;
             }
+        }
+
+        private void tbx_resolution_PreviewMouseDown( object sender, System.Windows.Input.MouseButtonEventArgs e )
+        {
+            int temp;
+
+            bool b = sender.Equals(tbx_resolution_w);
+            if( b && !int.TryParse(tbx_resolution_w.Text, out temp) )
+            {
+                tbx_resolution_w.Text = string.Empty;
+                return;
+            }
+
+            if( !int.TryParse(tbx_resolution_h.Text, out temp) )
+                tbx_resolution_h.Text = string.Empty;
         }
     }
 }
