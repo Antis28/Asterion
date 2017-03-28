@@ -27,26 +27,8 @@ namespace Asterion.Models
 
         // Качество изображения
         public int quality = 85;
-        public ImgSize resolution;
+        public Resolution resolution;
         public int qualityAlpha = 100;
-
-        // Используем метод для запуска события
-        private void OnChangeValue()
-        {
-            ChangeValueEvent();
-        }
-        private void OnMaxValue( int maxValue )
-        {
-            MaxValueEvent(maxValue);
-        }
-        private void OnCompleteConvert()
-        {
-            CompleteConvertEvent();
-        }
-        private void OnCanceledConvert()
-        {
-            CanceledConvertEvent();
-        }
 
         //Process для консольного приложения
         private Process myProcess = null;
@@ -54,7 +36,6 @@ namespace Asterion.Models
 
         // Команда которую будет выполнять
         string command = string.Empty;
-        string commandParameters = string.Empty;
 
         private string pathToWebp = @"cwebp.exe";
 
@@ -64,7 +45,7 @@ namespace Asterion.Models
         //------------- public -----------------------------//
         public ChellForWebP()
         {
-            Initialization();
+
         }
 
         /// <summary>
@@ -109,8 +90,51 @@ namespace Asterion.Models
             isAllFiles = false;
         }
 
-        //получение полных путей файлов
-        public void ExtractPathsFiles( string pathDirectory )
+        //------------- private -----------------------------//
+
+
+        private void Start()
+        {
+            ExtractPathsFiles(pathDirectory); // получить адреса файлов
+
+            if( !Directory.Exists(pathDirectory + @"\output") )
+            {
+                Directory.CreateDirectory(pathDirectory + @"\output");
+            }
+
+            string commandParameters = BuildParams();
+            List<string> commands = BuildComands(commandParameters);
+
+            string timpName = DateTime.Now.ToString("HH-mm-ss");
+            using( fileLogOut = new StreamWriter(Environment.CurrentDirectory + "\\log-" + timpName + ".txt") )
+            {
+                fileLogOut.WriteLine("Начало конвертации в " + DateTime.Now);
+                fileLogOut.WriteLine();
+                foreach( var command in commands )
+                {
+                    fileLogOut.WriteLine(new string('=', 50));
+                    PrepareConsole(command);
+                    if( !isRunning )
+                    {
+                        OnCanceledConvert();
+                        break;
+                    }
+                    OnChangeValue();
+                }
+                fileLogOut.WriteLine("Конец конвертации в " + DateTime.Now);
+            }
+            if( isRunning )
+                OnCompleteConvert();
+
+            // Очистка старых событий;
+            ClearEvents();
+        }
+
+        /// <summary>
+        /// Получение полных путей файлов
+        /// </summary>
+        /// <param name="pathDirectory"></param>
+        private void ExtractPathsFiles( string pathDirectory )
         {
             FileInfo[] files;
             pathToInputFiles = new List<string>();
@@ -132,21 +156,35 @@ namespace Asterion.Models
             {
                 pathToInputFiles.Add(item.FullName);
             }
+            OnMaxValue(pathToInputFiles.Count);
         }
 
-        //------------- private -----------------------------//
-        private void Initialization()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commandParameters"></param>
+        /// <returns>готовые аргуменнты для webP</returns>
+        private List<string> BuildComands( string commandParameters )
         {
-            myProcess = new Process();
-        }
+            List<string> commands = new List<string>();
 
-        private void Start()
-        {
-            ExtractPathsFiles(pathDirectory);
-            if( !Directory.Exists(pathDirectory + @"\output") )
+            foreach( var currentFile in pathToInputFiles )
             {
-                Directory.CreateDirectory(pathDirectory + @"\output");
+                // Компановка команды для Webp конвертера
+                command = string.Format(" {1} \"{2}\" {3}{4}.webP\"",
+                    "/C",               // {0} Ключ /C - выполнение команды
+                    pathToWebp,         // {1} Команда которую будет выполнять
+                    currentFile,        // {2} Файл для конвертации
+                    commandParameters,  // {3}
+                    Path.GetFileNameWithoutExtension(currentFile)  //{4} имя для выходного файла
+                    );
+                commands.Add(command);
             }
+            return commands;
+        }
+
+        private string BuildParams()
+        {
             // Параметры для Webp конвертера
             StringBuilder sb = new StringBuilder();
             if( resolution.height > 100 && resolution.width > 100 )
@@ -172,49 +210,9 @@ namespace Asterion.Models
             //       "-resize " +
             //       resolution.ToString()//{4} -resize
             //    );
-            commandParameters = sb.ToString();
-
-            List<string> commands = new List<string>();
-
-            OnMaxValue(pathToInputFiles.Count);
-
-            foreach( var currentFile in pathToInputFiles )
-            {
-                // Компановка команды для Webp конвертера
-                command = string.Format(" {1} \"{2}\" {3}{4}.webP\"",
-                    "/C",               // {0} Ключ /C - выполнение команды
-                    pathToWebp,         // {1} Команда которую будет выполнять
-                    currentFile,        // {2} Файл для конвертации
-                    commandParameters,  // {3}
-                    Path.GetFileNameWithoutExtension(currentFile)  //{4} имя для выходного файла
-                    );
-                // преобразование кодировки для консоли
-                //command = convertToCp866( command );
-                commands.Add(command);
-            }
-            string timeName = DateTime.Now.ToString("HH-mm-ss");
-            using( fileLogOut = new StreamWriter(Environment.CurrentDirectory + "\\log-" + timeName + ".txt") )
-            {
-                fileLogOut.WriteLine("Начало конвертации в " + DateTime.Now);
-                fileLogOut.WriteLine();
-                foreach( var command in commands )
-                {
-                    fileLogOut.WriteLine(new string('=', 50));
-                    convertFileToWebP(command);
-                    if( !isRunning )
-                    {
-                        OnCanceledConvert();
-                        break;
-                    }
-                    OnChangeValue();
-                }
-                fileLogOut.WriteLine("Конец конвертации в " + DateTime.Now);
-            }
-            if( isRunning )
-                OnCompleteConvert();
-            // Очистка старых событий;
-            ClearEvents();
+            return sb.ToString();
         }
+
         private string convertToCp866( string input )
         {
             Encoding cp866 = Encoding.GetEncoding(866);
@@ -234,10 +232,57 @@ namespace Asterion.Models
             return cp866String;
         }
 
-        private void convertFileToWebP( string command )
+        /// <summary>
+        /// Подготовка передачи комманд в консоль
+        /// </summary>
+        /// <param name="command"></param>
+        private void PrepareConsole( string command )
         {
             // Запускаем через cmd с параметрами command
             ProcessStartInfo startinfo = new ProcessStartInfo();
+
+            InitStartInfo(startinfo);
+
+            myProcess = new Process();
+            myProcess.StartInfo = startinfo;
+            myProcess.OutputDataReceived += cmd_DataReceived;
+            myProcess.ErrorDataReceived += cmd_DataError;
+            myProcess.EnableRaisingEvents = true;
+
+            // запускаем процесс
+            myProcess.Start();
+            myProcess.BeginOutputReadLine();
+            myProcess.BeginErrorReadLine();
+
+            StartWebP(command);
+            myProcess.WaitForExit();
+
+            // Освобождаем
+            myProcess = null;
+            startinfo = null;
+        }
+
+        /// <summary>
+        /// Ввод команд в консоль
+        /// </summary>
+        /// <param name="command">параметры для Webp</param>
+        private void StartWebP( string command )
+        {
+            myProcess.StandardInput.Write(pathToWebp);
+            // кодировка для русского языка
+            byte[] buffer = Encoding.GetEncoding(866).GetBytes(command);
+            myProcess.StandardInput.BaseStream.Write(buffer, 0, buffer.Length);
+            myProcess.StandardInput.Write("\n");
+
+            myProcess.StandardInput.WriteLine("exit");
+        }
+
+        /// <summary>
+        /// Настройка ProcessStartInfo
+        /// </summary>
+        /// <param name="startinfo"></param>
+        private void InitStartInfo( ProcessStartInfo startinfo )
+        {
             startinfo.StandardOutputEncoding = Encoding.GetEncoding(866);
 
             startinfo.FileName = @"C:\Windows\System32\cmd.exe";
@@ -251,25 +296,6 @@ namespace Asterion.Models
             startinfo.UseShellExecute = false;
             // Не надо окон
             startinfo.CreateNoWindow = true;
-
-            myProcess = new Process();
-            myProcess.StartInfo = startinfo;
-            myProcess.OutputDataReceived += cmd_DataReceived;
-            myProcess.ErrorDataReceived += cmd_DataError;
-            myProcess.EnableRaisingEvents = true;
-
-            // запускаем процесс
-            myProcess.Start();
-            myProcess.BeginOutputReadLine();
-            myProcess.BeginErrorReadLine();
-
-            myProcess.StandardInput.WriteLine("cwebp.exe " + command);
-            myProcess.StandardInput.WriteLine("exit");
-            myProcess.WaitForExit();
-
-            // Освобождаем
-            myProcess = null;
-            startinfo = null;
         }
 
         private void ClearEvents()
@@ -302,11 +328,29 @@ namespace Asterion.Models
             } catch { }
         }
 
-        public struct ImgSize
+
+        // Используем метод для запуска события
+        private void OnChangeValue()
+        {
+            ChangeValueEvent();
+        }
+        private void OnMaxValue( int maxValue )
+        {
+            MaxValueEvent(maxValue);
+        }
+        private void OnCompleteConvert()
+        {
+            CompleteConvertEvent();
+        }
+        private void OnCanceledConvert()
+        {
+            CanceledConvertEvent();
+        }
+        public struct Resolution
         {
             public int width;
             public int height;
-            public ImgSize( int w, int h )
+            public Resolution( int w, int h )
             {
                 width = w;
                 height = h;

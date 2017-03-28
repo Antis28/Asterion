@@ -55,7 +55,7 @@ namespace Asterion.Presentors
                     if(
                     int.TryParse(mainWindow.tb_resolution_w.Text, out width) &&
                     int.TryParse(mainWindow.tb_resolution_h.Text, out height) )
-                        chellForWebP.resolution = new ChellForWebP.ImgSize(width, height);
+                        chellForWebP.resolution = new ChellForWebP.Resolution(width, height);
                 }
                 // Добавляем обработчик события             
                 chellForWebP.MaxValueEvent += onInitialValue;
