@@ -32,7 +32,7 @@ namespace Asterion.Models
 
         //Process для консольного приложения
         private Process myProcess = null;
-        StreamWriter fileLogOut;
+        private LogFile log;
 
         // Команда которую будет выполнять
         string command = string.Empty;
@@ -102,48 +102,34 @@ namespace Asterion.Models
                 Directory.CreateDirectory(pathDirectory + @"\output");
             }
 
+            log = new LogFile();
+
             string commandParameters = BuildParams();
             List<string> commands = BuildComands(commandParameters);
 
-            //string timpName = DateTime.Now.ToString("HH-mm-ss");
-            using( fileLogOut = new StreamWriter(Environment.CurrentDirectory + "\\log-error.txt", true) )
+            log.StartRecordToLog();
+            foreach( var command in commands )
             {
-                StartRecordToLog();
-                foreach( var command in commands )
-                {
-                    fileLogOut.WriteLine(new string('=', 50));
-                    PrepareConsole(command);
-                    if( !isRunning )
-                    {
-                        OnCanceledConvert();
-                        break;
-                    }
-                    OnChangeValue();
-                    fileLogOut.WriteLine(new string('=', 50));
-                }
-                EndRecordToLog();
+                if( !isRunning )
+                    break;
+                log.SeparateRecord();
+                PrepareConsole(command);
+                OnChangeValue();
+                log.SeparateRecord();
             }
-            if( isRunning )
-                OnCompleteConvert();
 
+            if( isRunning )
+            {
+                log.EndRecordToLog();
+                OnCompleteConvert();
+            }
+            else
+            {
+                log.EndRecordToLog(false);
+                OnCanceledConvert();
+            }
             // Очистка старых событий;
             ClearEvents();
-        }        
-
-        private void StartRecordToLog()
-        {
-            fileLogOut.WriteLine(new string('*', 50));
-            fileLogOut.WriteLine();
-            fileLogOut.WriteLine("Начало конвертации " + DateTime.Now);
-            fileLogOut.WriteLine();
-        }
-
-        private void EndRecordToLog()
-        {
-            fileLogOut.WriteLine();
-            fileLogOut.WriteLine("Конец конвертации " + DateTime.Now);
-            fileLogOut.WriteLine();
-            fileLogOut.WriteLine(new string('*', 50));
         }
 
         /// <summary>
@@ -378,6 +364,51 @@ namespace Asterion.Models
             public override string ToString()
             {
                 return width + " " + height;
+            }
+        }
+
+        class LogFile
+        {
+            StreamWriter fileLogOut = null;
+
+            public LogFile()
+            {
+                fileLogOut = new StreamWriter(
+                    Environment.CurrentDirectory + "\\log-error.txt", true
+                    );
+            }
+
+            public void StartRecordToLog()
+            {
+                fileLogOut.WriteLine(new string('*', 50));
+                fileLogOut.WriteLine();
+                fileLogOut.WriteLine("Начало конвертации " + DateTime.Now);
+                fileLogOut.WriteLine();
+            }
+            /// <summary>
+            /// закрывает файл
+            /// </summary>
+            public void EndRecordToLog( bool isComplete = true )
+            {
+                fileLogOut.WriteLine();
+                if( isComplete )
+                    fileLogOut.WriteLine("Конец конвертации " + DateTime.Now);
+                else
+                    fileLogOut.WriteLine("Конвертация отменена " + DateTime.Now);
+                fileLogOut.WriteLine();
+                fileLogOut.WriteLine(new string('*', 50));
+                fileLogOut.Close();
+            }
+
+            public void RecordLine( string data )
+            {
+                //Пишем в файл(поток)                
+                fileLogOut.WriteLine(data);
+            }
+
+            public void SeparateRecord()
+            {
+                fileLogOut.WriteLine(new string('=', 50));
             }
         }
     }
