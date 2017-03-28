@@ -111,12 +111,12 @@ namespace Asterion.Models
 
             if( isRunning )
             {
-                log.EndRecordToLog();
+                log.EndRecordToLog(pathToInputFiles.Count);
                 OnCompleteConvert();
             }
             else
             {
-                log.EndRecordToLog(false);
+                log.EndRecordToLog(pathToInputFiles.Count, false);
                 OnCanceledConvert();
             }
             // Очистка старых событий;

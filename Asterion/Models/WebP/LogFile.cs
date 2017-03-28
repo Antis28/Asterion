@@ -27,13 +27,15 @@ namespace Asterion.Models.WebP
         /// <summary>
         /// закрывает файл
         /// </summary>
-        public void EndRecordToLog( bool isComplete = true )
+        public void EndRecordToLog(int countFiles, bool isComplete = true )
         {
             fileLogOut.WriteLine();
             if( isComplete )
                 fileLogOut.WriteLine("Конец конвертации " + DateTime.Now);
             else
                 fileLogOut.WriteLine("Конвертация отменена " + DateTime.Now);
+            fileLogOut.WriteLine();
+            fileLogOut.WriteLine("Конвертировано файлов {0}", countFiles);
             fileLogOut.WriteLine();
             fileLogOut.WriteLine(new string('*', 50));
             fileLogOut.Close();
