@@ -5,6 +5,7 @@ using Ookii.Dialogs.Wpf;
 using WPFFolderBrowser;
 using System.Windows;
 using System.Collections.Generic;
+using Asterion.Models.WebP;
 
 namespace Asterion.Presentors
 {
@@ -57,12 +58,13 @@ namespace Asterion.Presentors
                     int.TryParse(mainWindow.tb_resolution_h.Text, out tmpHeight);                        
 
                     // присвоение параметров из оболочки
-                    chellForWebP.parameters = new ChellForWebP.WebPParams()
+                    chellForWebP.parameters = new WebPParams()
                     {
                         quality = tmpQuality,
                         qualityAlpha = 100,
-                        resolution = new ChellForWebP.WebPParams.Resolution(tmpWidth, tmpHeight),
-                        IsQuiet = true                        
+                        resolution = new WebPParams.Resolution(tmpWidth, tmpHeight),
+                        IsQuiet = false,
+                        
                     };
                 }
                 // Добавляем обработчик события             
