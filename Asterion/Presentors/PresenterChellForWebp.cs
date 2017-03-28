@@ -51,16 +51,21 @@ namespace Asterion.Presentors
                 chellForWebP.isRunning = isRunning;
                 mainWindow.btn_convert.Content = "Остановить";                
                 {                    
-                    int tmpWidth = 0, tmpHeight = 0, tmpQuality = 0, compressionValue = 0;
+                    int tmpWidth = 0, tmpHeight = 0, 
+                        tmpQuality = 0, compression = 0,
+                        strength = 0;
 
                     int.TryParse(mainWindow.tb_qualityValue.Text, out tmpQuality);
-                    int.TryParse(mainWindow.tb_compressionValue.Text, out compressionValue);
+                    int.TryParse(mainWindow.tb_compressionValue.Text, out compression);
+                    int.TryParse(mainWindow.tb_strengthValue.Text, out strength);
 
+                    
                     // присвоение параметров из оболочки
                     chellForWebP.parameters = new WebPParams()
                     {
                         quality = tmpQuality,
-                        Compression = compressionValue,
+                        Compression = compression,
+                        FilterStrength = strength,
                         qualityAlpha = 100,
                         IsQuiet = true,
                     };
