@@ -81,6 +81,12 @@
                         <TextBlock x:Name="tb_noise_shaping" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Шумоподавление :" VerticalAlignment="Top" Margin="264,147,0,0"/>
                         <TextBlock x:Name="tb_noise_shapingValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=slider_noise_shaping, Path=Value}" VerticalAlignment="Top" Margin="374,148,0,0"/>
                     </Grid>
+                    <Grid Grid.Row="3" Name="g_PSNR">
+                        <Slider x:Name="slider_PSNR" HorizontalAlignment="Left" Margin="49,208,0,0" VerticalAlignment="Top" Width="116" Maximum="100" TickPlacement="BottomRight" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True" TickFrequency="5" Value="42"/>
+                        <TextBlock x:Name="tb_PSNR" HorizontalAlignment="Left" TextWrapping="Wrap" Text="PSNR :" VerticalAlignment="Top" Margin="49,192,0,0"/>
+                        <TextBlock x:Name="tb_PSNRValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=slider_PSNR, Path=Value}" VerticalAlignment="Top" Margin="89,192,0,0"/>
+                        <TextBlock x:Name="tb_PSNR_units" HorizontalAlignment="Left" TextWrapping="Wrap" Text="dB" VerticalAlignment="Top" Margin="114,192,0,0"/>
+                    </Grid>
 
                 </Grid>
             </TabItem>

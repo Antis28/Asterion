@@ -207,7 +207,7 @@ namespace Asterion.Models.WebP
                 sb.Append(Compression);
                 sb.Append(" ");
             }
-            //-psnr<float>..........target PSNR(in dB.typically: 42)
+            //-psnr<float>..........target PSNR(in dB.typically: 42)Пиковое отношение сигнала к шуму
             if( IsPSNR )
             {
                 sb.Append(" -psnr ");

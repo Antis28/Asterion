@@ -71,6 +71,10 @@ namespace Asterion.Presentors
                         qualityAlpha = 100,
                         IsQuiet = true,
                     };
+                    if( mainWindow.tb_PSNR.Text != "42" )
+                    {
+                        chellForWebP.parameters.PSNR = int.Parse(mainWindow.tb_PSNR.Text);
+                    }
 
                     if( mainWindow.cb_isChangeResolution.IsChecked.Value )
                     {
