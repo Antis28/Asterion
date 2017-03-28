@@ -59,6 +59,8 @@
                         <TextBox x:Name="tbx_resolution_w"  HorizontalAlignment="Left" Height="23" Margin="69,111,0,0" TextWrapping="Wrap" Text="ширина" VerticalAlignment="Top" Width="50" PreviewMouseDown="tbx_resolution_PreviewMouseDown" />
                         <TextBox x:Name="tbx_resolution_h"  HorizontalAlignment="Left" Height="23" Margin="146,111,0,0" TextWrapping="Wrap" Text="высота" VerticalAlignment="Top" Width="50" PreviewMouseDown="tbx_resolution_PreviewMouseDown"/>
                     </Grid>
+                    <CheckBox x:Name="cb_isNoAlpha" Content="Убрать прозрачность" HorizontalAlignment="Left" Margin="236,94,0,0" Grid.Row="2" VerticalAlignment="Top" />
+                    <CheckBox x:Name="cb_IsLossless" Content="Без потерь" HorizontalAlignment="Left" Margin="236,114,0,0" Grid.Row="2" VerticalAlignment="Top" />
 
                 </Grid>
             </TabItem>

@@ -69,6 +69,11 @@ namespace Asterion.Presentors
                         chellForWebP.parameters.resolution = 
                                     new WebPParams.Resolution(tmpWidth, tmpHeight);
                     }
+                    if( mainWindow.cb_isNoAlpha.IsChecked.Value )
+                        chellForWebP.parameters.IsNoalpha = true;
+
+                    if( mainWindow.cb_IsLossless.IsChecked.Value )
+                        chellForWebP.parameters.IsLossless = true;
                 }
                 // Добавляем обработчик события             
                 chellForWebP.MaxValueEvent += onInitialValue;
@@ -76,7 +81,7 @@ namespace Asterion.Presentors
                 chellForWebP.CompleteConvertEvent += onCompleteConvert;
                 chellForWebP.CanceledConvertEvent += onCanceledConvert;
 
-                if( mainWindow.cb_isDirectory.IsChecked == true )
+                if( mainWindow.cb_isDirectory.IsChecked.Value )
                 {
                     chellForWebP.SwitchOnAllFiles();
                 }
@@ -84,6 +89,7 @@ namespace Asterion.Presentors
                 {
                     chellForWebP.SwitchOnSelectedFiles(PathFileNames);
                 }
+                
 
                 chellForWebP.BeginStartConvert(mainWindow.tbx_addressField.Text);
 
