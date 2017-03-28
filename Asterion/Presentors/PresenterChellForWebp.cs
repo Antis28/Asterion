@@ -54,18 +54,21 @@ namespace Asterion.Presentors
                     int tmpWidth = 0, tmpHeight = 0, tmpQuality = 0;
 
                     int.TryParse(mainWindow.tb_qualityValue.Text, out tmpQuality);
-                    int.TryParse(mainWindow.tbx_resolution_w.Text, out tmpWidth);
-                    int.TryParse(mainWindow.tbx_resolution_h.Text, out tmpHeight);                        
 
                     // присвоение параметров из оболочки
                     chellForWebP.parameters = new WebPParams()
                     {
                         quality = tmpQuality,
                         qualityAlpha = 100,
-                        resolution = new WebPParams.Resolution(tmpWidth, tmpHeight),
                         IsQuiet = true,
-                        
                     };
+                    if( (bool)mainWindow.cb_isChangeResolution.IsChecked )
+                    {
+                        int.TryParse(mainWindow.tbx_resolution_w.Text, out tmpWidth);
+                        int.TryParse(mainWindow.tbx_resolution_h.Text, out tmpHeight);
+                        chellForWebP.parameters.resolution = 
+                                    new WebPParams.Resolution(tmpWidth, tmpHeight);
+                    }
                 }
                 // Добавляем обработчик события             
                 chellForWebP.MaxValueEvent += onInitialValue;

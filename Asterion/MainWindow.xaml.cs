@@ -28,6 +28,8 @@ namespace Asterion
             new PresenterRenamer(this);
             new PresenterFindExtInXMLBaseDate(this);
             presenterChellForWebp = new PresenterChellForWebp(this);
+
+            InitializeWebPGUI();
         }
 
         public event EventHandler startAlarmEvent = null;
@@ -218,19 +220,48 @@ namespace Asterion
 
         private void text_PreviewDrop( object sender, System.Windows.DragEventArgs e )
         {
-            tb_addressField.Text = string.Empty;
+            tbx_addressField.Text = string.Empty;
             string[] filenames = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop, true);
             foreach( string filename in filenames )
+            {
                 if( Path.GetExtension(filename).Length != 0 )
-                    tb_addressField.Text = Path.GetDirectoryName(filename);
+                {
+                    tbx_addressField.Text = Path.GetDirectoryName(filename);
+                    System.Drawing.Size size = ImageHeader.GetDimensions(filenames[0]);
+                    tbx_resolution_w.Text = size.Width.ToString();
+                    tbx_resolution_h.Text = size.Height.ToString();
+                }
                 else
-                    tb_addressField.Text = filename;
+                    tbx_addressField.Text = filename;
+            }
             e.Handled = true;
-
-            System.Drawing.Size size = ImageHeader.GetDimensions(filenames[0]);
-            tbx_resolution_w.Text = size.Width.ToString();
-            tbx_resolution_h.Text = size.Height.ToString();
             presenterChellForWebp.ExistPath();
+        }
+
+        private void InitializeWebPGUI()
+        {
+            tbx_resolution_w.IsEnabled = false;
+            tbx_resolution_w.Visibility = Visibility.Collapsed;
+            tbx_resolution_h.IsEnabled = false;
+            tbx_resolution_h.Visibility = Visibility.Collapsed;
+        }
+
+        private void cb_isChangeResolution_Click( object sender, RoutedEventArgs e )
+        {
+            if( (bool)cb_isChangeResolution.IsChecked )
+            {
+                tbx_resolution_w.IsEnabled = true;
+                tbx_resolution_w.Visibility = Visibility.Visible;
+                tbx_resolution_h.IsEnabled = true;
+                tbx_resolution_h.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                tbx_resolution_w.IsEnabled = false;
+                tbx_resolution_w.Visibility = Visibility.Collapsed;
+                tbx_resolution_h.IsEnabled = false;
+                tbx_resolution_h.Visibility = Visibility.Collapsed;
+            }
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Asterion.Models.WebP
 
             public bool IsValid()
             {
-                if( height > 100 && width > 100 )
+                if( height > 99 && width > 99 )
                     return true;
                 return false;
             }
