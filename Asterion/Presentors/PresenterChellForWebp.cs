@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading;
 using Asterion.Models;
-using Ookii.Dialogs.Wpf;
-using WPFFolderBrowser;
+
 using System.Windows;
 using System.Collections.Generic;
 using Asterion.Models.WebP;
 using System.Windows.Controls;
+using WPFFolderBrowser;
 
 namespace Asterion.Presentors
 {
