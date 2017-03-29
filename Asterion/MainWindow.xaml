@@ -66,6 +66,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="276*"/>
@@ -100,16 +101,17 @@
                             <TextBlock x:Name="tb_noise_shaping" HorizontalAlignment="Left"  Margin="0,0,0,0" TextWrapping="Wrap" Text="Шумоподавление :" VerticalAlignment="Top"/>
                             <TextBlock x:Name="tb_noise_shapingValue" HorizontalAlignment="Left" Margin="110,0,0,0" TextWrapping="Wrap" Text="{Binding ElementName=slider_noise_shaping, Path=Value}" VerticalAlignment="Top" />
                         </Grid>
+                        <Grid Name="g_PSNR" Grid.Row="1" Grid.Column="0" Margin="180,10,0,0">
+                            <Slider x:Name="slider_PSNR" HorizontalAlignment="Left" VerticalAlignment="Top" Width="85" Maximum="100" TickPlacement="BottomRight" Margin="0,20,0,0" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True" Value="42" TickFrequency="2"/>
+                            <TextBlock x:Name="tb_PSNR" HorizontalAlignment="Left" TextWrapping="Wrap" Text="PSNR :" VerticalAlignment="Top" Margin="5,0,0,0"/>
+                            <TextBlock x:Name="tb_PSNRValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=slider_PSNR, Path=Value}" Margin="45,0,0,0" VerticalAlignment="Top"/>
+                            <TextBlock x:Name="tb_PSNR_units" HorizontalAlignment="Left" TextWrapping="Wrap" Text="dB" VerticalAlignment="Top" Margin="65,0,0,0"/>
+                        </Grid>
                     </Grid>
 
-                    
-                    
-                    <Grid Grid.Row="6" Name="g_PSNR">
-                        <Slider x:Name="slider_PSNR" HorizontalAlignment="Left" Margin="49,208,0,0" VerticalAlignment="Top" Width="116" Maximum="100" TickPlacement="BottomRight" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True" Value="42" TickFrequency="2"/>
-                        <TextBlock x:Name="tb_PSNR" HorizontalAlignment="Left" TextWrapping="Wrap" Text="PSNR :" VerticalAlignment="Top" Margin="49,192,0,0"/>
-                        <TextBlock x:Name="tb_PSNRValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=slider_PSNR, Path=Value}" VerticalAlignment="Top" Margin="89,192,0,0"/>
-                        <TextBlock x:Name="tb_PSNR_units" HorizontalAlignment="Left" TextWrapping="Wrap" Text="dB" VerticalAlignment="Top" Margin="114,192,0,0"/>
-                    </Grid>
+
+
+
                     <Grid Grid.Row="7" Name="g_prifile">
                         <ComboBox Margin="295,110,99,138">
                             <StackPanel Margin="5" Orientation="Horizontal">
