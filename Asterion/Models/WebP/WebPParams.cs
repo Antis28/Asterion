@@ -236,6 +236,9 @@ namespace Asterion.Models.WebP
                 }
                 sb.Append(" -alpha_q ");    // -alpha_q качество изображения для альфа канала от 0 до 100   
                 sb.Append(qualityAlpha);
+
+                sb.Append(" -q ");          // -q       качество изображения от 0 до 100
+                sb.Append(quality);
                 #endregion
             }            
             else
@@ -268,9 +271,6 @@ namespace Asterion.Models.WebP
             if( IsQuiet )
                 sb.Append(" -quiet ");  //-quiet    don't print anything
 
-            sb.Append(" -q ");          // -q       качество изображения от 0 до 100
-            sb.Append(quality);
-            
             sb.Append(" -o \"");          // -o       адрес вывода файла
             sb.Append(pathDirectory);
             sb.Append(@"\output\");     //          каталог вывода
