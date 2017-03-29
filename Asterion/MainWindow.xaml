@@ -65,25 +65,25 @@
                         <ComboBox Name="cmb_profile" Margin="90,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="14" Width="155" SelectionChanged="CmbProfileSelected">
 
                             <StackPanel Name="sp_def" Margin="0" Orientation="Horizontal">
-                                <TextBlock Name="tb_default" >По умолчанию</TextBlock>
-                            </StackPanel>                            
-                            <StackPanel Margin="0" Orientation="Horizontal">
-                                <TextBlock >Пользовательский</TextBlock>
+                                <TextBlock Name="tb_webPdefault" >По умолчанию</TextBlock>
                             </StackPanel>
-                            <StackPanel Margin="0" Orientation="Horizontal">
-                                <TextBlock >Фото</TextBlock>
+                            <StackPanel  Margin="0" Orientation="Horizontal">
+                                <TextBlock Name="tb_webPcustom">Пользовательский</TextBlock>
                             </StackPanel>
-                            <StackPanel Margin="0" Orientation="Horizontal">
-                                <TextBlock >Картина</TextBlock>
+                            <StackPanel  Margin="0" Orientation="Horizontal">
+                                <TextBlock Name="tb_webPphoto">Фото</TextBlock>
                             </StackPanel>
-                            <StackPanel Margin="0" Orientation="Horizontal">
-                                <TextBlock >Рисунок</TextBlock>
+                            <StackPanel  Margin="0" Orientation="Horizontal">
+                                <TextBlock Name="tb_webPpicture" >Картина</TextBlock>
                             </StackPanel>
-                            <StackPanel Margin="0" Orientation="Horizontal">
-                                <TextBlock >Иконка</TextBlock>
+                            <StackPanel   Margin="0" Orientation="Horizontal">
+                                <TextBlock Name="tb_webPdrawing">Рисунок</TextBlock>
                             </StackPanel>
-                            <StackPanel Margin="0" Orientation="Horizontal">
-                                <TextBlock >Текст</TextBlock>
+                            <StackPanel  Margin="0" Orientation="Horizontal">
+                                <TextBlock Name="tb_webPicon">Иконка</TextBlock>
+                            </StackPanel>
+                            <StackPanel  Margin="0" Orientation="Horizontal">
+                                <TextBlock Name="tb_webPtext">Текст</TextBlock>
                             </StackPanel>
 
                         </ComboBox>

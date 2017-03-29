@@ -23,6 +23,8 @@ namespace Asterion.Presentors
         object lockObject = new object(); //Объект для синхронизации потоков
         ChellForWebP chellForWebP = null;
         MainWindow mainWindow = null;
+
+        WebPParams.Profile profile;
         
         public PresenterChellForWebp( MainWindow mainWindow )
         {
@@ -38,7 +40,34 @@ namespace Asterion.Presentors
         {            
             ComboBox comboBox = (ComboBox)sender;
             StackPanel selectedItem = (StackPanel)comboBox.SelectedItem;
-            TextBlock tbSelectedItem = (TextBlock)selectedItem.Children[0];            
+            TextBlock tbSelectedItem = (TextBlock)selectedItem.Children[0];
+            string selectedProfile = tbSelectedItem.Name.Remove(0, 7);
+            Enum.TryParse<WebPParams.Profile>(selectedProfile, true, out profile);
+
+            //switch( tbSelectedItem.Name )
+            //{
+            //    case "tb_webPdefault":
+            //        profile = WebPParams.Profile.Default;
+            //        break;
+            //    case "tb_webPcustom":
+            //        profile = WebPParams.Profile.Custom;
+            //        break;
+            //    case "tb_webPphoto":
+            //        profile = WebPParams.Profile.Photo;
+            //        break;
+            //    case "tb_webPpicture":
+            //        profile = WebPParams.Profile.Picture;
+            //        break;
+            //    case "tb_webPdrawing":
+            //        profile = WebPParams.Profile.Drawing;
+            //        break;
+            //    case "tb_webPicon":
+            //        profile = WebPParams.Profile.Icon;
+            //        break;
+            //    case "tb_webPtext":
+            //        profile = WebPParams.Profile.Text;
+            //        break;
+            //}
         }
 
         bool isRunning = false;
@@ -55,6 +84,7 @@ namespace Asterion.Presentors
                         strength = 0, tmpSns = 0;
 
                     int.TryParse(mainWindow.tb_qualityValue.Text, out tmpQuality);
+
                     int.TryParse(mainWindow.tb_compressionValue.Text, out compression);
                     int.TryParse(mainWindow.tb_strengthValue.Text, out strength);
                     int.TryParse(mainWindow.tb_noise_shapingValue.Text, out tmpSns);
