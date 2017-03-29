@@ -9,12 +9,18 @@ namespace Asterion.Models.WebP
     class LogFile
     {
         StreamWriter fileLogOut = null;
+        string pathFolder = Environment.CurrentDirectory + @"\Log";
+        public string pathFile = @"\log-error.txt";
 
         public LogFile()
         {
-            fileLogOut = new StreamWriter(
-                Environment.CurrentDirectory + "\\log-error.txt", true
-                );
+
+            if( !Directory.Exists(pathFolder) )
+            {
+                Directory.CreateDirectory(pathFolder);
+            }
+            string fullPath = pathFolder + pathFile;
+            fileLogOut = new StreamWriter(fullPath, true);
         }
 
         public void StartRecordToLog()

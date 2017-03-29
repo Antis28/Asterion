@@ -34,7 +34,7 @@ namespace Asterion.Models
         // Команда которую будет выполнять
         string command = string.Empty;
 
-        private string pathToWebp = @"cwebp.exe";
+        private string pathToWebp = @"Dlls\cwebp.exe";
 
         private string pathDirectory = "";
         private List<string> pathToInputFiles;
@@ -249,6 +249,7 @@ namespace Asterion.Models
         private void InitStartInfo( ProcessStartInfo startinfo )
         {
             startinfo.StandardOutputEncoding = Encoding.GetEncoding(866);
+            startinfo.StandardErrorEncoding = Encoding.GetEncoding(866);
 
             startinfo.FileName = @"C:\Windows\System32\cmd.exe";
             // скрываем окно запущенного процесса
@@ -275,7 +276,8 @@ namespace Asterion.Models
         {
             try
             {
-                using( StreamWriter sw = new StreamWriter(Environment.CurrentDirectory + "\\log1.txt", true, Encoding.UTF8) )
+                using( StreamWriter sw = new StreamWriter(
+                    Environment.CurrentDirectory + @"\Log" + "\\log1.txt", true, Encoding.UTF8) )
                 {
                     //Выводим                
                     sw.WriteLine(e.Data);
