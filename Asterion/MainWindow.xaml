@@ -21,8 +21,6 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
-                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="276*"/>
@@ -97,14 +95,15 @@
                             <TextBlock x:Name="tb_strength" HorizontalAlignment="Left" Margin="100,10,0,0" TextWrapping="Wrap" Text="Сила фильтра :" VerticalAlignment="Top" />
                             <TextBlock x:Name="tb_strengthValue" HorizontalAlignment="Left" Margin="185,10,0,0" TextWrapping="Wrap" Text="{Binding ElementName=slider_strength, Path=Value}" VerticalAlignment="Top" />
                         </Grid>
+                        <Grid Name="g_noise_shaping" Grid.Row="1" Grid.Column="0" Margin="50,10,0,0">
+                            <Slider x:Name="slider_noise_shaping" HorizontalAlignment="Left" Margin="0,20,0,0" VerticalAlignment="Top" Width="123" Maximum="100" TickPlacement="BottomRight" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True" TickFrequency="5" Value="35"/>
+                            <TextBlock x:Name="tb_noise_shaping" HorizontalAlignment="Left"  Margin="0,0,0,0" TextWrapping="Wrap" Text="Шумоподавление :" VerticalAlignment="Top"/>
+                            <TextBlock x:Name="tb_noise_shapingValue" HorizontalAlignment="Left" Margin="110,0,0,0" TextWrapping="Wrap" Text="{Binding ElementName=slider_noise_shaping, Path=Value}" VerticalAlignment="Top" />
+                        </Grid>
                     </Grid>
 
                     
-                    <Grid Grid.Row="5" Name="g_noise_shaping">
-                        <Slider x:Name="slider_noise_shaping" HorizontalAlignment="Left" Margin="264,163,0,0" VerticalAlignment="Top" Width="116" Maximum="100" TickPlacement="BottomRight" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True" TickFrequency="5" Value="35"/>
-                        <TextBlock x:Name="tb_noise_shaping" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Шумоподавление :" VerticalAlignment="Top" Margin="264,147,0,0"/>
-                        <TextBlock x:Name="tb_noise_shapingValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=slider_noise_shaping, Path=Value}" VerticalAlignment="Top" Margin="374,148,0,0"/>
-                    </Grid>
+                    
                     <Grid Grid.Row="6" Name="g_PSNR">
                         <Slider x:Name="slider_PSNR" HorizontalAlignment="Left" Margin="49,208,0,0" VerticalAlignment="Top" Width="116" Maximum="100" TickPlacement="BottomRight" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True" Value="42" TickFrequency="2"/>
                         <TextBlock x:Name="tb_PSNR" HorizontalAlignment="Left" TextWrapping="Wrap" Text="PSNR :" VerticalAlignment="Top" Margin="49,192,0,0"/>
