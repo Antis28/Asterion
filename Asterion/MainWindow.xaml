@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Asterion"
         mc:Ignorable="d"
-        Title="Asterion"  HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" Width="475"  Height="343.666" MinWidth="450" MinHeight="250" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+        Title="Asterion"  HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Auto" Width="488"  Height="379.666" MinWidth="450" MinHeight="250" ScrollViewer.HorizontalScrollBarVisibility="Auto">
     <Grid>
         <Grid.RowDefinitions>
             <!--   Главного меню -->
