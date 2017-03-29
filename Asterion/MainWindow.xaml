@@ -22,7 +22,7 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
-                        <RowDefinition Height="240*"/>
+                        <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="276*"/>
@@ -64,43 +64,53 @@
                     <CheckBox x:Name="cb_isNoAlpha" Content="Убрать прозрачность" HorizontalAlignment="Left" Margin="289,206,0,0" Grid.Row="2" VerticalAlignment="Top" />
                     <CheckBox x:Name="cb_IsLossless" Content="Без потерь" HorizontalAlignment="Left" Margin="181,206,0,0" Grid.Row="2" VerticalAlignment="Top" />
 
-                    
-                    <Grid Grid.Row="2" Name="g_resolution_all">
+                    <Grid Name="g_other_settings" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <CheckBox x:Name="cb_isChangeResolution" Grid.Row="0" Content="Задать разрешение" HorizontalAlignment="Left" Margin="50,10,0,0"  VerticalAlignment="Top" Click="cb_isChangeResolution_Click"/>
-                        <Grid Grid.Row="1" Name="g_resolution" Margin="50,10,0,0">
-                            <TextBlock x:Name="tb_resolution_w" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Ш:" VerticalAlignment="Top" Margin="0,2,0,0"/>
-                            <TextBlock x:Name="tb_resolution_h" HorizontalAlignment="Left" TextWrapping="Wrap" Text="В:" VerticalAlignment="Top" Margin="85,2,0,0"/>
-                            <TextBox x:Name="tbx_resolution_w"  HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="ширина" Margin="20,0,0,0" VerticalAlignment="Top" Width="50" PreviewMouseDown="tbx_resolution_PreviewMouseDown" />
-                            <TextBox x:Name="tbx_resolution_h"  HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="высота" Margin="100,0,0,0" VerticalAlignment="Top" Width="50" PreviewMouseDown="tbx_resolution_PreviewMouseDown"/>
-                        </Grid>                        
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="276*"/>
+                            <ColumnDefinition Width="179*"/>
+                            <ColumnDefinition Width="19*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Name="g_resolution_all" Grid.Row="0"  Grid.Column="0" VerticalAlignment="Top" Margin="0,0,0,0" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <CheckBox x:Name="cb_isChangeResolution" Grid.Row="0" Content="Задать разрешение" HorizontalAlignment="Left" Margin="50,10,0,0"  VerticalAlignment="Top" Click="cb_isChangeResolution_Click"/>
+                            <Grid Grid.Row="1" Name="g_resolution" Margin="50,10,0,0">
+                                <TextBlock x:Name="tb_resolution_w" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Ш:" VerticalAlignment="Top" Margin="0,2,0,0"/>
+                                <TextBlock x:Name="tb_resolution_h" HorizontalAlignment="Left" TextWrapping="Wrap" Text="В:" VerticalAlignment="Top" Margin="85,2,0,0"/>
+                                <TextBox x:Name="tbx_resolution_w"  HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="ширина" Margin="20,0,0,0" VerticalAlignment="Top" Width="50" PreviewMouseDown="tbx_resolution_PreviewMouseDown" />
+                                <TextBox x:Name="tbx_resolution_h"  HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="высота" Margin="100,0,0,0" VerticalAlignment="Top" Width="50" PreviewMouseDown="tbx_resolution_PreviewMouseDown"/>
+                            </Grid>
+                        </Grid>
+                        <Grid  Name="g_compression" Grid.Row="0"  Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0">
+                            <Slider x:Name="slider_compression" HorizontalAlignment="Left" Margin="10,30,0,0" VerticalAlignment="Top" Width="76" Maximum="6" Value="6" TickPlacement="BottomRight" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True"/>
+                            <TextBlock x:Name="tb_compression" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Сжатие :" VerticalAlignment="Top" />
+                            <TextBlock x:Name="tb_compressionValue" HorizontalAlignment="Left" Margin="60,10,0,0" TextWrapping="Wrap" Text="{Binding ElementName=slider_compression, Path=Value}" VerticalAlignment="Top" />
+                        </Grid>
                     </Grid>
 
-                    <Grid Grid.Row="5" Name="g_compression">
-                        <Slider x:Name="slider_compression" HorizontalAlignment="Left" Margin="46,164,0,0" VerticalAlignment="Top" Width="76" Maximum="6" Value="6" TickPlacement="BottomRight" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True"/>
-                        <TextBlock x:Name="tb_compression" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Сжатие :" VerticalAlignment="Top" Margin="46,148,0,0"/>
-                        <TextBlock x:Name="tb_compressionValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=slider_compression, Path=Value}" VerticalAlignment="Top" Margin="107,148,0,0"/>
-                    </Grid>
-                    <Grid Grid.Row="6" Name="g_strength">
+                    <Grid Grid.Row="4" Name="g_strength">
                         <Slider x:Name="slider_strength" HorizontalAlignment="Left" Margin="150,164,0,0" VerticalAlignment="Top" Width="92" Maximum="100" TickPlacement="BottomRight" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True" TickFrequency="5"/>
                         <TextBlock x:Name="tb_strength" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Сила фильтра :" VerticalAlignment="Top" Margin="150,148,0,0"/>
                         <TextBlock x:Name="tb_strengthValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=slider_strength, Path=Value}" VerticalAlignment="Top" Margin="236,148,0,0"/>
                     </Grid>
-                    <Grid Grid.Row="7" Name="g_noise_shaping">
+                    <Grid Grid.Row="5" Name="g_noise_shaping">
                         <Slider x:Name="slider_noise_shaping" HorizontalAlignment="Left" Margin="264,163,0,0" VerticalAlignment="Top" Width="116" Maximum="100" TickPlacement="BottomRight" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True" TickFrequency="5" Value="35"/>
                         <TextBlock x:Name="tb_noise_shaping" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Шумоподавление :" VerticalAlignment="Top" Margin="264,147,0,0"/>
                         <TextBlock x:Name="tb_noise_shapingValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=slider_noise_shaping, Path=Value}" VerticalAlignment="Top" Margin="374,148,0,0"/>
                     </Grid>
-                    <Grid Grid.Row="8" Name="g_PSNR">
+                    <Grid Grid.Row="6" Name="g_PSNR">
                         <Slider x:Name="slider_PSNR" HorizontalAlignment="Left" Margin="49,208,0,0" VerticalAlignment="Top" Width="116" Maximum="100" TickPlacement="BottomRight" SmallChange="1" IsSnapToTickEnabled="True" Cursor="Hand" IsSelectionRangeEnabled="True" Value="42" TickFrequency="2"/>
                         <TextBlock x:Name="tb_PSNR" HorizontalAlignment="Left" TextWrapping="Wrap" Text="PSNR :" VerticalAlignment="Top" Margin="49,192,0,0"/>
                         <TextBlock x:Name="tb_PSNRValue" HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding ElementName=slider_PSNR, Path=Value}" VerticalAlignment="Top" Margin="89,192,0,0"/>
                         <TextBlock x:Name="tb_PSNR_units" HorizontalAlignment="Left" TextWrapping="Wrap" Text="dB" VerticalAlignment="Top" Margin="114,192,0,0"/>
                     </Grid>
-                    <Grid Grid.Row="9" Name="g_prifile">
+                    <Grid Grid.Row="7" Name="g_prifile">
                         <ComboBox Margin="295,110,99,138">
                             <StackPanel Margin="5" Orientation="Horizontal">
 
