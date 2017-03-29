@@ -102,7 +102,7 @@ namespace Asterion.Presentors
                     Compression = compression,
                     FilterStrength = strength,
                     qualityAlpha = 100,
-                    IsQuiet = true,
+                    IsQuiet = mainWindow.cb_isDebugWebp.IsChecked.Value,
                 };
                 if( mainWindow.tb_PSNRValue.Text != "42" )
                 {
@@ -130,9 +130,9 @@ namespace Asterion.Presentors
                 // присвоение параметров из оболочки
                 chellForWebP.parameters = new WebPParams()
                 {
-                    quality = tmpQuality,
-                    //IsQuiet = true,
-                    profile = this.profileSelected
+                    quality = tmpQuality,                    
+                    profile = this.profileSelected,
+                    IsQuiet = mainWindow.cb_isDebugWebp.IsChecked.Value
                 };
             }
         }

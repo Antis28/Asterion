@@ -53,7 +53,6 @@ namespace Asterion.Models.WebP
             //{
             //    fileLogOut.BaseStream.WriteByte(item);
             //}
-            
         }
 
         public void SeparateRecord( bool isPrint = true )

@@ -87,7 +87,7 @@
                             </StackPanel>
 
                         </ComboBox>
-
+                        <CheckBox x:Name="cb_isDebugWebp" Grid.Row="0" Content="Отладка" HorizontalAlignment="Left" Margin="330,5,0,0"  VerticalAlignment="Top"/>
 
                     </Grid>
 
