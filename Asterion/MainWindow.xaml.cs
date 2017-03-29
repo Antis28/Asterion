@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using Asterion.Presentors;
 using Asterion.WpfExtensions;
 using System.Windows.Interop;
 using System.IO;
 using DevWilson;
+using System.Windows.Controls;
 
 namespace Asterion
 {
@@ -268,6 +269,12 @@ namespace Asterion
 
             if( !int.TryParse(tbx_resolution_h.Text, out temp) )
                 tbx_resolution_h.Text = string.Empty;
+        }
+
+        public event EventHandler profileSelectedEvent = null;
+        private void CmbProfileSelected( object sender, System.Windows.Controls.SelectionChangedEventArgs e )
+        {            
+            profileSelectedEvent.Invoke(sender, e);            
         }
     }
 }
