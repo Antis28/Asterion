@@ -43,6 +43,12 @@ namespace Asterion.Presentors
             TextBlock tbSelectedItem = (TextBlock)selectedItem.Children[0];
             string selectedProfile = tbSelectedItem.Name.Remove(0, 7);
             Enum.TryParse<WebPParams.Profile>(selectedProfile, true, out profileSelected);
+
+            if( profileSelected == WebPParams.Profile.Custom )
+                mainWindow.g_other_settings.Visibility = Visibility.Visible;
+            else
+                mainWindow.g_other_settings.Visibility = Visibility.Hidden;
+
         }
 
         bool isRunning = false;
@@ -62,8 +68,8 @@ namespace Asterion.Presentors
                 chellForWebP.CompleteConvertEvent += onCompleteConvert;
                 chellForWebP.CanceledConvertEvent += onCanceledConvert;
 
-                if( mainWindow.cb_isDirectory.IsChecked.Value )                
-                    chellForWebP.SwitchOnAllFiles();                
+                if( mainWindow.cb_isDirectory.IsChecked.Value )
+                    chellForWebP.SwitchOnAllFiles();
                 else
                     chellForWebP.SwitchOnSelectedFiles(PathFileNames);
 
