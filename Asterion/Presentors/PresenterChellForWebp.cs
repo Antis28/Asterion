@@ -102,7 +102,7 @@ namespace Asterion.Presentors
                     Compression = compression,
                     FilterStrength = strength,
                     qualityAlpha = 100,
-                    IsQuiet = mainWindow.cb_isDebugWebp.IsChecked.Value,
+                    IsQuiet = !mainWindow.cb_isDebugWebp.IsChecked.Value,
                 };
                 if( mainWindow.tb_PSNRValue.Text != "42" )
                 {
@@ -132,7 +132,7 @@ namespace Asterion.Presentors
                 {
                     quality = tmpQuality,                    
                     profile = this.profileSelected,
-                    IsQuiet = mainWindow.cb_isDebugWebp.IsChecked.Value
+                    IsQuiet = !mainWindow.cb_isDebugWebp.IsChecked.Value
                 };
             }
         }
