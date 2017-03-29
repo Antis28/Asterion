@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading;
 using Asterion.Models;
-using Ookii.Dialogs.Wpf;
-using WPFFolderBrowser;
+
 using System.Windows;
 using System.Collections.Generic;
 using Asterion.Models.WebP;
+using System.Windows.Controls;
+using WPFFolderBrowser;
 
 namespace Asterion.Presentors
 {
@@ -23,15 +24,7 @@ namespace Asterion.Presentors
         ChellForWebP chellForWebP = null;
         MainWindow mainWindow = null;
 
-        public int currentHourChange = 0;
-        public int currentMinutesChange = 0;
-
-        public volatile bool isStopTimer = true;
-        //string convertStatusText = "";
-
-        public volatile string pathToMusicFile = "";
-
-
+        WebPParams.Profile profileSelected;
 
         public PresenterChellForWebp( MainWindow mainWindow )
         {
@@ -40,6 +33,22 @@ namespace Asterion.Presentors
             this.mainWindow.startConvertEvent += new EventHandler(mainWindow_startConvert);
             this.mainWindow.openFolderDialogEvent += new EventHandler(mainWindow_openFolderDialog);
             this.mainWindow.openFileDialogToConverterEvent += new EventHandler(mainWindow_openFileDialog);
+            this.mainWindow.profileSelectedEvent += new EventHandler(mainWindow_profileSelected);
+        }
+
+        private void mainWindow_profileSelected( object sender, EventArgs e )
+        {
+            ComboBox comboBox = (ComboBox)sender;
+            StackPanel selectedItem = (StackPanel)comboBox.SelectedItem;
+            TextBlock tbSelectedItem = (TextBlock)selectedItem.Children[0];
+            string selectedProfile = tbSelectedItem.Name.Remove(0, 7);
+            Enum.TryParse<WebPParams.Profile>(selectedProfile, true, out profileSelected);
+
+            if( profileSelected == WebPParams.Profile.Custom )
+                mainWindow.g_other_settings.Visibility = Visibility.Visible;
+            else
+                mainWindow.g_other_settings.Visibility = Visibility.Hidden;
+
         }
 
         bool isRunning = false;
@@ -49,47 +58,10 @@ namespace Asterion.Presentors
             {
                 isRunning = !isRunning;
                 chellForWebP.isRunning = isRunning;
-                mainWindow.btn_convert.Content = "Остановить";                
-                {                    
-                    int tmpWidth = 0, tmpHeight = 0, 
-                        tmpQuality = 0, compression = 0,
-                        strength = 0, tmpSns = 0;
+                mainWindow.btn_convert.Content = "Остановить";
 
-                    int.TryParse(mainWindow.tb_qualityValue.Text, out tmpQuality);
-                    int.TryParse(mainWindow.tb_compressionValue.Text, out compression);
-                    int.TryParse(mainWindow.tb_strengthValue.Text, out strength);
-                    int.TryParse(mainWindow.tb_noise_shapingValue.Text, out tmpSns);
+                InitialzationWebP();
 
-
-                    // присвоение параметров из оболочки
-                    chellForWebP.parameters = new WebPParams()
-                    {
-                        quality = tmpQuality,
-                        Compression = compression,
-                        FilterStrength = strength,                        
-                        qualityAlpha = 100,
-                        IsQuiet = true,
-                    };
-                    if( mainWindow.tb_PSNRValue.Text != "42" )
-                    {
-                        chellForWebP.parameters.PSNR = int.Parse(mainWindow.tb_PSNRValue.Text);
-                    }
-                    if( tmpSns != 35 )
-                        chellForWebP.parameters.SNS = tmpSns;
-
-                    if( mainWindow.cb_isChangeResolution.IsChecked.Value )
-                    {
-                        int.TryParse(mainWindow.tbx_resolution_w.Text, out tmpWidth);
-                        int.TryParse(mainWindow.tbx_resolution_h.Text, out tmpHeight);
-                        chellForWebP.parameters.resolution = 
-                                    new WebPParams.Resolution(tmpWidth, tmpHeight);
-                    }
-                    if( mainWindow.cb_isNoAlpha.IsChecked.Value )
-                        chellForWebP.parameters.IsNoalpha = true;
-
-                    if( mainWindow.cb_IsLossless.IsChecked.Value )
-                        chellForWebP.parameters.IsLossless = true;
-                }
                 // Добавляем обработчик события             
                 chellForWebP.MaxValueEvent += onInitialValue;
                 chellForWebP.ChangeValueEvent += onChangeIndicator;
@@ -97,26 +69,74 @@ namespace Asterion.Presentors
                 chellForWebP.CanceledConvertEvent += onCanceledConvert;
 
                 if( mainWindow.cb_isDirectory.IsChecked.Value )
-                {
                     chellForWebP.SwitchOnAllFiles();
-                }
                 else
-                {
                     chellForWebP.SwitchOnSelectedFiles(PathFileNames);
-                }
-                
 
                 chellForWebP.BeginStartConvert(mainWindow.tbx_addressField.Text);
-
             }
             else
             {
                 isRunning = !isRunning;
                 mainWindow.btn_convert.Content = "Начать";
                 chellForWebP.isRunning = isRunning;
-
             }
         }
+
+        private void InitialzationWebP()
+        {
+            int tmpWidth = 0, tmpHeight = 0, tmpQuality = 0, compression = 0, strength = 0, tmpSns = 0;
+
+            int.TryParse(mainWindow.tb_qualityValue.Text, out tmpQuality);
+            if( profileSelected == WebPParams.Profile.Custom )
+            {
+                #region Profile.Custom
+                int.TryParse(mainWindow.tb_compressionValue.Text, out compression);
+                int.TryParse(mainWindow.tb_strengthValue.Text, out strength);
+                int.TryParse(mainWindow.tb_noise_shapingValue.Text, out tmpSns);
+
+                // присвоение параметров из оболочки
+                chellForWebP.parameters = new WebPParams()
+                {
+                    quality = tmpQuality,
+                    Compression = compression,
+                    FilterStrength = strength,
+                    qualityAlpha = 100,
+                    IsQuiet = !mainWindow.cb_isDebugWebp.IsChecked.Value,
+                };
+                if( mainWindow.tb_PSNRValue.Text != "42" )
+                {
+                    chellForWebP.parameters.PSNR = int.Parse(mainWindow.tb_PSNRValue.Text);
+                }
+                if( tmpSns != 35 )
+                    chellForWebP.parameters.SNS = tmpSns;
+
+                if( mainWindow.cb_isChangeResolution.IsChecked.Value )
+                {
+                    int.TryParse(mainWindow.tbx_resolution_w.Text, out tmpWidth);
+                    int.TryParse(mainWindow.tbx_resolution_h.Text, out tmpHeight);
+                    chellForWebP.parameters.resolution =
+                                new WebPParams.Resolution(tmpWidth, tmpHeight);
+                }
+                if( mainWindow.cb_isNoAlpha.IsChecked.Value )
+                    chellForWebP.parameters.IsNoalpha = true;
+
+                if( mainWindow.cb_IsLossless.IsChecked.Value )
+                    chellForWebP.parameters.IsLossless = true;
+                #endregion
+            }
+            else
+            {
+                // присвоение параметров из оболочки
+                chellForWebP.parameters = new WebPParams()
+                {
+                    quality = tmpQuality,                    
+                    profile = this.profileSelected,
+                    IsQuiet = !mainWindow.cb_isDebugWebp.IsChecked.Value
+                };
+            }
+        }
+
         void onChangeIndicator()
         {
             mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,

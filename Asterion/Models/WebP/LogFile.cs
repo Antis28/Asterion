@@ -9,12 +9,18 @@ namespace Asterion.Models.WebP
     class LogFile
     {
         StreamWriter fileLogOut = null;
+        string pathFolder = Environment.CurrentDirectory + @"\Log";
+        public string pathFile = @"\log-error.txt";
 
         public LogFile()
         {
-            fileLogOut = new StreamWriter(
-                Environment.CurrentDirectory + "\\log-error.txt", true
-                );
+
+            if( !Directory.Exists(pathFolder) )
+            {
+                Directory.CreateDirectory(pathFolder);
+            }
+            string fullPath = pathFolder + pathFile;
+            fileLogOut = new StreamWriter(fullPath, true);
         }
 
         public void StartRecordToLog()
@@ -27,7 +33,7 @@ namespace Asterion.Models.WebP
         /// <summary>
         /// закрывает файл
         /// </summary>
-        public void EndRecordToLog(int countFiles, bool isComplete = true )
+        public void EndRecordToLog( int countFiles, bool isComplete = true )
         {
             fileLogOut.WriteLine();
             if( isComplete )
@@ -43,8 +49,16 @@ namespace Asterion.Models.WebP
 
         public void RecordLine( string data )
         {
-            //Пишем в файл(поток)                
+            if( data == null )
+                return;
             fileLogOut.WriteLine(data);
+
+            //byte[] buffer = Encoding.UTF8.GetBytes(data);
+            ////Пишем в файл(поток)
+            //foreach( var item in buffer )
+            //{
+            //    fileLogOut.BaseStream.WriteByte(item);
+            //}
         }
 
         public void SeparateRecord( bool isPrint = true )

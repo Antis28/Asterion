@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using Asterion.Presentors;
 using Asterion.WpfExtensions;
 using System.Windows.Interop;
 using System.IO;
 using DevWilson;
+using System.Windows.Controls;
 
 namespace Asterion
 {
@@ -27,7 +28,7 @@ namespace Asterion
             new PresenterFindExt(this);
             new PresenterRenamer(this);
             new PresenterFindExtInXMLBaseDate(this);
-            presenterChellForWebp = new PresenterChellForWebp(this);
+            presenterChellForWebp = presenterChellForWebp ?? new PresenterChellForWebp(this);
 
             InitializeWebPGUI();
         }
@@ -240,7 +241,7 @@ namespace Asterion
 
         private void InitializeWebPGUI()
         {
-            g_resolution.Visibility = Visibility.Collapsed;
+            g_resolution.Visibility = Visibility.Hidden;
         }
 
         private void cb_isChangeResolution_Click( object sender, RoutedEventArgs e )
@@ -251,7 +252,7 @@ namespace Asterion
             }
             else
             {
-                g_resolution.Visibility = Visibility.Collapsed;
+                g_resolution.Visibility = Visibility.Hidden;
             }
         }
 
@@ -268,6 +269,17 @@ namespace Asterion
 
             if( !int.TryParse(tbx_resolution_h.Text, out temp) )
                 tbx_resolution_h.Text = string.Empty;
+        }
+
+        public event EventHandler profileSelectedEvent = null;
+        private void CmbProfileSelected( object sender, System.Windows.Controls.SelectionChangedEventArgs e )
+        {            
+            profileSelectedEvent.Invoke(sender, e);            
+        }       
+
+        private void g_other_settings_Loaded( object sender, RoutedEventArgs e )
+        {
+            cmb_profile.SelectedIndex = 1;
         }
     }
 }
