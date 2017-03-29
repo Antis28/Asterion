@@ -28,7 +28,7 @@ namespace Asterion
             new PresenterFindExt(this);
             new PresenterRenamer(this);
             new PresenterFindExtInXMLBaseDate(this);
-            presenterChellForWebp = new PresenterChellForWebp(this);
+            presenterChellForWebp = presenterChellForWebp ?? new PresenterChellForWebp(this);
 
             InitializeWebPGUI();
         }
@@ -275,6 +275,11 @@ namespace Asterion
         private void CmbProfileSelected( object sender, System.Windows.Controls.SelectionChangedEventArgs e )
         {            
             profileSelectedEvent.Invoke(sender, e);            
+        }       
+
+        private void g_other_settings_Loaded( object sender, RoutedEventArgs e )
+        {
+            cmb_profile.SelectedIndex = 1;
         }
     }
 }

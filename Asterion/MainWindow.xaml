@@ -91,7 +91,7 @@
 
                     </Grid>
 
-                    <Grid Name="g_other_settings" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2">
+                    <Grid Name="g_other_settings" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Loaded="g_other_settings_Loaded">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="auto"/>
