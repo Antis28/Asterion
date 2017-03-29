@@ -64,12 +64,19 @@
                     <CheckBox x:Name="cb_isNoAlpha" Content="Убрать прозрачность" HorizontalAlignment="Left" Margin="289,206,0,0" Grid.Row="2" VerticalAlignment="Top" />
                     <CheckBox x:Name="cb_IsLossless" Content="Без потерь" HorizontalAlignment="Left" Margin="181,206,0,0" Grid.Row="2" VerticalAlignment="Top" />
 
-                    <CheckBox x:Name="cb_isChangeResolution" Content="Задать разрешение" HorizontalAlignment="Left" Margin="50,91,0,0" Grid.Row="2" VerticalAlignment="Top" Click="cb_isChangeResolution_Click"/>
-                    <Grid Grid.Row="4" Name="g_resolution">
-                        <TextBlock x:Name="tb_resolution_w" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Ш:" VerticalAlignment="Top" Margin="53,115,0,0"/>
-                        <TextBlock x:Name="tb_resolution_h" HorizontalAlignment="Left" TextWrapping="Wrap" Text="В:" VerticalAlignment="Top" Margin="132,115,0,0"/>
-                        <TextBox x:Name="tbx_resolution_w"  HorizontalAlignment="Left" Height="23" Margin="69,111,0,0" TextWrapping="Wrap" Text="ширина" VerticalAlignment="Top" Width="50" PreviewMouseDown="tbx_resolution_PreviewMouseDown" />
-                        <TextBox x:Name="tbx_resolution_h"  HorizontalAlignment="Left" Height="23" Margin="146,111,0,0" TextWrapping="Wrap" Text="высота" VerticalAlignment="Top" Width="50" PreviewMouseDown="tbx_resolution_PreviewMouseDown"/>
+                    
+                    <Grid Grid.Row="2" Name="g_resolution_all">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <CheckBox x:Name="cb_isChangeResolution" Grid.Row="0" Content="Задать разрешение" HorizontalAlignment="Left" Margin="50,10,0,0"  VerticalAlignment="Top" Click="cb_isChangeResolution_Click"/>
+                        <Grid Grid.Row="1" Name="g_resolution" Margin="50,10,0,0">
+                            <TextBlock x:Name="tb_resolution_w" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Ш:" VerticalAlignment="Top" Margin="0,2,0,0"/>
+                            <TextBlock x:Name="tb_resolution_h" HorizontalAlignment="Left" TextWrapping="Wrap" Text="В:" VerticalAlignment="Top" Margin="85,2,0,0"/>
+                            <TextBox x:Name="tbx_resolution_w"  HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="ширина" Margin="20,0,0,0" VerticalAlignment="Top" Width="50" PreviewMouseDown="tbx_resolution_PreviewMouseDown" />
+                            <TextBox x:Name="tbx_resolution_h"  HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="высота" Margin="100,0,0,0" VerticalAlignment="Top" Width="50" PreviewMouseDown="tbx_resolution_PreviewMouseDown"/>
+                        </Grid>                        
                     </Grid>
 
                     <Grid Grid.Row="5" Name="g_compression">
