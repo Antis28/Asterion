@@ -240,7 +240,7 @@ namespace Asterion
 
         private void InitializeWebPGUI()
         {
-            g_resolution.Visibility = Visibility.Collapsed;
+            g_resolution.Visibility = Visibility.Hidden;
         }
 
         private void cb_isChangeResolution_Click( object sender, RoutedEventArgs e )
@@ -251,7 +251,7 @@ namespace Asterion
             }
             else
             {
-                g_resolution.Visibility = Visibility.Collapsed;
+                g_resolution.Visibility = Visibility.Hidden;
             }
         }
 
