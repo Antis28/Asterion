@@ -6,6 +6,7 @@ using WPFFolderBrowser;
 using System.Windows;
 using System.Collections.Generic;
 using Asterion.Models.WebP;
+using System.Windows.Controls;
 
 namespace Asterion.Presentors
 {
@@ -22,17 +23,7 @@ namespace Asterion.Presentors
         object lockObject = new object(); //Объект для синхронизации потоков
         ChellForWebP chellForWebP = null;
         MainWindow mainWindow = null;
-
-        public int currentHourChange = 0;
-        public int currentMinutesChange = 0;
-
-        public volatile bool isStopTimer = true;
-        //string convertStatusText = "";
-
-        public volatile string pathToMusicFile = "";
-
-
-
+        
         public PresenterChellForWebp( MainWindow mainWindow )
         {
             this.chellForWebP = new ChellForWebP();
@@ -40,6 +31,14 @@ namespace Asterion.Presentors
             this.mainWindow.startConvertEvent += new EventHandler(mainWindow_startConvert);
             this.mainWindow.openFolderDialogEvent += new EventHandler(mainWindow_openFolderDialog);
             this.mainWindow.openFileDialogToConverterEvent += new EventHandler(mainWindow_openFileDialog);
+            this.mainWindow.profileSelectedEvent += new EventHandler(mainWindow_profileSelected);            
+        }
+
+        private void mainWindow_profileSelected( object sender, EventArgs e )
+        {            
+            ComboBox comboBox = (ComboBox)sender;
+            StackPanel selectedItem = (StackPanel)comboBox.SelectedItem;
+            TextBlock tbSelectedItem = (TextBlock)selectedItem.Children[0];            
         }
 
         bool isRunning = false;
