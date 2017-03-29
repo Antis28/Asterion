@@ -164,7 +164,7 @@ namespace Asterion.Models
             foreach( var currentFile in pathToInputFiles )
             {
                 // Компановка команды для Webp конвертера
-                command = string.Format(" {1} \"{2}\" {3}{4}.webP\"",
+                command = string.Format("{1} \"{2}\" {3}{4}.webP\"",
                     "/C",               // {0} Ключ /C - выполнение команды
                     pathToWebp,         // {1} Команда которую будет выполнять
                     currentFile,        // {2} Файл для конвертации
@@ -233,7 +233,7 @@ namespace Asterion.Models
         /// <param name="command">параметры для Webp</param>
         private void StartWebP( string command )
         {
-            myProcess.StandardInput.Write(pathToWebp);
+            //myProcess.StandardInput.Write(pathToWebp);
             // кодировка для русского языка
             byte[] buffer = Encoding.GetEncoding(866).GetBytes(command);
             myProcess.StandardInput.BaseStream.Write(buffer, 0, buffer.Length);

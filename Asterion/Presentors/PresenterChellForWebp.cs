@@ -131,7 +131,7 @@ namespace Asterion.Presentors
                 chellForWebP.parameters = new WebPParams()
                 {
                     quality = tmpQuality,
-                    IsQuiet = true,
+                    //IsQuiet = true,
                     profile = this.profileSelected
                 };
             }
