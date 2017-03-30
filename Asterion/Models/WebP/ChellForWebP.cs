@@ -233,6 +233,7 @@ namespace Asterion.Models
         /// <param name="command">параметры для Webp</param>
         private void StartWebP( string command )
         {
+            ExistCwebpPFile();
             //myProcess.StandardInput.Write(pathToWebp);
             // кодировка для русского языка
             byte[] buffer = Encoding.GetEncoding(866).GetBytes(command);
@@ -289,6 +290,21 @@ namespace Asterion.Models
         void cmd_DataError( object sender, DataReceivedEventArgs e )
         {
             log.RecordLine(e.Data);
+        }
+
+        /// <summary>
+        /// Проверка существования cwebp.exe,
+        /// если файла нет, то создать его из ресурсов.
+        /// </summary>
+        void ExistCwebpPFile()
+        {
+            if( !Directory.Exists(Environment.CurrentDirectory + @"\Dlls\") )
+                Directory.CreateDirectory(Environment.CurrentDirectory + @"\Dlls\");
+
+            using( FileStream fs = new FileStream(Environment.CurrentDirectory + @"\Dlls\cwebp.exe", FileMode.Create, FileAccess.Write) )
+            {
+                fs.Write(Properties.Resources.cwebp, 0, Properties.Resources.cwebp.Length);
+            }
         }
 
 
