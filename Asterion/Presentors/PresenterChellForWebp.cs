@@ -140,7 +140,7 @@ namespace Asterion.Presentors
 
         private void mainWindow_startConvert( object sender, EventArgs e )
         {
-            if( !isRunning )
+            if( !isRunning && ExistCwebpPFile() )
             {
                 isRunning = !isRunning;
                 chellForWebP.isRunning = isRunning;
@@ -318,6 +318,44 @@ namespace Asterion.Presentors
                 mainWindow.tb_selectedValue.Text = "0";
             }
             mainWindow.tb_selectedValue.Text += " файлов";
+        }
+
+        /// <summary>
+        /// Проверка существования cwebp.exe,
+        /// если файла нет, то создать его из ресурсов.
+        /// </summary>
+        bool ExistCwebpPFile()
+        {
+            string path = Environment.CurrentDirectory + @"\Dlls\";
+            string fullName = path + "cwebp.exe";
+
+            if( !File.Exists(fullName) || File.ReadAllBytes(fullName).Length == 0 )
+            {
+                if( !Directory.Exists(path) )
+                    Directory.CreateDirectory(path);
+
+                using( FileStream fs = new FileStream(fullName, FileMode.Create, FileAccess.Write) )
+                {
+                    fs.Write(Properties.Resources.cwebp, 0, Properties.Resources.cwebp.Length);
+                }
+                MessageBox.Show(
+                   Environment.CurrentDirectory + @"\Dlls\cwebp.exe" +
+                   " - не найден!\nФайл будет создан.", "cwebp.exe - не найден!",
+                   MessageBoxButton.OK,MessageBoxImage.Exclamation
+                                   );
+            }
+            int s = File.ReadAllBytes(fullName).Length;
+            if( !File.Exists(fullName) || File.ReadAllBytes(fullName).Length == 0)
+            {
+                MessageBox.Show(
+                  Environment.CurrentDirectory + @"\Dlls\cwebp.exe" +
+                  " - не найден!\nКонвертация не возможна!", 
+                  "cwebp.exe - не удалось создать",
+                   MessageBoxButton.OK, MessageBoxImage.Error
+                                  );
+                return false;
+            }
+            return true;
         }
     }
 }
