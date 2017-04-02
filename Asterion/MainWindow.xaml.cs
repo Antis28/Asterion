@@ -150,18 +150,10 @@ namespace Asterion
 
         private void btn_addAddress_Click( object sender, RoutedEventArgs e )
         {
-            if( File.Exists(Environment.CurrentDirectory + "WPFFolderBrowser.dll") )
-            {
-                if( cb_isDirectory.IsChecked == true )
-                    openFolderDialogEvent.Invoke(sender, e);
-                else
-                    openFileDialogToConverterEvent.Invoke(sender, e);
-            }
+            if( cb_isDirectory.IsChecked == true )
+                openFolderDialogEvent.Invoke(sender, e);
             else
-            {
-                MessageBox.Show(Environment.CurrentDirectory + "\\WPFFolderBrowser.dll"+
-                    " - не найден","Компонент не найден",MessageBoxButton.OK,MessageBoxImage.Error);
-            }
+                openFileDialogToConverterEvent.Invoke(sender, e);
         }
         public event EventHandler startConvertEvent = null;
         private void btn_convert_Click( object sender, RoutedEventArgs e )

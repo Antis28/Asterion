@@ -6,7 +6,7 @@ using System.Windows;
 using System.Collections.Generic;
 using Asterion.Models.WebP;
 using System.Windows.Controls;
-using WPFFolderBrowser;
+using WpfFolderBrowser;
 using System.IO;
 
 namespace Asterion.Presentors
@@ -293,7 +293,7 @@ namespace Asterion.Presentors
         }
         private void mainWindow_openFolderDialog( object sender, System.EventArgs e )
         {
-            var dialog = new WPFFolderBrowserDialog("Выберите каталог для обработки");
+            var dialog = new WpfFolderBrowserDialog("Выберите каталог для обработки");
             bool? result = dialog.ShowDialog();
             if( result == true )
             {
