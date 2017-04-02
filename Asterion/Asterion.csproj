@@ -56,17 +56,20 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WPFFolderBrowser, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Dlls\WPFFolderBrowser.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Dlls\WPFFolderBrowser\interop\comguids.cs" />
+    <Compile Include="Dlls\WPFFolderBrowser\interop\errorhelper.cs" />
+    <Compile Include="Dlls\WPFFolderBrowser\interop\helpers.cs" />
+    <Compile Include="Dlls\WPFFolderBrowser\interop\nativemethods.cs" />
+    <Compile Include="Dlls\WPFFolderBrowser\interop\nativetaskdialogshowstate.cs" />
+    <Compile Include="Dlls\WPFFolderBrowser\interop\shellcominterfaces.cs" />
+    <Compile Include="Dlls\WPFFolderBrowser\interop\shellwrapperdefinitions.cs" />
+    <Compile Include="Dlls\WPFFolderBrowser\library\WPFFolderBrowserDialog.cs" />
     <Compile Include="Models\WebP\ChellForWebP.cs" />
     <Compile Include="Models\WebP\ImageHeader.cs" />
     <Compile Include="Models\WebP\LogFile.cs" />
