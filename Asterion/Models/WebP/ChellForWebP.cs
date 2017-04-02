@@ -40,7 +40,7 @@ namespace Asterion.Models
         private List<string> pathToInputFiles;
 
         //------------- public -----------------------------//
-        
+
         /// <summary>
         /// Конвертация выполняется в другом потоке
         /// </summary>
@@ -274,16 +274,19 @@ namespace Asterion.Models
 
         void cmd_DataReceived( object sender, DataReceivedEventArgs e )
         {
-            try
-            {
-                using( StreamWriter sw = new StreamWriter(
-                    Environment.CurrentDirectory + @"\Log" + "\\log1.txt", true, Encoding.UTF8) )
-                {
-                    //Выводим                
-                    sw.WriteLine(e.Data);
-                    sw.Close();
-                }
-            } catch { }
+            //try
+            //{
+            //    using( StreamWriter sw = new StreamWriter(
+            //        Environment.CurrentDirectory + @"\Log" + "\\log1.txt", true, Encoding.UTF8) )
+            //    {
+            //        sw.WriteLine(new string('*', 50));
+            //        sw.WriteLine("Конвертация " + DateTime.Now);
+            //        //Выводим                
+            //        sw.WriteLine(e.Data);
+            //        sw.WriteLine(new string('*', 50));
+            //        sw.Close();
+            //    }
+            //} catch { }
         }
 
         void cmd_DataError( object sender, DataReceivedEventArgs e )
