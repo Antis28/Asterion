@@ -112,10 +112,15 @@ namespace Asterion.Presentors
             Enum.TryParse<WebPParams.Profile>(selectedProfile, true, out profileSelected);
 
             if( profileSelected == WebPParams.Profile.Custom )
+            {
                 mainWindow.g_other_settings.Visibility = Visibility.Visible;
+                mainWindow.g_quality.Visibility = Visibility.Visible;
+            }
             else
+            {
                 mainWindow.g_other_settings.Visibility = Visibility.Hidden;
-
+                mainWindow.g_quality.Visibility = Visibility.Hidden;
+            }
         }
 
         bool isRunning = false;
