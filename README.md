@@ -29,6 +29,19 @@ You can use one of many encoder tools and plugins available, but none of them ha
 - Integrate webP library
 - A lot of ‘dumb/simple code’ (this is a very simple application) so don’t use this as a reference
 
-### Resources used
-* The library was used https://github.com/McNeight/WpfFolderBrowser for the directory selection dialog.
-* The converter is located at https://developers.google.com/speed/webp/docs/precompiled.
+### Credits
+- Developed by: Antis28
+- Includes [WpfFolderBrowser](https://github.com/McNeight/WpfFolderBrowser) Library 
+- Includes [cwebp.exe](https://developers.google.com/speed/webp/download) encoding tool v.0.4.1(v.0.6.0) - Copyright (c) 2010, Google Inc
+
+### License
+
+The MIT License (MIT)
+
+Copyright (c) 2017 Antis28
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
