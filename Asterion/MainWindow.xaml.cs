@@ -161,11 +161,6 @@ namespace Asterion
             startConvertEvent.Invoke(sender, e);
         }
 
-        private void tb_addressField_DragEnter( object sender, System.Windows.DragEventArgs e )
-        {
-            System.Windows.MessageBox.Show(e.ToString());
-        }
-
         private void tb_addressField_LostFocus( object sender, RoutedEventArgs e )
         {
             presenterChellForWebp.ExistPath();
@@ -177,66 +172,16 @@ namespace Asterion
             isPercent = !isPercent;
         }
 
+        public event DragEventHandler WebpDragEnterEvent = null;        
         private void text_PreviewDragEnter( object sender, System.Windows.DragEventArgs e )
         {
-            bool isCorrect = true;
-
-            if( e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop, true) == true )
-            {
-                string[] filenames = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop, true);
-
-                foreach( string filename in filenames )
-                {
-                    if( Path.GetExtension(filename).Length == 0 )
-                    {
-
-                        isCorrect = true;
-                        break;
-
-                    }
-                    if( File.Exists(filename) == false )
-                    {
-                        isCorrect = false;
-                        break;
-                    }
-                    FileInfo info = new FileInfo(filename);
-                    if( info.Extension.ToLower() != ".txt" &&
-                        info.Extension.ToLower() != ".png" &&
-                        info.Extension.ToLower() != ".jpg" &&
-                        info.Extension.ToLower() != ".jpeg" &&
-                        info.Extension.ToLower() != ".tiff"
-                        )
-                    {
-                        isCorrect = false;
-                        break;
-                    }
-                }
-            }
-            if( isCorrect == true )
-                e.Effects = System.Windows.DragDropEffects.All;
-            else
-                e.Effects = System.Windows.DragDropEffects.None;
-            e.Handled = true;
+            WebpDragEnterEvent.Invoke(sender, e);            
         }
 
+        public event DragEventHandler WebpPreviewDropEvent = null;
         private void text_PreviewDrop( object sender, System.Windows.DragEventArgs e )
         {
-            tbx_addressField.Text = string.Empty;
-            string[] filenames = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop, true);
-            foreach( string filename in filenames )
-            {
-                if( Path.GetExtension(filename).Length != 0 )
-                {
-                    tbx_addressField.Text = Path.GetDirectoryName(filename);
-                    System.Drawing.Size size = ImageHeader.GetDimensions(filenames[0]);
-                    tbx_resolution_w.Text = size.Width.ToString();
-                    tbx_resolution_h.Text = size.Height.ToString();
-                }
-                else
-                    tbx_addressField.Text = filename;
-            }
-            e.Handled = true;
-            presenterChellForWebp.ExistPath();
+            WebpPreviewDropEvent.Invoke(sender,e);
         }
 
         private void InitializeWebPGUI()

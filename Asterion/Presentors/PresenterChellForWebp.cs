@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Asterion.Models.WebP;
 using System.Windows.Controls;
 using WPFFolderBrowser;
+using System.IO;
 
 namespace Asterion.Presentors
 {
@@ -24,6 +25,8 @@ namespace Asterion.Presentors
         ChellForWebP chellForWebP = null;
         MainWindow mainWindow = null;
 
+        string[] pathFileNames;
+
         WebPParams.Profile profileSelected;
 
         public PresenterChellForWebp( MainWindow mainWindow )
@@ -34,6 +37,70 @@ namespace Asterion.Presentors
             this.mainWindow.openFolderDialogEvent += new EventHandler(mainWindow_openFolderDialog);
             this.mainWindow.openFileDialogToConverterEvent += new EventHandler(mainWindow_openFileDialog);
             this.mainWindow.profileSelectedEvent += new EventHandler(mainWindow_profileSelected);
+            this.mainWindow.WebpDragEnterEvent += new DragEventHandler(mainWindow_WebpDragEnter);
+            this.mainWindow.WebpPreviewDropEvent += new DragEventHandler(mainWindow_WebpPreviewDrop);
+        }
+
+        private void mainWindow_WebpPreviewDrop( object sender, System.Windows.DragEventArgs e )
+        {
+            mainWindow.tbx_addressField.Text = string.Empty;
+            string[] filenames = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop, true);
+
+            if( mainWindow.cb_isDirectory.IsChecked.Value )
+            {
+                mainWindow.tbx_addressField.Text = Path.GetDirectoryName(filenames[0]);
+                System.Drawing.Size size = DevWilson.ImageHeader.GetDimensions(filenames[0]);
+                mainWindow.tbx_resolution_w.Text = size.Width.ToString();
+                mainWindow.tbx_resolution_h.Text = size.Height.ToString();
+            }
+            else
+            {
+                PathFileNames = filenames;
+                mainWindow.tbx_addressField.Text = Path.GetDirectoryName(filenames[0]);
+            }
+
+            e.Handled = true;
+            ExistPath();
+        }
+
+        private void mainWindow_WebpDragEnter( object sender, System.Windows.DragEventArgs e )
+        {
+            bool isCorrect = true;
+
+            if( e.Data.GetDataPresent(System.Windows.DataFormats.FileDrop, true) == true )
+            {
+                string[] filenames = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop, true);
+
+                foreach( string filename in filenames )
+                {
+                    if( Path.GetExtension(filename).Length == 0 )
+                    {
+                        isCorrect = true;
+                        break;
+                    }
+                    if( File.Exists(filename) == false )
+                    {
+                        isCorrect = false;
+                        break;
+                    }
+                    FileInfo info = new FileInfo(filename);
+                    if(
+                        info.Extension.ToLower() != ".png" &&
+                        info.Extension.ToLower() != ".jpg" &&
+                        info.Extension.ToLower() != ".jpeg" &&
+                        info.Extension.ToLower() != ".tiff"
+                        )
+                    {
+                        isCorrect = false;
+                        break;
+                    }
+                }
+            }
+            if( isCorrect == true )
+                e.Effects = System.Windows.DragDropEffects.All;
+            else
+                e.Effects = System.Windows.DragDropEffects.None;
+            e.Handled = true;
         }
 
         private void mainWindow_profileSelected( object sender, EventArgs e )
@@ -52,6 +119,20 @@ namespace Asterion.Presentors
         }
 
         bool isRunning = false;
+
+        public string[] PathFileNames
+        {
+            get
+            {
+                return pathFileNames;
+            }
+
+            set
+            {
+                pathFileNames = value;
+            }
+        }
+
         private void mainWindow_startConvert( object sender, EventArgs e )
         {
             if( !isRunning )
@@ -130,7 +211,7 @@ namespace Asterion.Presentors
                 // присвоение параметров из оболочки
                 chellForWebP.parameters = new WebPParams()
                 {
-                    quality = tmpQuality,                    
+                    quality = tmpQuality,
                     profile = this.profileSelected,
                     IsQuiet = !mainWindow.cb_isDebugWebp.IsChecked.Value
                 };
@@ -185,7 +266,7 @@ namespace Asterion.Presentors
 
         }
 
-        string[] PathFileNames;
+
         private void mainWindow_openFileDialog( object sender, System.EventArgs e )
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
