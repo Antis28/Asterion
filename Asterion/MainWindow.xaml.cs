@@ -150,10 +150,18 @@ namespace Asterion
 
         private void btn_addAddress_Click( object sender, RoutedEventArgs e )
         {
-            if( cb_isDirectory.IsChecked == true )
-                openFolderDialogEvent.Invoke(sender, e);
+            if( File.Exists(Environment.CurrentDirectory + "WPFFolderBrowser.dll") )
+            {
+                if( cb_isDirectory.IsChecked == true )
+                    openFolderDialogEvent.Invoke(sender, e);
+                else
+                    openFileDialogToConverterEvent.Invoke(sender, e);
+            }
             else
-                openFileDialogToConverterEvent.Invoke(sender, e);
+            {
+                MessageBox.Show(Environment.CurrentDirectory + "\\WPFFolderBrowser.dll"+
+                    " - не найден","Компонент не найден",MessageBoxButton.OK,MessageBoxImage.Error);
+            }
         }
         public event EventHandler startConvertEvent = null;
         private void btn_convert_Click( object sender, RoutedEventArgs e )
@@ -172,16 +180,16 @@ namespace Asterion
             isPercent = !isPercent;
         }
 
-        public event DragEventHandler WebpDragEnterEvent = null;        
+        public event DragEventHandler WebpDragEnterEvent = null;
         private void text_PreviewDragEnter( object sender, System.Windows.DragEventArgs e )
         {
-            WebpDragEnterEvent.Invoke(sender, e);            
+            WebpDragEnterEvent.Invoke(sender, e);
         }
 
         public event DragEventHandler WebpPreviewDropEvent = null;
         private void text_PreviewDrop( object sender, System.Windows.DragEventArgs e )
         {
-            WebpPreviewDropEvent.Invoke(sender,e);
+            WebpPreviewDropEvent.Invoke(sender, e);
         }
 
         private void InitializeWebPGUI()
@@ -218,9 +226,9 @@ namespace Asterion
 
         public event EventHandler profileSelectedEvent = null;
         private void CmbProfileSelected( object sender, System.Windows.Controls.SelectionChangedEventArgs e )
-        {            
-            profileSelectedEvent.Invoke(sender, e);            
-        }       
+        {
+            profileSelectedEvent.Invoke(sender, e);
+        }
 
         private void g_other_settings_Loaded( object sender, RoutedEventArgs e )
         {
