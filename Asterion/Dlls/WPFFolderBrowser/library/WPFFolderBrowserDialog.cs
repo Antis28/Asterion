@@ -22,7 +22,7 @@ namespace WpfFolderBrowser
 
 		private IFileDialog nativeDialog;
 		//        private IFileDialogCustomize nativeDialogCustomize;
-		private NativeDialogEventSink nativeEventSink;
+		//private NativeDialogEventSink nativeEventSink;
 		private bool? canceled;
 		private Window parentWindow;
 
