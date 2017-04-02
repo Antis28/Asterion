@@ -307,7 +307,9 @@ namespace Asterion.Presentors
             {
                 mainWindow.btn_convert.IsEnabled = true;
                 if( mainWindow.cb_isDirectory.IsChecked == true )
-                    mainWindow.tb_selectedValue.Text = System.IO.Directory.GetFiles(mainWindow.tbx_addressField.Text).Length.ToString();
+                    mainWindow.tb_selectedValue.Text =
+                        chellForWebP.FilterExtension(mainWindow.tbx_addressField.Text)
+                        .Length.ToString();
                 else
                     mainWindow.tb_selectedValue.Text = PathFileNames.Length.ToString();
             }

@@ -1,4 +1,5 @@
 ﻿#define Debug
+#define framewok_4_0
 
 using System;
 using System.Diagnostics;
@@ -7,6 +8,7 @@ using System.Threading;
 using System.IO;
 using System.Text;
 using Asterion.Models.WebP;
+using System.Linq;
 
 namespace Asterion.Models
 {
@@ -128,26 +130,15 @@ namespace Asterion.Models
         /// </summary>
         /// <param name="pathDirectory"></param>
         private void ExtractPathsFiles( string pathDirectory )
-        {
-            FileInfo[] files;
+        {            
             pathToInputFiles = new List<string>();
             if( isAllFiles )
             {
-                DirectoryInfo dir = new System.IO.DirectoryInfo(pathDirectory);
-                files = dir.GetFiles();
+                pathFileNames = FilterExtension(pathDirectory);
             }
-            else
+            foreach( var item in pathFileNames )
             {
-                int length = this.pathFileNames.Length;
-                files = new FileInfo[length];
-                for( int i = 0; i < length; i++ )
-                {
-                    files[i] = new FileInfo(this.pathFileNames[i]);
-                }
-            }
-            foreach( var item in files )
-            {
-                pathToInputFiles.Add(item.FullName);
+                pathToInputFiles.Add(item);
             }
             OnMaxValue(pathToInputFiles.Count);
         }
@@ -314,6 +305,26 @@ namespace Asterion.Models
         {
             if( CanceledConvertEvent != null )
                 CanceledConvertEvent();
+        }
+
+        public string[] FilterExtension(string pathDirectory )
+        {
+#if framewok_4_0
+            //For .NET 4.0 and later, 
+            var files = Directory.EnumerateFiles(pathDirectory, "*.*", SearchOption.TopDirectoryOnly)
+            .Where(s =>
+            s.EndsWith(".PNG", StringComparison.OrdinalIgnoreCase)
+            || s.EndsWith(".JPG", StringComparison.OrdinalIgnoreCase)
+            || s.EndsWith(".JPEG", StringComparison.OrdinalIgnoreCase)
+            || s.EndsWith(".TIFF", StringComparison.OrdinalIgnoreCase)
+            );
+#endif
+#if framewok_do_4_0
+            //For earlier versions of .NET,
+            var files = Directory.GetFiles("C:\\path", "*.*", SearchOption.AllDirectories)
+            .Where(s => s.EndsWith(".mp3") || s.EndsWith(".jpg"));
+#endif
+            return files.ToArray<string>();
         }
     }
 }
