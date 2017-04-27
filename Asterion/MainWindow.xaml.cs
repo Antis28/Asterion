@@ -7,6 +7,7 @@ using System.Windows.Interop;
 using System.IO;
 using DevWilson;
 using System.Windows.Controls;
+using ExtensionStore;
 
 namespace Asterion
 {
@@ -78,13 +79,17 @@ namespace Asterion
             sizeDiskProgressBarEvent.Invoke(sender, e);
         }
         public event EventHandler findExtInBaseDateEvent = null;
-        public event EventHandler FindExtInXMLBaseDateEvent = null;
+        public event EventHandler FindExtInXMLBaseDateEvent = null;        
         private void startSerach_Click( object sender, RoutedEventArgs e )
         {
             if( isSearchXML.IsChecked != true )
                 findExtInBaseDateEvent.Invoke(sender, e);
             else
-                FindExtInXMLBaseDateEvent.Invoke(sender, e);
+            {
+                //FindExtInXMLBaseDateEvent.Invoke(sender, e);
+                ParserManeger pm = new ParserManeger(this);
+                pm.ExtractExt();
+            }
         }
 
         public event EventHandler openFileDialogRenamerEvent = null;
