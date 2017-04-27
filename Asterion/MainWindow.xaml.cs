@@ -226,5 +226,22 @@ namespace Asterion
         {
             cmb_profile.SelectedIndex = 1;
         }
+
+        private void isSearchXML_Click( object sender, RoutedEventArgs e )
+        {
+            if( listViewExtDescription == null || sv_extOutput == null )
+                return;
+
+            if( isSearchXML.IsChecked.Value )
+            {
+                listViewExtDescription.Visibility = Visibility.Collapsed;
+                sv_extOutput.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                listViewExtDescription.Visibility = Visibility.Visible;
+                sv_extOutput.Visibility = Visibility.Collapsed;
+            }
+        }
     }
 }
