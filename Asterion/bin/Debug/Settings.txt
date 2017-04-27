@@ -1,3 +1,0 @@
-C:\Windows\temp
-C:\Users\Antis\AppData\Local\Temp\
-D:\Win_Doc_APP\Local\Microsoft\Windows\INetCache
