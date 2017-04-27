@@ -39,6 +39,9 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\..\ParserHTML\bin\Debug\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -69,6 +72,13 @@
     <Compile Include="Dlls\WPFFolderBrowser\interop\shellcominterfaces.cs" />
     <Compile Include="Dlls\WPFFolderBrowser\interop\shellwrapperdefinitions.cs" />
     <Compile Include="Dlls\WPFFolderBrowser\library\WPFFolderBrowserDialog.cs" />
+    <Compile Include="FindExtension\Data\ExtInfo.cs" />
+    <Compile Include="FindExtension\html\ExtractorLinkExt.cs" />
+    <Compile Include="FindExtension\html\HtmlString.cs" />
+    <Compile Include="FindExtension\html\ParserManeger.cs" />
+    <Compile Include="FindExtension\Xml\XmlConstructor.cs" />
+    <Compile Include="FindExtension\Xml\XmlExtractor.cs" />
+    <Compile Include="FindExtension\Xml\xmlSanitizingString.cs" />
     <Compile Include="Models\WebP\ChellForWebP.cs" />
     <Compile Include="Models\WebP\ImageHeader.cs" />
     <Compile Include="Models\WebP\LogFile.cs" />
