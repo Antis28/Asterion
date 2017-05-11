@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml;
 using System.Windows;
+using ExtensionStore.Xml;
 
 namespace ExtensionStore
 {
@@ -66,9 +67,9 @@ namespace ExtensionStore
             foreach( KeyValuePair<string, string> cat in Category.categoryes2 )
             {
                 XElement category = root.Element(cat.Key);
-                foreach( XElement item in category.Elements("ext") )
+                foreach( XElement item in category.Elements(XmlStruct.eExt) )
                 {
-                    bool condit = item.Attribute("Name").Value == word;
+                    bool condit = item.Attribute(XmlStruct.eName).Value == word;
                     if( condit )
                     {
                         foundItems.Add(item);
@@ -86,20 +87,24 @@ namespace ExtensionStore
 
                 OnComplete(extInfo);
             }
+            else
+            {
+                MessageBox.Show("Расширение " + word + " не найдено");
+            }
         }
 
         ExtInfo Extract( XElement foundItem )
         {
-            string element = "e";
-            string eName = "Name";
-            string eTypeFile = "typeFile";
-            string eRusDescription = "rusDescription";
-            string eEngDescription = "engDescription";
-            string eDetailedDescription = "detailedDescription";
-            string eInfoHeaderFile = "infoHeaderFile";
-            string eWhatOpenWindows = "WhatOpenWindows";
-            string eWhatOpenLinux = "WhatOpenLinux";
-            string eWhatOpenMac = "WhatOpenMac";
+            string element = XmlStruct.element;
+            string eName = XmlStruct.eName;
+            string eTypeFile = XmlStruct.eTypeFile;
+            string eRusDescription = XmlStruct.eRusDescription;
+            string eEngDescription = XmlStruct.eEngDescription;
+            string eDetailedDescription = XmlStruct.eDetailedDescription;
+            string eInfoHeaderFile = XmlStruct.eInfoHeaderFile;
+            string eWhatOpenWindows = XmlStruct.eWhatOpenWindows;
+            string eWhatOpenLinux = XmlStruct.eWhatOpenLinux;
+            string eWhatOpenMac = XmlStruct.eWhatOpenMac;
 
             ExtInfo extInfo = new ExtInfo()
             {

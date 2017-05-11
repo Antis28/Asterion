@@ -29,9 +29,9 @@ namespace ExtensionStore
         public void Parse()
         {
 
-            //linkTypes = mainWindow.tb_genLinks.Text;
-            //linkFormats = mainWindow.tb_allLinks.Text;
-            //formats = mainWindow.tb_allExtension.Text;            
+            linkTypes = mainWindow.tb_genLinks.Text;
+            linkFormats = mainWindow.tb_allLinks.Text;
+            formats = mainWindow.tb_allExtension.Text;
 
             Encoding codePage = Encoding.GetEncoding(1251);
 
@@ -109,34 +109,20 @@ namespace ExtensionStore
             XmlConstructor constructor = new XmlConstructor();
             foreach( var item in extList )
             {
+                if( item == null )
+                    continue;
                 constructor.AddToCategory(item);
             }
+
             constructor.Close();
         }
 
         private void Extractor_ChangeValueExtParseEvent()
         {
-            //mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-            //      (Action)delegate
-            //      {
-            //          mainWindow.pb_allExtension.Value += 1;
-            //          mainWindow.tb_allExtension.Text =
-            //                        formats
-            //                        + mainWindow.pb_allExtension.Value
-            //                        + " из "
-            //                        + mainWindow.pb_allExtension.Maximum;
-            //      });
         }
 
         private void Extractor_MaxValueExtParseEvent( int obj )
         {
-            //mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-            //       (Action)delegate
-            //       {
-            //           mainWindow.tb_allExtension.Text = formats + obj;
-            //           mainWindow.pb_allExtension.Maximum = obj;
-            //           mainWindow.pb_allExtension.Value = 0;
-            //       });
         }
 
         private void Extractor_CompleteAllLinkParseEvent( Dictionary<string, List<string>> obj )
@@ -146,45 +132,17 @@ namespace ExtensionStore
 
         private void Extractor_ChangeValueAllEvent()
         {
-            //mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-            //       (Action)delegate
-            //       {
-            //           mainWindow.pb_allLinks.Value += 1;
-            //           mainWindow.tb_allLinks.Text =
-            //                        linkFormats 
-            //                        + mainWindow.pb_allLinks.Value
-            //                        + " из "
-            //                        + mainWindow.pb_allLinks.Maximum;
-            //       });
         }
 
         private void Extractor_MaxValueAllEvent( int obj )
         {
-            //mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-            //       (Action)delegate
-            //       {
-            //           mainWindow.tb_allLinks.Text = linkTypes + obj;
-            //           mainWindow.pb_allLinks.Maximum = obj;
-            //           mainWindow.pb_allLinks.Value = 0;
-            //       });
         }
 
         private void Extractor_ChangeValueGeneralEvent()
         {
-            //mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-            //       (Action)delegate
-            //       {
-            //           mainWindow.pb_genLinks.Value += 1;
-            //       });
         }
         private void Extractor_MaxValueGeneralEvent( int obj )
         {
-            //mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
-            //       (Action)delegate
-            //       {
-            //           mainWindow.tb_genLinks.Text = linkTypes + obj; 
-            //           mainWindow.pb_genLinks.Maximum = obj;
-            //       });
         }
 
         private void Extractor_CompleteConvertEvent( Dictionary<string, string> obj )
@@ -192,10 +150,6 @@ namespace ExtensionStore
             mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                     (Action)delegate
                     {
-                        //foreach( KeyValuePair<string, string> item in obj )
-                        //{
-                        //    mainWindow.listBox.Items.Add(item.Key);
-                        //}
                     });
         }
 
@@ -204,18 +158,6 @@ namespace ExtensionStore
             mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                     (Action)delegate
                     {
-                        //mainWindow.listBox.Items.Add(obj.Name);
-                        //mainWindow.listBox.Items.Add(obj.Header);
-                        //mainWindow.listBox.Items.Add(obj.TypeFile);
-
-                        //mainWindow.listBox.Items.Add(obj.RusDescription);
-                        //mainWindow.listBox.Items.Add(obj.EngDescription);
-
-                        //mainWindow.listBox.Items.Add(obj.InfoHeaderFile);
-                        //foreach( var item in obj.WhatOpenWindows )
-                        //{
-                        //    mainWindow.listBox.Items.Add(item);
-                        //}
 
                     });
         }

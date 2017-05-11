@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml;
+using ExtensionStore.Xml;
 
 namespace ExtensionStore
 {
@@ -65,9 +66,9 @@ namespace ExtensionStore
                     if( category != null )
                     {
                         // ищем в xml полученое разрешение
-                        foreach( var item in category.Elements("ext") )
+                        foreach( var item in category.Elements(XmlStruct.eExt) )
                         {
-                            bool coincidence = item.Attribute("Name").Value == itemExt.Name;
+                            bool coincidence = item.Attribute(XmlStruct.eName).Value == itemExt.Name;
                             // если xml уже есть такое расширение
                             if( coincidence )
                             {
@@ -185,16 +186,16 @@ namespace ExtensionStore
         /// <param name="xmlTWriter"></param>
         void AddNewExtension( ExtInfo itemExt, XmlWriter xmlTWriter )
         {
-            string element = "e";
-            string eName = "Name";
-            string eTypeFile = "typeFile";
-            string eRusDescription = "rusDescription";
-            string eEngDescription = "engDescription";
-            string eDetailedDescription = "detailedDescription";
-            string eInfoHeaderFile = "infoHeaderFile";
-            string eWhatOpenWindows = "WhatOpenWindows";
-            string eWhatOpenLinux = "WhatOpenLinux";
-            string eWhatOpenMac = "WhatOpenMac";
+            string element = XmlStruct.element;
+            string eName = XmlStruct.eName;
+            string eTypeFile = XmlStruct.eTypeFile;
+            string eRusDescription = XmlStruct.eRusDescription;
+            string eEngDescription = XmlStruct.eEngDescription;
+            string eDetailedDescription = XmlStruct.eDetailedDescription;
+            string eInfoHeaderFile = XmlStruct.eInfoHeaderFile;
+            string eWhatOpenWindows = XmlStruct.eWhatOpenWindows;
+            string eWhatOpenLinux = XmlStruct.eWhatOpenLinux;
+            string eWhatOpenMac = XmlStruct.eWhatOpenMac;
 
             xmlTWriter.WriteStartElement("ext");
             {
@@ -255,7 +256,7 @@ namespace ExtensionStore
             XAttribute attr;
             bool coincidence;
 
-            attr = element.Attribute("detailedDescription");
+            attr = element.Attribute(XmlStruct.eDetailedDescription);
             coincidence = attr.Value == itemExt.DetailedDescription;
             if( !coincidence )
             {
