@@ -79,6 +79,7 @@
     <Compile Include="FindExtension\Xml\XmlConstructor.cs" />
     <Compile Include="FindExtension\Xml\XmlExtractor.cs" />
     <Compile Include="FindExtension\Xml\xmlSanitizingString.cs" />
+    <Compile Include="FindExtension\Xml\XmlStruct.cs" />
     <Compile Include="Models\WebP\ChellForWebP.cs" />
     <Compile Include="Models\WebP\ImageHeader.cs" />
     <Compile Include="Models\WebP\LogFile.cs" />
