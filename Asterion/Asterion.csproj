@@ -39,9 +39,6 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AntisLib">
-      <HintPath>..\..\Обучение\Education\AntisLib\bin\Debug\AntisLib.dll</HintPath>
-    </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\ParserHTML\bin\Debug\HtmlAgilityPack.dll</HintPath>
     </Reference>
@@ -67,6 +64,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ConvertSRTtoTXT\ModelSRTtoTXT.cs" />
     <Compile Include="ConvertSRTtoTXT\PresenterSRTtoTXT.cs" />
     <Compile Include="Dlls\WPFFolderBrowser\interop\comguids.cs" />
     <Compile Include="Dlls\WPFFolderBrowser\interop\errorhelper.cs" />

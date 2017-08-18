@@ -146,7 +146,7 @@ namespace Asterion
             Asterion.Models.LogicLogOutTrack LOT = new Asterion.Models.LogicLogOutTrack();
             LOT.hwndSource = PresentationSource.FromVisual(this) as HwndSource;
             // и устанавливаем перехватчик
-            LOT.hwndSource.AddHook(LOT.WndProc);
+            //LOT.hwndSource.AddHook(LOT.WndProc);
             // logOutTrackEvent - ?
             if( e.ToString() == "" )
                 logOutTrackEvent.Invoke(this, e);
@@ -262,6 +262,11 @@ namespace Asterion
                 srtOpenFolderDialogEvent.Invoke(sender, e);
             else
                 srtOpenFileDialogEvent.Invoke(sender, e);
+        }
+        public event EventHandler srtStartConvertEvent = null;
+        private void btn_srtconvert_Click( object sender, RoutedEventArgs e )
+        {
+            srtStartConvertEvent.Invoke(sender, e);
         }
     }
 }
