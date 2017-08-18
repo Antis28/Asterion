@@ -8,6 +8,7 @@ using System.IO;
 using DevWilson;
 using System.Windows.Controls;
 using ExtensionStore;
+using Asterion.ConvertSRTtoTXT;
 
 namespace Asterion
 {
@@ -29,6 +30,7 @@ namespace Asterion
             new PresenterFindExt(this);
             new PresenterRenamer(this);
             new PresenterFindExtInXMLBaseDate(this);
+            new PresenterSRTtoTXT(this);
             presenterChellForWebp = presenterChellForWebp ?? new PresenterChellForWebp(this);
 
             InitializeWebPGUI();
@@ -247,6 +249,19 @@ namespace Asterion
                 listViewExtDescription.Visibility = Visibility.Visible;
                 sv_extOutput.Visibility = Visibility.Collapsed;
             }
+        }
+        // **************************************************************************** //
+        //                                  srt to txt                                                
+        // **************************************************************************** //
+
+        public event EventHandler srtOpenFolderDialogEvent = null;
+        public event EventHandler srtOpenFileDialogEvent = null;
+        private void btn_srtOpenAddress_Click( object sender, RoutedEventArgs e )
+        {
+            if( cb_srtIsDirectory.IsChecked == true )
+                srtOpenFolderDialogEvent.Invoke(sender, e);
+            else
+                srtOpenFileDialogEvent.Invoke(sender, e);
         }
     }
 }

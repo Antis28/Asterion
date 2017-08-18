@@ -29,9 +29,9 @@ namespace ExtensionStore
         public void Parse()
         {
 
-            linkTypes = mainWindow.tb_genLinks.Text;
-            linkFormats = mainWindow.tb_allLinks.Text;
-            formats = mainWindow.tb_allExtension.Text;
+            //linkTypes = mainWindow.tb_genLinks.Text;
+            //linkFormats = mainWindow.tb_allLinks.Text;
+            //formats = mainWindow.tb_allExtension.Text;
 
             Encoding codePage = Encoding.GetEncoding(1251);
 

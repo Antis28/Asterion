@@ -15,6 +15,47 @@
         </Grid.RowDefinitions >
         <!--   Контент  для Tab элементов -->
         <TabControl Grid.Row="1" >
+            <TabItem Header="Конвертер SRT to TXT">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="276*"/>
+                        <ColumnDefinition Width="179*"/>
+                        <ColumnDefinition Width="19*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Name="jjjj" Grid.Row="0" Grid.Column="0"  Grid.ColumnSpan="2">
+                        <TextBlock  x:Name="tb_percentSRTConvert" Text="0 / 100%" Grid.Row="0"  Margin="0,15,0,0" VerticalAlignment="Top" HorizontalAlignment="Center" Panel.ZIndex="1" Foreground="#FF00033A" />
+                        <ProgressBar x:Name="pb_percentSRTConvert" Grid.Row="0" Height="25" Margin="50,10,21,0" VerticalAlignment="Top"  FontWeight="Bold" Background="#FFEEEEEE" BorderBrush="#FF4B004B" Foreground="#FF98FF68" MouseUp="pb_percentConvert_MouseUp"/>
+                    </Grid>
+                    <Grid  Name="g_srtSelect" Grid.Row="2"  Grid.Column="0"  Grid.ColumnSpan="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="276*"/>
+                            <ColumnDefinition Width="179*"/>
+                            <ColumnDefinition Width="19*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="tbx_srtAddressField"  HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" 
+                             Text="Адрес каталога" VerticalAlignment="Top" Width="205" LostFocus="tb_addressField_LostFocus"
+                             Grid.Column="0"
+                             BorderBrush="Green" BorderThickness="1"
+                             AllowDrop="True" AcceptsReturn="True"
+                             PreviewDragEnter="text_PreviewDragEnter"
+                             PreviewDragOver="text_PreviewDragEnter"
+                             PreviewDrop="text_PreviewDrop"                             
+                             />
+                        <Button x:Name="btn_srtOpenAddress" Content="..." Grid.Column="1" HorizontalAlignment="Left" Margin="19,13,0,0" VerticalAlignment="Top" Width="37" Click="btn_srtOpenAddress_Click" Height="20"/>
+                        <Button x:Name="btn_srtConvert" Content="Начать" Grid.Column="1" HorizontalAlignment="Left" Margin="66,13,0,0" VerticalAlignment="Top" Width="80" Click="btn_convert_Click" IsEnabled="False" Height="20"/>
+                        <CheckBox x:Name="cb_srtIsDirectory" Content="Выбрать каталог" Grid.Column="1" HorizontalAlignment="Left" Margin="19,49,0,0" VerticalAlignment="Top" IsChecked="True" Height="15" Width="111"/>
+
+                        <TextBlock Text="Выбрано :" HorizontalAlignment="Left" TextWrapping="Wrap"  VerticalAlignment="Top" Margin="19,72,0,0" Grid.Column="1" Height="16" Width="55"/>
+                        <TextBlock x:Name="tb_srtSelectedValue" Text="0"  Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Margin="80,72,0,0" Height="16"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
             <TabItem Header="Конвертер WebP">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -149,6 +190,7 @@
 
                 </Grid>
             </TabItem>
+            
             <TabItem Header="Поиск по расширению">
                 <Grid ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
                     <Grid.RowDefinitions>
