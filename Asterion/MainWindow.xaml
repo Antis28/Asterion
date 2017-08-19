@@ -38,15 +38,17 @@
                             <ColumnDefinition Width="179*"/>
                             <ColumnDefinition Width="19*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBox x:Name="tbx_srtAddressField"  HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" 
+                        <TextBox x:Name="tbx_srtAddressField" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" 
                              Text="Адрес каталога" VerticalAlignment="Top" Width="205" LostFocus="tb_addressField_LostFocus"
-                             Grid.Column="0"
+
                              BorderBrush="Green" BorderThickness="1"
                              AllowDrop="True" AcceptsReturn="True"
                              PreviewDragEnter="text_PreviewDragEnter"
                              PreviewDragOver="text_PreviewDragEnter"
                              PreviewDrop="text_PreviewDrop"                             
                              />
+                        <RadioButton x:Name="rb_srtToText" Content="в текст" Margin="50,49,0,0" HorizontalAlignment="Left"  Grid.Row="2" VerticalAlignment="Top" Width="100" IsChecked="True"/>
+                        <RadioButton x:Name="rb_textToSrt" Content="в srt" Margin="150,49,0,0" HorizontalAlignment="Left"  Grid.Row="2" VerticalAlignment="Top" Width="100"/>
                         <Button x:Name="btn_srtOpenAddress" Content="..." Grid.Column="1" HorizontalAlignment="Left" Margin="19,13,0,0" VerticalAlignment="Top" Width="37" Click="btn_srtOpenAddress_Click" Height="20"/>
                         <Button x:Name="btn_srtConvert" Content="Начать" Grid.Column="1" HorizontalAlignment="Left" Margin="66,13,0,0" VerticalAlignment="Top" Width="80" Click="btn_srtconvert_Click" IsEnabled="False" Height="20"/>
                         <CheckBox x:Name="cb_srtIsDirectory" Content="Выбрать каталог" Grid.Column="1" HorizontalAlignment="Left" Margin="19,49,0,0" VerticalAlignment="Top" IsChecked="True" Height="15" Width="111"/>
@@ -375,7 +377,6 @@
             </MenuItem>
             <MenuItem x:Name="Settings" Header="Настройки" ></MenuItem>
         </Menu>
-
 
     </Grid>
 </Window>

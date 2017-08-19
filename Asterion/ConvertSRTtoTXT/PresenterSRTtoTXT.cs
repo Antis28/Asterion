@@ -129,8 +129,14 @@ namespace Asterion.ConvertSRTtoTXT
                     modelSRTtoTXT.SwitchOnAllFiles();
                 else
                     modelSRTtoTXT.SwitchOnSelectedFiles(PathFileNames);
+                if( mainWindow.rb_srtToText.IsChecked.Value )
+                {
+                    modelSRTtoTXT.BeginConvertSrtToTxt(mainWindow.tbx_srtAddressField.Text);
+                }else if( mainWindow.rb_textToSrt.IsChecked.Value )
+                {
+                    modelSRTtoTXT.BeginConvertTxtToSrt(mainWindow.tbx_srtAddressField.Text);
+                }
 
-                modelSRTtoTXT.BeginStartConvert(mainWindow.tbx_srtAddressField.Text);
             }
             else
             {

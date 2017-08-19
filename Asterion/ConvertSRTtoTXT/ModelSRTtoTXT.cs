@@ -18,6 +18,8 @@ namespace Asterion.ConvertSRTtoTXT
         private string[] pathFileNames;
         private string pathDirectory;
         private List<string> pathToInputFiles;
+        enum TypeConvert { SRT, TEXT };
+        TypeConvert TargetType = TypeConvert.SRT;
 
         // Объявляем событие
         public event Action ChangeValueEvent;
@@ -44,12 +46,22 @@ namespace Asterion.ConvertSRTtoTXT
             isAllFiles = false;
         }
 
-        public void BeginStartConvert( string pathDirectory )
+        public void BeginConvertSrtToTxt( string pathDirectory )
         {
             this.pathDirectory = pathDirectory;
             Thread backgroundThread = new Thread(new ThreadStart(Start));
             backgroundThread.Name = "SrtToTxt";
             backgroundThread.IsBackground = true;
+            TargetType = TypeConvert.TEXT;
+            backgroundThread.Start();
+        }
+        public void BeginConvertTxtToSrt( string pathDirectory )
+        {
+            this.pathDirectory = pathDirectory;
+            Thread backgroundThread = new Thread(new ThreadStart(Start));
+            backgroundThread.Name = "TxtToSrt";
+            backgroundThread.IsBackground = true;
+            TargetType = TypeConvert.SRT;
             backgroundThread.Start();
         }
         //------------- private -----------------------------//
@@ -57,35 +69,46 @@ namespace Asterion.ConvertSRTtoTXT
         {
             ExtractPathsFiles(pathDirectory); // получить адреса файлов
             string path = pathToInputFiles[0];
-            string text = ReadFromSrtFile(path);
-            WriteToTextFile(path, text);
-            WriteToSrtFile(path);
+
+            if( TargetType == TypeConvert.TEXT )
+            {
+                string text = ReadFromSrtFile(path);
+                WriteToTextFile(path, text);
+            }
+            else if( TargetType == TypeConvert.SRT )
+            {
+                WriteToSrtFile(path);
+            }
+
 
         }
 
-        private void WriteToSrtFile( string writePath )
+        private void WriteToSrtFile( string originalFilePath )
         {
-            string readPath = string.Empty;
+            string tempFilePath = string.Empty;
             string text = string.Empty;
-            string fileName = string.Empty;
-            string FullFileName = string.Empty;
-            string folderName = string.Empty;
+            string resultFileName = string.Empty;            
+            string directoryName = string.Empty;
+            string tempNameFile = string.Empty;
 
-            readPath = Path.GetFileNameWithoutExtension(writePath) + ".txt";
-            fileName = Path.GetFileNameWithoutExtension(writePath);
-            folderName = Path.GetDirectoryName(writePath);
-            FullFileName = folderName + "\\" + fileName + "-ru.srt";
+            directoryName = Path.GetDirectoryName(originalFilePath);
+
+            tempNameFile = Path.GetFileNameWithoutExtension(originalFilePath) + ".txt";
+            tempFilePath = directoryName + "\\" + tempNameFile;
+
+            resultFileName = Path.GetFileNameWithoutExtension(originalFilePath);            
+            resultFileName = directoryName + "\\" + resultFileName + "-ru.srt";
             int counter = 1;
 
             Regex rxTime = new Regex(@"\d+:\d+"); // 00:00
             Regex rxNum = new Regex(@"^\d+"); // 00
             try
             {   // Open the text file using a stream reader.
-                using( StreamWriter swResult = new StreamWriter(File.Create(FullFileName), System.Text.Encoding.UTF8) )
+                using( StreamWriter swResult = new StreamWriter(File.Create(resultFileName), System.Text.Encoding.UTF8) )
                 {
-                    using( StreamReader srOriginal = new StreamReader(writePath, System.Text.Encoding.UTF8) )
+                    using( StreamReader srOriginal = new StreamReader(originalFilePath, System.Text.Encoding.UTF8) )
                     {
-                        using( StreamReader srSource = new StreamReader(readPath, System.Text.Encoding.UTF8) )
+                        using( StreamReader srSource = new StreamReader(tempFilePath, System.Text.Encoding.UTF8) )
                         {
                             while( true )
                             {
@@ -126,12 +149,15 @@ namespace Asterion.ConvertSRTtoTXT
 
         private void WriteToTextFile( string writePath, string text )
         {
-            writePath = Path.GetFileNameWithoutExtension(writePath) + ".txt";
+            string directoryName = Path.GetDirectoryName(writePath);
+            string tempNameFile = Path.GetFileNameWithoutExtension(writePath) + ".txt";
+            writePath = directoryName + "\\" + tempNameFile;
+
             try
             {
                 using( StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.UTF8) )
                 {
-                    sw.WriteLine(text);
+                    sw.Write(text);
                 }
             } catch( Exception e )
             {
