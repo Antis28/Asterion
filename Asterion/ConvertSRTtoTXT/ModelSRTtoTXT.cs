@@ -28,14 +28,26 @@ namespace Asterion.ConvertSRTtoTXT
         public event Action<int> MaxValueEvent;
         public event Action CompleteConvertEvent;
         public event Action CanceledConvertEvent;
-        //------------- public methods -----------------------------//
-        /// <summary>
-        /// Обрабатываются все файлы в папке
-        /// </summary>
-        public void SwitchOnAllFiles()
+
+        private void OnCompleteConvert()
         {
-            pathFileNames = null;
-            isAllFiles = true;
+            if( CompleteConvertEvent != null )
+                CompleteConvertEvent();
+        }
+        private void OnChangeValueEvent()
+        {
+            if( ChangeValueEvent != null )
+                ChangeValueEvent();
+        }
+        private void OnMaxValueEvent( int value)
+        {
+            if( MaxValueEvent != null )
+                MaxValueEvent(value);
+        }
+        private void OnCanceledConvertEvent()
+        {
+            if( CanceledConvertEvent != null )
+                CanceledConvertEvent();
         }
         #endregion
         #region public methods
@@ -105,6 +117,7 @@ namespace Asterion.ConvertSRTtoTXT
                     WriteToSrtFile(path);
                 }
             }
+            OnCompleteConvert();
         }
 
         private void WriteToSrtFile( string originalFilePath )
