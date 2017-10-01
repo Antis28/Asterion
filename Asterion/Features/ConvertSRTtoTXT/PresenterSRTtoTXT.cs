@@ -46,20 +46,10 @@ namespace Asterion.ConvertSRTtoTXT
             this.mainWindow = mainWindow;
             this.mainWindow.srtStartConvertEvent += new EventHandler(mainWindow_startConvert);
             this.mainWindow.srtOpenFolderDialogEvent += new EventHandler(mainWindow_openFolderDialog);
-            this.mainWindow.srtOpenFileDialogEvent += new EventHandler(mainWindow_openFileDialog);            
-            this.mainWindow.WebpDragEnterEvent += new DragEventHandler(mainWindow_WebpDragEnter);
-            this.mainWindow.WebpPreviewDropEvent += new DragEventHandler(mainWindow_WebpPreviewDrop);
+            this.mainWindow.srtOpenFileDialogEvent += new EventHandler(mainWindow_openFileDialog);
         }
         // ***************************************************** //
-        #region Window Handlers
-        private void mainWindow_WebpPreviewDrop( object sender, DragEventArgs e )
-        {
-            throw new NotImplementedException();
-        }
-        private void mainWindow_WebpDragEnter( object sender, DragEventArgs e )
-        {
-            throw new NotImplementedException();
-        }
+        #region Window Handlers        
         private void mainWindow_openFileDialog( object sender, System.EventArgs e )
         {
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
@@ -110,38 +100,42 @@ namespace Asterion.ConvertSRTtoTXT
             mainWindow.tb_srtSelectedValue.Text += " файлов";
         }
 
-        
-
         private void mainWindow_startConvert( object sender, EventArgs e )
         {
-            if( !isRunning )
-            {
-                isRunning = !isRunning;
-                modelSRTtoTXT.isRunning = isRunning;
-                mainWindow.btn_srtConvert.Content = ButtonsName.STOP;
-                
-                // Добавляем обработчик события             
-                modelSRTtoTXT.MaxValueEvent += onInitialValue;
-                modelSRTtoTXT.ChangeValueEvent += onChangeIndicator;
-                modelSRTtoTXT.CompleteConvertEvent += onCompleteConvert;
-                modelSRTtoTXT.CanceledConvertEvent += onCanceledConvert;
-
-                if( !mainWindow.cb_srtIsDirectory.IsChecked.Value )
-                    modelSRTtoTXT.SetSelectedFiles(PathFileNames);
-                if( mainWindow.rb_srtToText.IsChecked.Value )
-                {
-                    modelSRTtoTXT.BeginConvertSrtToTxt(mainWindow.tbx_srtAddressField.Text);
-                }else if( mainWindow.rb_textToSrt.IsChecked.Value )
-                {
-                    modelSRTtoTXT.BeginConvertTxtToSrt(mainWindow.tbx_srtAddressField.Text);
-                }
-
-            }
-            else
+            if( isRunning )
             {
                 isRunning = !isRunning;
                 mainWindow.btn_srtConvert.Content = ButtonsName.START;
                 modelSRTtoTXT.isRunning = false;
+                return;
+            }
+
+            isRunning = !isRunning;
+            modelSRTtoTXT.isRunning = isRunning;
+            mainWindow.btn_srtConvert.Content = ButtonsName.STOP;
+
+            // Добавляем обработчики события             
+            modelSRTtoTXT.MaxValueEvent += onInitialValue;
+            modelSRTtoTXT.ChangeValueEvent += onChangeIndicator;
+            modelSRTtoTXT.CompleteConvertEvent += onCompleteConvert;
+            modelSRTtoTXT.CanceledConvertEvent += onCanceledConvert;
+
+            if( mainWindow.rb_srtToText.IsChecked.Value )
+            {
+                string addresToDirectory = mainWindow.tbx_srtAddressField.Text;
+                if( mainWindow.cb_srtIsDirectory.IsChecked.Value )
+                    modelSRTtoTXT.BeginConvertSrtToTxt(addresToDirectory);
+                else
+                    modelSRTtoTXT.BeginConvertSrtToTxt(PathFileNames);
+
+            }
+            else if( mainWindow.rb_textToSrt.IsChecked.Value )
+            {
+                string addresToDirectory = mainWindow.tbx_srtAddressField.Text;
+                if( mainWindow.cb_srtIsDirectory.IsChecked.Value )
+                    modelSRTtoTXT.BeginConvertTxtToSrt(addresToDirectory);
+                else
+                    modelSRTtoTXT.BeginConvertTxtToSrt(PathFileNames);
             }
         }
         #endregion
@@ -154,17 +148,30 @@ namespace Asterion.ConvertSRTtoTXT
 
         private void onCompleteConvert()
         {
-            mainWindow.btn_srtConvert.Content = ButtonsName.START;
+            mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                      (Action)delegate
+                      {
+                          mainWindow.btn_srtConvert.Content = ButtonsName.START;
+                      });
         }
 
         private void onChangeIndicator()
         {
-            throw new NotImplementedException();
+            mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                       (Action)delegate
+                       {
+                           mainWindow.pb_percentSRTConvert.Value += 1;
+                       });
         }
 
-        private void onInitialValue( int obj )
+        private void onInitialValue( int value )
         {
-            throw new NotImplementedException();
+            mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
+                       (Action)delegate
+                       {
+                           mainWindow.pb_percentSRTConvert.Value = 0;
+                           mainWindow.pb_percentSRTConvert.Maximum = value;
+                       });
         }
         #endregion
         // ***************************************************** //

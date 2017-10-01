@@ -64,8 +64,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ConvertSRTtoTXT\ModelSRTtoTXT.cs" />
-    <Compile Include="ConvertSRTtoTXT\PresenterSRTtoTXT.cs" />
+    <Compile Include="Features\ConvertSRTtoTXT\ModelSRTtoTXT.cs" />
+    <Compile Include="Features\ConvertSRTtoTXT\PresenterSRTtoTXT.cs" />
     <Compile Include="Dlls\WPFFolderBrowser\interop\comguids.cs" />
     <Compile Include="Dlls\WPFFolderBrowser\interop\errorhelper.cs" />
     <Compile Include="Dlls\WPFFolderBrowser\interop\helpers.cs" />
@@ -82,13 +82,13 @@
     <Compile Include="FindExtension\Xml\XmlExtractor.cs" />
     <Compile Include="FindExtension\Xml\xmlSanitizingString.cs" />
     <Compile Include="FindExtension\Xml\XmlStruct.cs" />
-    <Compile Include="Models\WebP\ChellForWebP.cs" />
-    <Compile Include="Models\WebP\ImageHeader.cs" />
-    <Compile Include="Models\WebP\LogFile.cs" />
-    <Compile Include="Models\WebP\WebPParams.cs" />
+    <Compile Include="Features\WebP\ChellForWebP.cs" />
+    <Compile Include="Features\WebP\ImageHeader.cs" />
+    <Compile Include="Features\WebP\LogFile.cs" />
+    <Compile Include="Features\WebP\WebPParams.cs" />
     <Compile Include="Models\LogicFindExtInXMLBaseDate.cs" />
     <Compile Include="Models\LogicLogOutTrack.cs" />
-    <Compile Include="Presentors\PresenterChellForWebp.cs" />
+    <Compile Include="Features\WebP\PresenterChellForWebp.cs" />
     <Compile Include="Presentors\PresenterFindExtInXMLBaseDate.cs" />
     <Compile Include="Presentors\PresentorLogOutTrack.cs" />
     <Compile Include="UIHelpers\ButtonsName.cs" />

@@ -39,10 +39,11 @@ namespace Asterion.ConvertSRTtoTXT
             if( ChangeValueEvent != null )
                 ChangeValueEvent();
         }
-        private void OnMaxValueEvent( int value)
+        private void OnMaxValueEvent( int value )
         {
             if( MaxValueEvent != null )
                 MaxValueEvent(value);
+            Thread.Sleep(100);
         }
         private void OnCanceledConvertEvent()
         {
@@ -55,13 +56,17 @@ namespace Asterion.ConvertSRTtoTXT
         /// <summary>
         /// Обрабатываются только выбранные файлы в папке
         /// </summary>
-        /// <param name="pathFileNames"></param>
-        public void SetSelectedFiles( string[] pathFileNames )
+        /// <param name="pathFileNames"></param>        
+        public void BeginConvertSrtToTxt( string[] pathFileNames )
         {
             this.pathFileNames = pathFileNames;
             isAllFiles = false;
+            BeginConvertSrtToTxt(Path.GetDirectoryName(pathFileNames[0]));
         }
-
+        /// <summary>
+        /// Обрабатываются все файлы в папке
+        /// </summary>
+        /// <param name="pathFileNames"></param>   
         public void BeginConvertSrtToTxt( string pathDirectory )
         {
             this.pathDirectory = pathDirectory;
@@ -71,6 +76,20 @@ namespace Asterion.ConvertSRTtoTXT
             TargetType = TypeConvert.TEXT;
             backgroundThread.Start();
         }
+        /// <summary>
+        /// Обрабатываются только выбранные файлы в папке
+        /// </summary>
+        /// <param name="pathFileNames"></param>
+        public void BeginConvertTxtToSrt( string[] pathFileNames )
+        {
+            this.pathFileNames = pathFileNames;
+            isAllFiles = false;
+            BeginConvertTxtToSrt(Path.GetDirectoryName(pathFileNames[0]));
+        }
+        /// <summary>
+        /// Обрабатываются все файлы в папке
+        /// </summary>
+        /// <param name="pathFileNames"></param>   
         public void BeginConvertTxtToSrt( string pathDirectory )
         {
             this.pathDirectory = pathDirectory;
@@ -108,6 +127,7 @@ namespace Asterion.ConvertSRTtoTXT
                 {
                     string text = ReadFromSrtFile(path);
                     WriteToTextFile(path, text);
+                    OnChangeValueEvent();
                 }
             }
             else if( TargetType == TypeConvert.SRT )
@@ -115,7 +135,12 @@ namespace Asterion.ConvertSRTtoTXT
                 foreach( string path in pathToInputFiles )
                 {
                     WriteToSrtFile(path);
+                    OnChangeValueEvent();
                 }
+            }
+            else
+            {
+                OnCanceledConvertEvent();
             }
             OnCompleteConvert();
         }
@@ -130,11 +155,11 @@ namespace Asterion.ConvertSRTtoTXT
             //int counter = 1;
             try
             {   // Open the text file using a stream reader.
-                using( StreamWriter swResult = new StreamWriter(File.Create(NameSrtFile), System.Text.Encoding.UTF8) )
+                using( StreamWriter srtTarget = new StreamWriter(File.Create(NameSrtFile), System.Text.Encoding.UTF8) )
                 {
                     using( StreamReader srOriginal = new StreamReader(originalFilePath, System.Text.Encoding.UTF8) )
                     {
-                        using( StreamReader srSource = new StreamReader(PathTxtFile, System.Text.Encoding.UTF8) )
+                        using( StreamReader txtSource = new StreamReader(PathTxtFile, System.Text.Encoding.UTF8) )
                         {
                             while( true )
                             {
@@ -147,10 +172,14 @@ namespace Asterion.ConvertSRTtoTXT
                                 if( originalText == string.Empty )
                                     continue;
                                 // Cтрока начинается с цифры
-                                if( StartNumber(swResult, originalText) )
+                                if( StartNumber(srtTarget, originalText) )
                                     continue;
+                                // Не с таймкода - просто записать в файл
+                                if( !StartWithTimeCode(srtTarget, txtSource, originalText) )
+                                {
+                                    srtTarget.WriteLine(txtSource.ReadLine());
+                                }
 
-                                StartWithTimeCode(swResult, srSource, originalText);
                             }
                         }
                     }
@@ -161,15 +190,15 @@ namespace Asterion.ConvertSRTtoTXT
             }
         }
 
-        private void WriteToTextFile( string writePath, string text )
+        private void WriteToTextFile( string txtPath, string text )
         {
-            string directoryName = Path.GetDirectoryName(writePath);
-            string tempNameFile = Path.GetFileNameWithoutExtension(writePath) + ".txt";
-            writePath = directoryName + "\\" + tempNameFile;
+            string directoryName = Path.GetDirectoryName(txtPath);
+            string txtNameFile = Path.GetFileNameWithoutExtension(txtPath) + ".txt";
+            txtPath = directoryName + "\\" + txtNameFile;
 
             try
             {
-                using( StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.UTF8) )
+                using( StreamWriter sw = new StreamWriter(txtPath, false, System.Text.Encoding.UTF8) )
                 {
                     sw.Write(text);
                 }
@@ -232,25 +261,23 @@ namespace Asterion.ConvertSRTtoTXT
             {
                 pathToInputFiles.Add(item);
             }
-            //OnMaxValue(pathToInputFiles.Count);
+            OnMaxValueEvent(pathToInputFiles.Count);
         }
 
-        private void StartWithTimeCode( StreamWriter srtTarget,
-                                                StreamReader srtSource,
+        private bool StartWithTimeCode( StreamWriter srtTarget,
+                                                StreamReader txtSource,
                                                 string text )
         {
             Regex rxTime = new Regex(@"^\d+:\d+"); // 00:00
-            if( rxTime.IsMatch(text) )
-            {
-                //swTarget.WriteLine(counter++);
-                srtTarget.WriteLine(text);
-                srtTarget.WriteLine();
-                srtTarget.WriteLine(srtSource.ReadLine());
-            }
-            else
-            {
-                srtTarget.WriteLine(srtSource.ReadLine());
-            }
+            bool withTimeCode = rxTime.IsMatch(text);
+
+            if( !withTimeCode )
+                return false;
+
+            srtTarget.WriteLine(text);
+            srtTarget.WriteLine();
+            srtTarget.WriteLine(txtSource.ReadLine());
+            return true;
         }
 
         private bool StartNumber( StreamWriter sWriter, string record )
