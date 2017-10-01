@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Asterion.Models;
-
+using Asterion.UIHelpers;
 
 namespace Asterion.Presentors
 {
@@ -106,8 +106,8 @@ namespace Asterion.Presentors
         {
             mainWindow.startTimerButton.Foreground = System.Windows.Media.Brushes.Black;
             mainWindow.startTimerButton.Background = new System.Windows.Media.SolidColorBrush( System.Windows.Media.Color.FromArgb( 0xFF, 0xE3, 0xE3, 0xE3 ) );
-            mainWindow.startTimerButton.Content = "Включить таймер";
-            TimerStatusText = "Cтатус: таймер выключен";
+            mainWindow.startTimerButton.Content = ButtonsName.ON_TIMER;
+            TimerStatusText = LabelText.STATUS_OFF_TIMER;
             isStopTimer = true;
         }
 
@@ -115,7 +115,7 @@ namespace Asterion.Presentors
         {
             mainWindow.startTimerButton.Foreground = System.Windows.Media.Brushes.Red;
             mainWindow.startTimerButton.Background = System.Windows.Media.Brushes.Yellow;
-            mainWindow.startTimerButton.Content = "Таймер включен";            
+            mainWindow.startTimerButton.Content = ButtonsName.OFF_TIMER;
             isStopTimer = false;
         }
 

@@ -4,6 +4,7 @@ using System.Speech.Synthesis;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Asterion.UIHelpers;
 
 namespace Asterion.Models
 {
@@ -63,7 +64,7 @@ namespace Asterion.Models
                 {
                     textBlock.Text = "Интернета нет, засыпаю...";
                     synthesizer.Speak( "Интернета нет, засыпаю..." );
-                    //buttonStart.Content = "Старт";
+                    //buttonStart.Content = ButtonsName.START;
                 } );
 
 
@@ -78,7 +79,7 @@ namespace Asterion.Models
             }
             buttonStart.Dispatcher.BeginInvoke( DispatcherPriority.Normal, (Action)delegate ()
             {
-                buttonStart.Content = "Старт";
+                buttonStart.Content = ButtonsName.START;
                 textBlock.Text = MyMessage.status + MyMessage.stop;
             } );
         }

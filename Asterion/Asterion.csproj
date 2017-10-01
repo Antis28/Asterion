@@ -91,6 +91,8 @@
     <Compile Include="Presentors\PresenterChellForWebp.cs" />
     <Compile Include="Presentors\PresenterFindExtInXMLBaseDate.cs" />
     <Compile Include="Presentors\PresentorLogOutTrack.cs" />
+    <Compile Include="UIHelpers\ButtonsName.cs" />
+    <Compile Include="UIHelpers\LabelText.cs" />
     <Compile Include="WPFExtensions\OpenFolderDialog_extension.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

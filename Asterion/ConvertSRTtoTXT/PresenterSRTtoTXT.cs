@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using Asterion.UIHelpers;
 using WpfFolderBrowser;
 
 namespace Asterion.ConvertSRTtoTXT
@@ -117,8 +118,8 @@ namespace Asterion.ConvertSRTtoTXT
             {
                 isRunning = !isRunning;
                 modelSRTtoTXT.isRunning = isRunning;
-                mainWindow.btn_srtConvert.Content = "Остановить";
-
+                mainWindow.btn_srtConvert.Content = ButtonsName.STOP;
+                
                 // Добавляем обработчик события             
                 modelSRTtoTXT.MaxValueEvent += onInitialValue;
                 modelSRTtoTXT.ChangeValueEvent += onChangeIndicator;
@@ -139,7 +140,7 @@ namespace Asterion.ConvertSRTtoTXT
             else
             {
                 isRunning = !isRunning;
-                mainWindow.btn_srtConvert.Content = "Начать";
+                mainWindow.btn_srtConvert.Content = ButtonsName.START;
                 modelSRTtoTXT.isRunning = false;
             }
         }
@@ -153,7 +154,7 @@ namespace Asterion.ConvertSRTtoTXT
 
         private void onCompleteConvert()
         {
-            throw new NotImplementedException();
+            mainWindow.btn_srtConvert.Content = ButtonsName.START;
         }
 
         private void onChangeIndicator()

@@ -18,7 +18,6 @@ namespace Asterion
 
     public partial class MainWindow : Window
     {
-
         System.Windows.Threading.DispatcherTimer timerDiskSpace = new System.Windows.Threading.DispatcherTimer();
         PresenterChellForWebp presenterChellForWebp;
         public MainWindow()

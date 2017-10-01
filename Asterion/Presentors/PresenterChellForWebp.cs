@@ -8,6 +8,7 @@ using Asterion.Models.WebP;
 using System.Windows.Controls;
 using WpfFolderBrowser;
 using System.IO;
+using Asterion.UIHelpers;
 
 namespace Asterion.Presentors
 {
@@ -144,7 +145,7 @@ namespace Asterion.Presentors
             {
                 isRunning = !isRunning;
                 chellForWebP.isRunning = isRunning;
-                mainWindow.btn_convert.Content = "Остановить";
+                mainWindow.btn_convert.Content = ButtonsName.STOP;
 
                 InitialzationWebP();
 
@@ -164,7 +165,7 @@ namespace Asterion.Presentors
             else
             {
                 isRunning = !isRunning;
-                mainWindow.btn_convert.Content = "Начать";
+                mainWindow.btn_convert.Content = ButtonsName.START;
                 chellForWebP.isRunning = isRunning;
             }
         }
@@ -244,9 +245,9 @@ namespace Asterion.Presentors
             mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                     (Action)delegate
                     {
-                        mainWindow.tb_percentConvert.Text = "Конвертировние завершено";
+                        mainWindow.tb_percentConvert.Text = LabelText.CONVERT_COMPLETE;
                         isRunning = !isRunning;
-                        mainWindow.btn_convert.Content = "Начать";
+                        mainWindow.btn_convert.Content = ButtonsName.START;
                     });
 
         }
@@ -255,8 +256,8 @@ namespace Asterion.Presentors
             mainWindow.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
                     (Action)delegate
                     {
-                        mainWindow.tb_percentConvert.Text = "Конвертировние отменено";
-                        mainWindow.btn_convert.Content = "Начать";
+                        mainWindow.tb_percentConvert.Text = LabelText.CONVERT_CANCELED;
+                        mainWindow.btn_convert.Content = ButtonsName.START;
                     });
 
         }
