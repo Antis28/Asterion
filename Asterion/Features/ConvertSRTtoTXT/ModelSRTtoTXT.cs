@@ -268,29 +268,33 @@ namespace Asterion.ConvertSRTtoTXT
                                                 StreamReader txtSource,
                                                 string text )
         {
-            Regex rxTime = new Regex(@"^\d+:\d+"); // 00:00
+            //Regex rxTime = new Regex(@"^\d+:\d+"); // 00:00
+            //00:00:04,130 --> 00:00:09,389 align:middle line:90%
+            Regex rxTime = new Regex(@"^[\d]{2}[:]{1}[\d]{2}([:]?)?([\d]{0,2})?([,]?)?([\d]{0,3})?( [-]{2})?([>]{1})?( [\d]{2})?([:]{1})?([\d]{2})?([:]{1})?([\d]{2})?([,]{1})?([\d]{3})?( [a-z]{5})?([:]?)?([a-z]{0,6})?( [a-z]{4})?([:]?)?([\d]?)?([%\d]?)?([%]?)?$");
+            Regex rxForRemove = new Regex(@"[a-z]{5}[:]{1}[a-z]{6} [a-z]{4}[:]{1}[\d]{2}[%]{1}");
             bool withTimeCode = rxTime.IsMatch(text);
+            string cleanedText = rxForRemove.Replace(text, "");
 
             if( !withTimeCode )
                 return false;
 
-            srtTarget.WriteLine(text);
             srtTarget.WriteLine();
+            srtTarget.WriteLine(cleanedText);
+            
             srtTarget.WriteLine(txtSource.ReadLine());
             return true;
         }
 
         private bool StartNumber( StreamWriter sWriter, string record )
         {
-            Regex rxNum = new Regex(@"^\d+"); // 00
-            if( rxNum.IsMatch(record) )
+            Regex rxNum = new Regex(@"^\d+$"); // 00
+            bool startNumber = rxNum.IsMatch(record);
+            if( startNumber )
             {
-                sWriter.WriteLine();
-                sWriter.WriteLine(record);
-                sWriter.WriteLine();
-                return true;
+                sWriter.WriteLine(record);                
+                return startNumber;
             }
-            return false;
+            return startNumber;
         }
         #endregion
     }

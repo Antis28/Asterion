@@ -74,22 +74,22 @@
     <Compile Include="Dlls\WPFFolderBrowser\interop\shellcominterfaces.cs" />
     <Compile Include="Dlls\WPFFolderBrowser\interop\shellwrapperdefinitions.cs" />
     <Compile Include="Dlls\WPFFolderBrowser\library\WPFFolderBrowserDialog.cs" />
-    <Compile Include="FindExtension\Data\ExtInfo.cs" />
-    <Compile Include="FindExtension\html\ExtractorLinkExt.cs" />
-    <Compile Include="FindExtension\html\HtmlString.cs" />
-    <Compile Include="FindExtension\ParserManeger.cs" />
-    <Compile Include="FindExtension\Xml\XmlConstructor.cs" />
-    <Compile Include="FindExtension\Xml\XmlExtractor.cs" />
-    <Compile Include="FindExtension\Xml\xmlSanitizingString.cs" />
-    <Compile Include="FindExtension\Xml\XmlStruct.cs" />
+    <Compile Include="Features\FindExtension\Data\ExtInfo.cs" />
+    <Compile Include="Features\FindExtension\html\ExtractorLinkExt.cs" />
+    <Compile Include="Features\FindExtension\html\HtmlString.cs" />
+    <Compile Include="Features\FindExtension\ParserManeger.cs" />
+    <Compile Include="Features\FindExtension\Xml\XmlConstructor.cs" />
+    <Compile Include="Features\FindExtension\Xml\XmlExtractor.cs" />
+    <Compile Include="Features\FindExtension\Xml\xmlSanitizingString.cs" />
+    <Compile Include="Features\FindExtension\Xml\XmlStruct.cs" />
     <Compile Include="Features\WebP\ChellForWebP.cs" />
     <Compile Include="Features\WebP\ImageHeader.cs" />
     <Compile Include="Features\WebP\LogFile.cs" />
     <Compile Include="Features\WebP\WebPParams.cs" />
-    <Compile Include="Models\LogicFindExtInXMLBaseDate.cs" />
+    <Compile Include="Features\FindExtension\LogicFindExtInXMLBaseDate.cs" />
     <Compile Include="Models\LogicLogOutTrack.cs" />
     <Compile Include="Features\WebP\PresenterChellForWebp.cs" />
-    <Compile Include="Presentors\PresenterFindExtInXMLBaseDate.cs" />
+    <Compile Include="Features\FindExtension\PresenterFindExtInXMLBaseDate.cs" />
     <Compile Include="Presentors\PresentorLogOutTrack.cs" />
     <Compile Include="UIHelpers\ButtonsName.cs" />
     <Compile Include="UIHelpers\LabelText.cs" />
@@ -108,14 +108,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\LogicAlarmTimer.cs" />
-    <Compile Include="Models\FindExtInBaseDate.cs" />
+    <Compile Include="Features\AlarmTimer\LogicAlarmTimer.cs" />
+    <Compile Include="Features\FindExtension\FindExtInBaseDate.cs" />
     <Compile Include="Models\LogicCheckInternet.cs" />
     <Compile Include="Models\LogicCleanTemp.cs" />
     <Compile Include="Models\LogicRanamer.cs" />
     <Compile Include="Models\LogicRestartProcess.cs" />
-    <Compile Include="Presentors\PresenterAlarmTimer.cs" />
-    <Compile Include="Presentors\PresenterFindExt.cs" />
+    <Compile Include="Features\AlarmTimer\PresenterAlarmTimer.cs" />
+    <Compile Include="Features\FindExtension\PresenterFindExt.cs" />
     <Compile Include="Presentors\PresenterPreviewClean.cs" />
     <Compile Include="Presentors\PresenterRenamer.cs" />
     <Compile Include="Presentors\PresenterRestartProcess.cs" />
