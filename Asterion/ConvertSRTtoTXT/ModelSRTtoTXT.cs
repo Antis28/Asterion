@@ -26,7 +26,7 @@ namespace Asterion.ConvertSRTtoTXT
         public event Action<int> MaxValueEvent;
         public event Action CompleteConvertEvent;
         public event Action CanceledConvertEvent;
-
+        //------------- public methods -----------------------------//
         /// <summary>
         /// Обрабатываются все файлы в папке
         /// </summary>
@@ -63,6 +63,23 @@ namespace Asterion.ConvertSRTtoTXT
             backgroundThread.IsBackground = true;
             TargetType = TypeConvert.SRT;
             backgroundThread.Start();
+        }
+
+        public string[] FilterExtension( string pathDirectory )
+        {
+#if framewok_4_0
+            //For .NET 4.0 and later, 
+            var files = Directory.EnumerateFiles(pathDirectory, "*.*", SearchOption.TopDirectoryOnly)
+            .Where(s =>
+            s.EndsWith(".SRT", StringComparison.OrdinalIgnoreCase)
+            );
+#endif
+#if framewok_do_4_0
+                    //For earlier versions of .NET,
+                    var files = Directory.GetFiles("C:\\path", "*.*", SearchOption.AllDirectories)
+                    .Where(s => s.EndsWith(".srt"));
+#endif
+            return files.ToArray<string>();
         }
         //------------- private -----------------------------//
         private void Start()
