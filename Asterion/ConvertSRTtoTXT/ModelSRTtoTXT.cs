@@ -13,6 +13,7 @@ namespace Asterion.ConvertSRTtoTXT
 {
     class ModelSRTtoTXT
     {
+        #region fields
         internal bool isRunning;
         private bool isAllFiles;
         private string[] pathFileNames;
@@ -20,7 +21,8 @@ namespace Asterion.ConvertSRTtoTXT
         private List<string> pathToInputFiles;
         enum TypeConvert { SRT, TEXT };
         TypeConvert TargetType = TypeConvert.SRT;
-
+        #endregion
+        #region Events
         // Объявляем событие
         public event Action ChangeValueEvent;
         public event Action<int> MaxValueEvent;
@@ -35,6 +37,8 @@ namespace Asterion.ConvertSRTtoTXT
             pathFileNames = null;
             isAllFiles = true;
         }
+        #endregion
+        #region public methods
 
         /// <summary>
         /// Обрабатываются только выбранные файлы в папке
@@ -81,7 +85,8 @@ namespace Asterion.ConvertSRTtoTXT
 #endif
             return files.ToArray<string>();
         }
-        //------------- private -----------------------------//
+        #endregion
+        # region private methods
         private void Start()
         {
             ExtractPathsFiles(pathDirectory); // получить адреса файлов
@@ -247,5 +252,6 @@ namespace Asterion.ConvertSRTtoTXT
             }
             return false;
         }
+        #endregion
     }
 }
