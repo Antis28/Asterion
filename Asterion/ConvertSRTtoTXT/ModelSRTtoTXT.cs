@@ -85,19 +85,21 @@ namespace Asterion.ConvertSRTtoTXT
         private void Start()
         {
             ExtractPathsFiles(pathDirectory); // получить адреса файлов
-            string path = pathToInputFiles[0];
-
             if( TargetType == TypeConvert.TEXT )
             {
-                string text = ReadFromSrtFile(path);
-                WriteToTextFile(path, text);
+                foreach( string path in pathToInputFiles )
+                {
+                    string text = ReadFromSrtFile(path);
+                    WriteToTextFile(path, text);
+                }
             }
             else if( TargetType == TypeConvert.SRT )
             {
-                WriteToSrtFile(path);
+                foreach( string path in pathToInputFiles )
+                {
+                    WriteToSrtFile(path);
+                }
             }
-
-
         }
 
         private void WriteToSrtFile( string originalFilePath )
