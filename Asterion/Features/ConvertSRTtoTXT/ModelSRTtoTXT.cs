@@ -14,6 +14,8 @@ namespace Asterion.ConvertSRTtoTXT
     class ModelSRTtoTXT
     {
         #region fields
+        string resultText = "";
+
         internal bool isRunning;
         private bool isAllFiles = true;
         private string[] pathFileNames = null;
@@ -147,6 +149,7 @@ namespace Asterion.ConvertSRTtoTXT
 
         private void WriteToSrtFile( string originalFilePath )
         {
+            resultText = string.Empty;
             string directoryName = Path.GetDirectoryName(originalFilePath);
             string NameTxtFile = Path.GetFileNameWithoutExtension(originalFilePath) + ".txt";
             string PathTxtFile = directoryName + "\\" + NameTxtFile;
@@ -161,25 +164,31 @@ namespace Asterion.ConvertSRTtoTXT
                     {
                         using( StreamReader txtSource = new StreamReader(PathTxtFile, System.Text.Encoding.UTF8) )
                         {
-                            while( true )
-                            {
+                            while( !srOriginal.EndOfStream )
+                            {   
                                 // Читаем строку из файла оригинала
                                 string originalText = srOriginal.ReadLine();
+                                
 
-                                // Достигнут конец файла, прерываем считывание.
-                                if( originalText == null )
-                                    break;
                                 if( originalText == string.Empty )
                                     continue;
-                                // Cтрока начинается с цифры
-                                if( StartNumber(srtTarget, originalText) )
-                                    continue;
-                                // Не с таймкода - просто записать в файл
-                                if( !StartWithTimeCode(srtTarget, txtSource, originalText) )
+                                if( StartWithNumber(originalText) )
                                 {
-                                    srtTarget.WriteLine(txtSource.ReadLine());
+                                    srtTarget.WriteLine(originalText);
+                                    resultText += originalText + "\n";
+                                    continue;
                                 }
-
+                                string cleanedText;
+                                if( StartWithTimeCode(originalText, out cleanedText) )
+                                {
+                                    srtTarget.WriteLine();
+                                    srtTarget.WriteLine(cleanedText);
+                                    resultText += cleanedText + "\n";
+                                    continue;
+                                }
+                                string editedText = txtSource.ReadLine();
+                                srtTarget.WriteLine(editedText);
+                                resultText += editedText + "\n";
                             }
                         }
                     }
@@ -210,30 +219,24 @@ namespace Asterion.ConvertSRTtoTXT
 
         private string ReadFromSrtFile( string readPath )
         {
-            string text = "";
-            Regex rxTime = new Regex(@"^\d+:\d+"); // 00:00
+            string text = "";            
             Regex rxNum = new Regex(@"^\d+"); // 00
             try
             {   // Open the text file using a stream reader.
                 using( StreamReader sr = new StreamReader(readPath) )
                 {
-                    while( true )
+                    while( !sr.EndOfStream )
                     {
                         // Читаем строку из файла во временную переменную.
-                        string temp = sr.ReadLine();
-                        // Если достигнут конец файла, прерываем считывание.
-                        if( temp == null )
-                            break;
+                        string currentText = sr.ReadLine();
 
-                        if( temp == string.Empty || rxNum.IsMatch(temp) )
+                        if( currentText == string.Empty || StartWithNumber(currentText) )
                             continue;
 
-                        bool isDigit = rxTime.IsMatch(temp);
-
-                        if( !isDigit )
+                        if( !StartWithTimeCode(currentText) )
                         {
                             // Пишем считанную строку в итоговую переменную.
-                            text += temp + "\n";
+                            text += currentText + "\n";
                         }
                     }
 
@@ -264,37 +267,32 @@ namespace Asterion.ConvertSRTtoTXT
             OnMaxValueEvent(pathToInputFiles.Count);
         }
 
-        private bool StartWithTimeCode( StreamWriter srtTarget,
-                                                StreamReader txtSource,
-                                                string text )
+        private bool StartWithTimeCode( string originalText, out string cleanedText )
         {
-            //Regex rxTime = new Regex(@"^\d+:\d+"); // 00:00
+            //align:middle line:90%
+            Regex rxForRemove = new Regex(@"[a-z]{5}[:]{1}[a-z]{6} [a-z]{4}[:]{1}[\d]{2}[%]{1}");
+            cleanedText = rxForRemove.Replace(originalText, "");
+
+            return StartWithTimeCode(originalText);
+        }
+        private bool StartWithTimeCode( string originalText)
+        {
             //00:00:04,130 --> 00:00:09,389 align:middle line:90%
             Regex rxTime = new Regex(@"^[\d]{2}[:]{1}[\d]{2}([:]?)?([\d]{0,2})?([,]?)?([\d]{0,3})?( [-]{2})?([>]{1})?( [\d]{2})?([:]{1})?([\d]{2})?([:]{1})?([\d]{2})?([,]{1})?([\d]{3})?( [a-z]{5})?([:]?)?([a-z]{0,6})?( [a-z]{4})?([:]?)?([\d]?)?([%\d]?)?([%]?)?$");
-            Regex rxForRemove = new Regex(@"[a-z]{5}[:]{1}[a-z]{6} [a-z]{4}[:]{1}[\d]{2}[%]{1}");
-            bool withTimeCode = rxTime.IsMatch(text);
-            string cleanedText = rxForRemove.Replace(text, "");
+            bool withTimeCode = rxTime.IsMatch(originalText);
 
-            if( !withTimeCode )
-                return false;
-
-            srtTarget.WriteLine();
-            srtTarget.WriteLine(cleanedText);
-            
-            srtTarget.WriteLine(txtSource.ReadLine());
-            return true;
+            return withTimeCode;
         }
 
-        private bool StartNumber( StreamWriter sWriter, string record )
+        private bool StartWithNumber( string text )
         {
             Regex rxNum = new Regex(@"^\d+$"); // 00
-            bool startNumber = rxNum.IsMatch(record);
-            if( startNumber )
-            {
-                sWriter.WriteLine(record);                
-                return startNumber;
+            bool startWithNumber = rxNum.IsMatch(text);
+            if( startWithNumber )
+            {   
+                return startWithNumber;
             }
-            return startNumber;
+            return startWithNumber;
         }
         #endregion
     }
