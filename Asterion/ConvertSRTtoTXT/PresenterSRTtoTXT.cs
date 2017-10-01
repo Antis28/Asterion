@@ -125,10 +125,8 @@ namespace Asterion.ConvertSRTtoTXT
                 modelSRTtoTXT.CompleteConvertEvent += onCompleteConvert;
                 modelSRTtoTXT.CanceledConvertEvent += onCanceledConvert;
 
-                if( mainWindow.cb_srtIsDirectory.IsChecked.Value )
-                    modelSRTtoTXT.SwitchOnAllFiles();
-                else
-                    modelSRTtoTXT.SwitchOnSelectedFiles(PathFileNames);
+                if( !mainWindow.cb_srtIsDirectory.IsChecked.Value )
+                    modelSRTtoTXT.SetSelectedFiles(PathFileNames);
                 if( mainWindow.rb_srtToText.IsChecked.Value )
                 {
                     modelSRTtoTXT.BeginConvertSrtToTxt(mainWindow.tbx_srtAddressField.Text);

@@ -15,8 +15,8 @@ namespace Asterion.ConvertSRTtoTXT
     {
         #region fields
         internal bool isRunning;
-        private bool isAllFiles;
-        private string[] pathFileNames;
+        private bool isAllFiles = true;
+        private string[] pathFileNames = null;
         private string pathDirectory;
         private List<string> pathToInputFiles;
         enum TypeConvert { SRT, TEXT };
@@ -44,7 +44,7 @@ namespace Asterion.ConvertSRTtoTXT
         /// Обрабатываются только выбранные файлы в папке
         /// </summary>
         /// <param name="pathFileNames"></param>
-        public void SwitchOnSelectedFiles( string[] pathFileNames )
+        public void SetSelectedFiles( string[] pathFileNames )
         {
             this.pathFileNames = pathFileNames;
             isAllFiles = false;
