@@ -85,58 +85,35 @@ namespace Asterion.ConvertSRTtoTXT
 
         private void WriteToSrtFile( string originalFilePath )
         {
-            string tempFilePath = string.Empty;
-            string text = string.Empty;
-            string resultFileName = string.Empty;            
-            string directoryName = string.Empty;
-            string tempNameFile = string.Empty;
-
-            directoryName = Path.GetDirectoryName(originalFilePath);
-
-            tempNameFile = Path.GetFileNameWithoutExtension(originalFilePath) + ".txt";
-            tempFilePath = directoryName + "\\" + tempNameFile;
-
-            resultFileName = Path.GetFileNameWithoutExtension(originalFilePath);            
-            resultFileName = directoryName + "\\" + resultFileName + "-ru.srt";
-            int counter = 1;
-
-            Regex rxTime = new Regex(@"\d+:\d+"); // 00:00
-            Regex rxNum = new Regex(@"^\d+"); // 00
+            string directoryName = Path.GetDirectoryName(originalFilePath);
+            string NameTxtFile = Path.GetFileNameWithoutExtension(originalFilePath) + ".txt";
+            string PathTxtFile = directoryName + "\\" + NameTxtFile;
+            string NameSrtFile = Path.GetFileNameWithoutExtension(originalFilePath);
+            NameSrtFile = directoryName + "\\" + NameSrtFile + "-ru.srt";
+            //int counter = 1;
             try
             {   // Open the text file using a stream reader.
-                using( StreamWriter swResult = new StreamWriter(File.Create(resultFileName), System.Text.Encoding.UTF8) )
+                using( StreamWriter swResult = new StreamWriter(File.Create(NameSrtFile), System.Text.Encoding.UTF8) )
                 {
                     using( StreamReader srOriginal = new StreamReader(originalFilePath, System.Text.Encoding.UTF8) )
                     {
-                        using( StreamReader srSource = new StreamReader(tempFilePath, System.Text.Encoding.UTF8) )
+                        using( StreamReader srSource = new StreamReader(PathTxtFile, System.Text.Encoding.UTF8) )
                         {
                             while( true )
                             {
-                                // Читаем строку из файла во временную переменную.
-                                string temp = srOriginal.ReadLine();
+                                // Читаем строку из файла оригинала
+                                string originalText = srOriginal.ReadLine();
 
-                                // Если достигнут конец файла, прерываем считывание.
-                                if( temp == null )
+                                // Достигнут конец файла, прерываем считывание.
+                                if( originalText == null )
                                     break;
-                                if( temp == string.Empty || rxNum.IsMatch(temp) )
-                                {
-                                    swResult.WriteLine(temp);
+                                if( originalText == string.Empty )
                                     continue;
-                                }
+                                // Cтрока начинается с цифры
+                                if( StartNumber(swResult, originalText) )
+                                    continue;
 
-                                if( rxTime.IsMatch(temp) )
-                                {
-                                    //swResult.WriteLine(counter++);
-                                    //swResult.WriteLine();
-                                    swResult.WriteLine(temp);
-                                    swResult.WriteLine();
-                                    swResult.WriteLine(srSource.ReadLine());
-                                    //swResult.WriteLine();
-                                }
-                                else
-                                {
-                                    swResult.WriteLine(srSource.ReadLine());
-                                }
+                                StartWithTimeCode(swResult, srSource, originalText);
                             }
                         }
                     }
@@ -221,21 +198,35 @@ namespace Asterion.ConvertSRTtoTXT
             //OnMaxValue(pathToInputFiles.Count);
         }
 
-        public string[] FilterExtension( string pathDirectory )
+        private void StartWithTimeCode( StreamWriter srtTarget,
+                                                StreamReader srtSource,
+                                                string text )
         {
-#if framewok_4_0
-            //For .NET 4.0 and later, 
-            var files = Directory.EnumerateFiles(pathDirectory, "*.*", SearchOption.TopDirectoryOnly)
-            .Where(s =>
-            s.EndsWith(".SRT", StringComparison.OrdinalIgnoreCase)
-            );
-#endif
-#if framewok_do_4_0
-                    //For earlier versions of .NET,
-                    var files = Directory.GetFiles("C:\\path", "*.*", SearchOption.AllDirectories)
-                    .Where(s => s.EndsWith(".srt"));
-#endif
-            return files.ToArray<string>();
+            Regex rxTime = new Regex(@"^\d+:\d+"); // 00:00
+            if( rxTime.IsMatch(text) )
+            {
+                //swTarget.WriteLine(counter++);
+                srtTarget.WriteLine(text);
+                srtTarget.WriteLine();
+                srtTarget.WriteLine(srtSource.ReadLine());
+            }
+            else
+            {
+                srtTarget.WriteLine(srtSource.ReadLine());
+            }
+        }
+
+        private bool StartNumber( StreamWriter sWriter, string record )
+        {
+            Regex rxNum = new Regex(@"^\d+"); // 00
+            if( rxNum.IsMatch(record) )
+            {
+                sWriter.WriteLine();
+                sWriter.WriteLine(record);
+                sWriter.WriteLine();
+                return true;
+            }
+            return false;
         }
     }
 }
