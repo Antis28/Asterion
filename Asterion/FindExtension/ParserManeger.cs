@@ -18,9 +18,9 @@ namespace ExtensionStore
     class ParserManeger
     {
         MainWindow mainWindow;
-        string linkTypes;
-        string linkFormats;
-        string formats;
+        //string linkTypes;
+        //string linkFormats;
+        //string formats;
 
         public ParserManeger( MainWindow mainWindow )
         {
